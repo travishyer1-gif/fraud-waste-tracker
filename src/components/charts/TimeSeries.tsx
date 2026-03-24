@@ -46,36 +46,71 @@ export const SPENDING_EVENTS: SpendingEvent[] = [
 // ─── Counterfactual helper ────────────────────────────────────────────────────
 
 /**
- * Build a "what-if" version of the data by removing a set of spending events.
- * For each disabled event, we subtract a fraud/waste-fraud-rate proxy from that
- * year and all subsequent years (simulating that the spending never happened and
- * therefore the associated fraud/waste never accrued).
- *
- * We use a conservative leakage rate of 8% of authorised spend → fraud/waste.
+ * Per-event leakage rates: fraction of authorised spend that became fraud/waste.
+ * COVID-era programs used higher rates (10-15%) based on known improper payment
+ * investigations. Non-COVID programs use the baseline ~4% (paymentaccuracy.gov).
+ * Policy-only events (no direct spending) use 0.
  */
-const LEAKAGE_RATE = 0.08;
+export const EVENT_LEAKAGE_RATES: Record<string, number> = {
+  'CARES Act ($2.2T)': 0.12,
+  'PPP/EIDL Loans': 0.15,
+  'American Rescue Plan ($1.9T)': 0.10,
+  'Infrastructure Act ($1.2T)': 0.04,
+  'Inflation Reduction Act ($891B)': 0.04,
+  'CHIPS Act ($280B)': 0.04,
+  'TARP ($700B)': 0.01, // TARP mostly recovered
+  'ARRA Stimulus ($831B)': 0.025,
+  'Bipartisan Budget Act ($300B)': 0.04,
+  'ACA Signed': 0, // No direct spending package
+  'Sequestration Cuts': 0, // Cuts, not spending
+  'Tax Cuts & Jobs Act': 0, // Revenue, not spending
+};
 
+interface CounterfactualResult {
+  cfRows: ReturnType<typeof buildTypeTimeSeriesData>;
+  cfBudget: Record<number, number>;
+}
+
+/**
+ * Build a "what-if" version of the data by removing a set of spending events.
+ *
+ * For each disabled event:
+ *  1. Subtract the event's authorised amount from the federal budget for that year
+ *     (showing what the budget would have been without this spending).
+ *  2. Subtract (amount × leakage rate) from fraud/waste totals for that year,
+ *     using program-specific leakage rates rather than a flat proxy.
+ */
 function buildCounterfactualData(
   baseData: ReturnType<typeof buildTypeTimeSeriesData>,
   disabledEvents: SpendingEvent[],
-): ReturnType<typeof buildTypeTimeSeriesData> {
-  if (disabledEvents.length === 0) return baseData;
+): CounterfactualResult {
+  // Clone base budget so we can adjust per event
+  const cfBudget: Record<number, number> = { ...FEDERAL_BUDGET };
 
-  return baseData.map(row => {
+  if (disabledEvents.length === 0) {
+    return { cfRows: baseData, cfBudget };
+  }
+
+  // Subtract event amounts from the federal budget for the event year
+  disabledEvents.forEach(evt => {
+    if (evt.amount === 0) return;
+    if (cfBudget[evt.year] !== undefined) {
+      cfBudget[evt.year] = Math.max(0, cfBudget[evt.year] - evt.amount);
+    }
+  });
+
+  // Build adjusted fraud/waste rows using per-event leakage rates
+  const cfRows = baseData.map(row => {
     let fraudAdjust = 0;
     let wasteAdjust = 0;
 
     disabledEvents.forEach(evt => {
-      if (evt.amount === 0 || evt.year > row.year) return;
-      const leakage = evt.amount * LEAKAGE_RATE;
-      // Spread across event year + 2 subsequent years (3-year window)
-      const windowSize = 3;
-      const yearsElapsed = row.year - evt.year;
-      if (yearsElapsed < windowSize) {
-        const share = yearsElapsed === 0 ? 0.5 : yearsElapsed === 1 ? 0.35 : 0.15;
-        fraudAdjust += leakage * share * 0.5; // half attributed to fraud
-        wasteAdjust += leakage * share * 0.5; // half attributed to waste
-      }
+      if (evt.amount === 0 || evt.year !== row.year) return;
+      const leakageRate = EVENT_LEAKAGE_RATES[evt.label] ?? 0.04;
+      const leakage = evt.amount * leakageRate;
+      // Split leakage equally between fraud and waste (conservative)
+      fraudAdjust += leakage * 0.5;
+      wasteAdjust += leakage * 0.5;
     });
 
     const fraud = Math.max(0, row.fraud - fraudAdjust);
@@ -88,6 +123,8 @@ function buildCounterfactualData(
       combined: fraud + waste,
     };
   });
+
+  return { cfRows, cfBudget };
 }
 
 // ─── Tooltip ──────────────────────────────────────────────────────────────────
@@ -159,7 +196,7 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
   }, [disabledEventLabels]);
 
   // Counterfactual data (only computed when some events are toggled off)
-  const counterfactualBase = useMemo(
+  const { cfRows: counterfactualBase, cfBudget } = useMemo(
     () => buildCounterfactualData(baseData, disabledEvents),
     [baseData, disabledEvents],
   );
@@ -170,10 +207,12 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
   const chartData = useMemo(() => {
     return baseData.map((d, idx) => {
       const budget = FEDERAL_BUDGET[d.year] ?? null;
+      const cfBudgetVal = cfBudget[d.year] ?? null;
       const cf = counterfactualBase[idx];
       return {
         ...d,
         budget,
+        cfBudget: cfBudgetVal,
         fraudPct: budget ? (d.fraud / budget) * 100 : null,
         wastePct: budget ? (d.waste / budget) * 100 : null,
         combinedPct: budget ? (d.combined / budget) * 100 : null,
@@ -181,12 +220,12 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
         cfFraud: cf.fraud,
         cfWaste: cf.waste,
         cfCombined: cf.combined,
-        cfFraudPct: budget ? (cf.fraud / budget) * 100 : null,
-        cfWastePct: budget ? (cf.waste / budget) * 100 : null,
-        cfCombinedPct: budget ? (cf.combined / budget) * 100 : null,
+        cfFraudPct: cfBudgetVal ? (cf.fraud / cfBudgetVal) * 100 : null,
+        cfWastePct: cfBudgetVal ? (cf.waste / cfBudgetVal) * 100 : null,
+        cfCombinedPct: cfBudgetVal ? (cf.combined / cfBudgetVal) * 100 : null,
       };
     });
-  }, [baseData, counterfactualBase]);
+  }, [baseData, counterfactualBase, cfBudget]);
 
   const fraudKey = showAsPct ? 'fraudPct' : 'fraud';
   const wasteKey = showAsPct ? 'wastePct' : 'waste';
@@ -194,6 +233,8 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
   const cfFraudKey = showAsPct ? 'cfFraudPct' : 'cfFraud';
   const cfWasteKey = showAsPct ? 'cfWastePct' : 'cfWaste';
   const cfCombinedKey = showAsPct ? 'cfCombinedPct' : 'cfCombined';
+  // cfBudget key — only shown on right axis in absolute mode when showBudget is active
+  const cfBudgetKey = 'cfBudget';
 
   const yTickFormatter = showAsPct
     ? (v: number) => `${v.toFixed(1)}%`
@@ -395,6 +436,20 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
               />
             )}
 
+            {/* Counterfactual budget line (shown when events are toggled OFF and showBudget is on) */}
+            {showBudget && !showAsPct && hasCounterfactual && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey={cfBudgetKey}
+                name="Fed. Budget (counterfactual)"
+                stroke="#94a3b8"
+                strokeWidth={1.5}
+                strokeDasharray="6 3"
+                dot={false}
+              />
+            )}
+
             <Brush
               dataKey="year"
               height={24}
@@ -417,6 +472,20 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
           </ComposedChart>
         </ResponsiveContainer>
       </div>
+
+      {/* Counterfactual explainer */}
+      {hasCounterfactual && (
+        <p className="text-[11px] text-cyan-400/70 leading-relaxed rounded-lg border border-cyan-500/20 bg-cyan-500/5 px-3 py-2">
+          <span className="font-semibold text-cyan-300">Counterfactual estimate:</span> removes{' '}
+          {disabledEvents
+            .filter(e => e.amount > 0)
+            .map(e => e.label)
+            .join(', ')}{' '}
+          spending from the federal budget and subtracts estimated fraud/waste using
+          program-specific leakage rates (COVID: 10–15%, baseline: 4%). Enable{' '}
+          <em>Federal budget context</em> above to see the counterfactual budget line.
+        </p>
+      )}
 
       {/* Data density note */}
       <p className="text-[10px] text-white/30 text-center">

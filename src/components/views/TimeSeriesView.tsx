@@ -126,9 +126,10 @@ export default function TimeSeriesView() {
               <>
                 <span className="font-semibold text-cyan-300">Counterfactual mode active.</span>{' '}
                 Dashed cyan lines show estimated fraud/waste if the disabled spending event(s) had
-                never occurred. We apply an 8% leakage rate distributed over the event year + 2
-                subsequent years. This is illustrative, not audited — treat it as a lower-bound
-                scenario.
+                never occurred. Program-specific leakage rates are applied (COVID-era: 10–15%;
+                baseline: 4%; TARP: 1%). The federal budget line is also adjusted downward by the
+                removed spending amount. This is illustrative, not audited — treat it as a
+                lower-bound scenario.
               </>
             ) : (
               <>

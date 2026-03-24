@@ -5,10 +5,14 @@ import { Navigation, type ViewId } from './Navigation';
 import { FilterProvider } from '@/context/FilterContext';
 import { Dashboard } from '@/components/dashboard/Dashboard';
 import { EvidenceTable } from '@/components/table/EvidenceTable';
+import TreemapView from '@/components/views/TreemapView';
+import BubbleView from '@/components/views/BubbleView';
 
 function ViewContent({ view }: { view: ViewId }) {
   if (view === 'dashboard') return <Dashboard />;
   if (view === 'table') return <EvidenceTable />;
+  if (view === 'treemap') return <TreemapView />;
+  if (view === 'bubble') return <BubbleView />;
 
   return (
     <div className="flex items-center justify-center h-64">

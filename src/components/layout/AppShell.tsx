@@ -7,14 +7,15 @@ import { Dashboard } from '@/components/dashboard/Dashboard';
 import { EvidenceTable } from '@/components/table/EvidenceTable';
 import TreemapView from '@/components/views/TreemapView';
 import BubbleView from '@/components/views/BubbleView';
-import SankeyView from '@/components/views/SankeyView';
+import { TooltipProvider } from '@/components/ui/InfoTooltip';
+import { MethodologyPanel } from '@/components/ui/MethodologyPanel';
+import { Footer } from '@/components/layout/Footer';
 
-function ViewContent({ view }: { view: ViewId }) {
+function ViewContent({ view, onViewChange }: { view: ViewId; onViewChange: (v: ViewId) => void }) {
   if (view === 'dashboard') return <Dashboard />;
   if (view === 'table') return <EvidenceTable />;
   if (view === 'treemap') return <TreemapView />;
   if (view === 'bubble') return <BubbleView />;
-  if (view === 'sources') return <SankeyView />;
 
   return (
     <div className="flex items-center justify-center h-64">
@@ -35,11 +36,19 @@ export function AppShell() {
   const [activeView, setActiveView] = useState<ViewId>('dashboard');
 
   return (
-    <FilterProvider>
-      <Navigation activeView={activeView} onViewChange={setActiveView} />
-      <main className="container mx-auto px-4 py-6 flex-1">
-        <ViewContent view={activeView} />
-      </main>
-    </FilterProvider>
+    <TooltipProvider>
+      <FilterProvider>
+        <Navigation activeView={activeView} onViewChange={setActiveView} />
+        <main className="container mx-auto px-4 py-6 flex-1">
+          <ViewContent view={activeView} onViewChange={setActiveView} />
+        </main>
+
+        {/* Methodology + Footer pinned at bottom of app */}
+        <div className="container mx-auto px-4 pb-4 space-y-3">
+          <MethodologyPanel />
+        </div>
+        <Footer onViewSourceData={() => setActiveView('table')} />
+      </FilterProvider>
+    </TooltipProvider>
   );
 }

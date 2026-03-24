@@ -6,6 +6,7 @@ import { useEvidenceData } from '@/hooks/useEvidenceData';
 import { formatCompact } from '@/lib/utils';
 import { TIER_COLORS, CATEGORY_LABELS } from '@/lib/constants';
 import { GlobalControls } from '@/components/controls/GlobalControls';
+import { InfoTooltip } from '@/components/ui/InfoTooltip';
 
 // ─── Animated number counter using RAF ────────────────────────────────────────
 function AnimatedNumber({ value }: { value: number }) {
@@ -259,6 +260,12 @@ export function Dashboard() {
                 <span className="text-sm text-muted-foreground self-end pb-1">
                   / year
                 </span>
+                <span className="self-end pb-1.5">
+                  <InfoTooltip
+                    tier={2}
+                    content="This range spans all filtered entries using their low/high bounds. We sum only root-level findings — entries tagged as subsets of a larger finding are excluded from the headline to avoid double-counting. Hover individual tier badges below for confidence definitions."
+                  />
+                </span>
               </div>
             </div>
 
@@ -304,6 +311,10 @@ export function Dashboard() {
                         <span className="font-mono font-semibold text-foreground">
                           {formatCompact(amt)}
                         </span>
+                        <InfoTooltip
+                          tier={tier}
+                          content={`${formatCompact(amt)} across ${tierCounts[tier] ?? 0} ${TIER_COLORS[tier].label.toLowerCase()} entries (Tier ${tier}).`}
+                        />
                       </span>
                     );
                   })}

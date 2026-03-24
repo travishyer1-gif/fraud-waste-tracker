@@ -7,12 +7,14 @@ import { Dashboard } from '@/components/dashboard/Dashboard';
 import { EvidenceTable } from '@/components/table/EvidenceTable';
 import TreemapView from '@/components/views/TreemapView';
 import BubbleView from '@/components/views/BubbleView';
+import SankeyView from '@/components/views/SankeyView';
 
 function ViewContent({ view }: { view: ViewId }) {
   if (view === 'dashboard') return <Dashboard />;
   if (view === 'table') return <EvidenceTable />;
   if (view === 'treemap') return <TreemapView />;
   if (view === 'bubble') return <BubbleView />;
+  if (view === 'sources') return <SankeyView />;
 
   return (
     <div className="flex items-center justify-center h-64">

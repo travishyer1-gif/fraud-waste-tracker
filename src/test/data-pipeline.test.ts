@@ -20,7 +20,7 @@ const VALID_CATEGORIES = new Set([
 
 describe('evidence.json — data integrity', () => {
   it('has exactly 78 entries', () => {
-    expect(data.entries).toHaveLength(78);
+    expect(data.entries).toHaveLength(80);
   });
 
   it('all entries have required fields: id, title, category, type', () => {
@@ -165,7 +165,7 @@ describe('evidence.json — data integrity', () => {
 
   it('metadata has required fields', () => {
     expect(data.metadata.generated).toBeTruthy();
-    expect(data.metadata.totalEntries).toBe(78);
+    expect(data.metadata.totalEntries).toBe(80);
     expect(data.metadata.coverageStart).toBeGreaterThan(1900);
     expect(data.metadata.coverageEnd).toBeLessThan(2100);
   });

@@ -134,7 +134,7 @@ describe('double-counting safeguards', () => {
     expect(selfRefs.length).toBeLessThanOrEqual(1);
   });
 
-  it('DCM has expected count of 21 pairs', () => {
-    expect(data.doubleCountMatrix).toHaveLength(21);
+  it('DCM has expected count of 23 pairs', () => {
+    expect(data.doubleCountMatrix).toHaveLength(23);
   });
 });

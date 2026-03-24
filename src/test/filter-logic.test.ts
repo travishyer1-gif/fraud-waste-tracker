@@ -71,11 +71,11 @@ describe('filter logic', () => {
       });
     });
 
-    it('maxTier=1 returns only tier-1 entries (dataset has 55 tier-1 entries, none null-tier)', () => {
+    it('maxTier=1 returns only tier-1 entries (dataset has 56 tier-1 entries, none null-tier)', () => {
       const result = applyFilters(data.entries, { ...defaultFilters, maxTier: 1 });
       // All results must be tier 1 (no null-tier entries in this dataset)
       result.forEach(e => expect(e.certaintyTier).toBe(1));
-      expect(result.length).toBe(55);
+      expect(result.length).toBe(56);
     });
 
     it('maxTier=4 shows all entries', () => {
@@ -100,7 +100,7 @@ describe('filter logic', () => {
         yearStart: 2024,
         yearEnd: 2025,
       });
-      expect(result.length).toBe(43);
+      expect(result.length).toBe(45);
       result.forEach(e => {
         if (e.fiscalYearStart !== null) {
           const end = e.fiscalYearEnd ?? e.fiscalYearStart;
@@ -117,7 +117,7 @@ describe('filter logic', () => {
         yearStart: 2024,
         yearEnd: 2024,
       });
-      expect(result.length).toBe(30);
+      expect(result.length).toBe(32);
     });
 
     it('multi-year entries spanning a range are included when range overlaps', () => {
@@ -167,7 +167,7 @@ describe('filter logic', () => {
     it("type='waste' shows only waste entries", () => {
       const result = applyFilters(data.entries, { ...defaultFilters, dataType: 'waste' });
       result.forEach(e => expect(e.type).toBe('waste'));
-      expect(result.length).toBe(44);
+      expect(result.length).toBe(46);
     });
 
     it("type='both' shows all entries", () => {

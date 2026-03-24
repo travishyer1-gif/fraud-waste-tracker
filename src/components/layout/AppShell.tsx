@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { Navigation, type ViewId } from './Navigation';
 import { FilterProvider } from '@/context/FilterContext';
 import { Dashboard } from '@/components/dashboard/Dashboard';
+import { EvidenceTable } from '@/components/table/EvidenceTable';
 
 function ViewContent({ view }: { view: ViewId }) {
   if (view === 'dashboard') return <Dashboard />;
-  
+  if (view === 'table') return <EvidenceTable />;
+
   return (
     <div className="flex items-center justify-center h-64">
       <div className="text-center space-y-2">

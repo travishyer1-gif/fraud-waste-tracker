@@ -17,21 +17,57 @@ export interface YearTypeData {
   fraud: number;
   waste: number;
   combined: number;
+  /** Number of actual evidence entries contributing to this year's total */
+  dataDensity: number;
 }
 
 /**
+ * COVID-era weight distribution for multi-year entries spanning 2020–2022.
+ * Reflects known front-loading of emergency spending in peak pandemic years.
+ */
+const COVID_YEAR_WEIGHTS: Partial<Record<number, number>> = {
+  2020: 0.50,
+  2021: 0.35,
+  2022: 0.15,
+};
+
+/**
  * Returns the per-year weight for distributing a multi-year entry.
- * For a single-year entry, weight = 1.
- * For a multi-year entry spanning N chart years, each year gets 1/N.
+ * - Single-year entries → 1
+ * - Entries spanning both 2020 and 2021 → COVID-weighted distribution
+ * - All other multi-year entries → even split
  */
 function getYearWeight(entry: EvidenceEntry, year: number): number {
   const start = entry.fiscalYearStart ?? 0;
   const end = entry.fiscalYearEnd ?? start;
 
-  // Determine which chart years this entry covers
   const coveredYears = CHART_YEARS.filter(y => y >= start && y <= end);
   if (coveredYears.length === 0) return 0;
   if (!coveredYears.includes(year as ChartYear)) return 0;
+  if (coveredYears.length === 1) return 1;
+
+  // Apply COVID-era peak weighting when entry spans 2020 + 2021
+  const has2020 = coveredYears.includes(2020 as ChartYear);
+  const has2021 = coveredYears.includes(2021 as ChartYear);
+
+  if (has2020 && has2021) {
+    const covidCoveredYears = coveredYears.filter(y => COVID_YEAR_WEIGHTS[y] !== undefined);
+    const nonCovidCoveredYears = coveredYears.filter(y => COVID_YEAR_WEIGHTS[y] === undefined);
+    const isCovidYear = COVID_YEAR_WEIGHTS[year] !== undefined;
+
+    if (isCovidYear) {
+      const totalCovidWeight = covidCoveredYears.reduce(
+        (sum, y) => sum + (COVID_YEAR_WEIGHTS[y] ?? 0),
+        0,
+      );
+      // Allocate 85% of total weight to COVID years, 15% to non-COVID years (if any)
+      const covidShare = nonCovidCoveredYears.length > 0 ? 0.85 : 1.0;
+      return ((COVID_YEAR_WEIGHTS[year] ?? 0) / totalCovidWeight) * covidShare;
+    } else {
+      if (nonCovidCoveredYears.length === 0) return 0;
+      return 0.15 / nonCovidCoveredYears.length;
+    }
+  }
 
   return 1 / coveredYears.length;
 }
@@ -39,12 +75,12 @@ function getYearWeight(entry: EvidenceEntry, year: number): number {
 /**
  * Filter entries to those relevant for the time series:
  * - Must have amountBest
- * - Must have fiscalYearStart within or overlapping CHART_YEARS range
+ * - Must overlap with CHART_YEARS range
  * - Must NOT be cumulative period type
  */
 function getRelevantEntries(
   entries: EvidenceEntry[],
-  typeFilter: 'fraud' | 'waste' | 'combined' = 'combined'
+  typeFilter: 'fraud' | 'waste' | 'combined' = 'combined',
 ): EvidenceEntry[] {
   return entries.filter(e => {
     if (e.amountBest === null) return false;
@@ -53,7 +89,6 @@ function getRelevantEntries(
     const start = e.fiscalYearStart ?? 0;
     const end = e.fiscalYearEnd ?? start;
 
-    // Must overlap with our chart year range
     if (end < CHART_YEARS[0] || start > CHART_YEARS[CHART_YEARS.length - 1]) return false;
 
     if (typeFilter !== 'combined' && e.type !== typeFilter) return false;
@@ -64,11 +99,10 @@ function getRelevantEntries(
 
 /**
  * Build per-year, per-tier data for the Confidence Explorer stacked area chart.
- * typeFilter: 'fraud' | 'waste' | 'combined'
  */
 export function buildTierTimeSeriesData(
   entries: EvidenceEntry[],
-  typeFilter: 'fraud' | 'waste' | 'combined' = 'combined'
+  typeFilter: 'fraud' | 'waste' | 'combined' = 'combined',
 ): YearTierData[] {
   const relevant = getRelevantEntries(entries, typeFilter);
 
@@ -104,6 +138,7 @@ export function buildTierTimeSeriesData(
 
 /**
  * Build per-year fraud/waste/combined totals for the Time Series chart.
+ * Includes a dataDensity count reflecting how many evidence entries back each year.
  */
 export function buildTypeTimeSeriesData(entries: EvidenceEntry[]): YearTypeData[] {
   const fraudEntries = getRelevantEntries(entries, 'fraud');
@@ -112,15 +147,22 @@ export function buildTypeTimeSeriesData(entries: EvidenceEntry[]): YearTypeData[
   return CHART_YEARS.map(year => {
     let fraud = 0;
     let waste = 0;
+    let dataDensity = 0;
 
     fraudEntries.forEach(e => {
       const weight = getYearWeight(e, year);
-      fraud += (e.amountBest ?? 0) * weight;
+      if (weight > 0) {
+        fraud += (e.amountBest ?? 0) * weight;
+        dataDensity++;
+      }
     });
 
     wasteEntries.forEach(e => {
       const weight = getYearWeight(e, year);
-      waste += (e.amountBest ?? 0) * weight;
+      if (weight > 0) {
+        waste += (e.amountBest ?? 0) * weight;
+        dataDensity++;
+      }
     });
 
     return {
@@ -128,18 +170,37 @@ export function buildTypeTimeSeriesData(entries: EvidenceEntry[]): YearTypeData[
       fraud,
       waste,
       combined: fraud + waste,
+      dataDensity,
     };
   });
 }
 
-/** Federal budget by year (approximate, in dollars) */
+/**
+ * Federal outlays by fiscal year (approximate, OMB/CBO).
+ * Used for % of budget view and counterfactual scaling.
+ */
 export const FEDERAL_BUDGET: Record<number, number> = {
-  2018: 4.1e12,
-  2019: 4.4e12,
-  2020: 6.6e12,
-  2021: 6.8e12,
-  2022: 6.3e12,
-  2023: 6.1e12,
-  2024: 6.8e12,
-  2025: 7.0e12,
+  2003: 2_160_000_000_000,
+  2004: 2_293_000_000_000,
+  2005: 2_472_000_000_000,
+  2006: 2_655_000_000_000,
+  2007: 2_729_000_000_000,
+  2008: 2_983_000_000_000,
+  2009: 3_518_000_000_000,
+  2010: 3_457_000_000_000,
+  2011: 3_603_000_000_000,
+  2012: 3_537_000_000_000,
+  2013: 3_455_000_000_000,
+  2014: 3_506_000_000_000,
+  2015: 3_688_000_000_000,
+  2016: 3_853_000_000_000,
+  2017: 3_982_000_000_000,
+  2018: 4_109_000_000_000,
+  2019: 4_447_000_000_000,
+  2020: 6_552_000_000_000,
+  2021: 6_822_000_000_000,
+  2022: 6_272_000_000_000,
+  2023: 6_135_000_000_000,
+  2024: 6_752_000_000_000,
+  2025: 7_000_000_000_000,
 };

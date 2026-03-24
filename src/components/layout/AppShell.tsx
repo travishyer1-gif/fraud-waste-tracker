@@ -16,14 +16,14 @@ import { MethodologyPanel } from '@/components/ui/MethodologyPanel';
 import { Footer } from '@/components/layout/Footer';
 
 function ViewContent({ view }: { view: ViewId }) {
-  if (view === 'dashboard') return <Dashboard />;
+  if (view === 'dashboard') return <BubbleView />;
   if (view === 'table') return <EvidenceTable />;
   if (view === 'treemap') return <TreemapView />;
-  if (view === 'bubble') return <BubbleView />;
+  if (view === 'stats') return <Dashboard />;
   if (view === 'trends') return <TimeSeriesView />;
   if (view === 'confidence') return <ConfidenceView />;
-  if (view === 'sources') return <SankeyView />;
-  return <Dashboard />;
+  if (view === 'dataflow') return <SankeyView />;
+  return <BubbleView />;
 }
 
 export function AppShell() {
@@ -43,7 +43,7 @@ export function AppShell() {
         <div className="container mx-auto px-4 pb-4 space-y-3">
           <MethodologyPanel />
         </div>
-        <Footer onViewSourceData={() => setActiveView('table')} />
+        <Footer onViewSourceData={() => setActiveView('table' as ViewId)} />
       </FilterProvider>
     </TooltipProvider>
   );

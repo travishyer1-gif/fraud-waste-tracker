@@ -81,7 +81,7 @@ describe('Navigation', () => {
     const { Navigation } = await import('@/components/layout/Navigation');
     renderWithProviders(<Navigation />);
 
-    const expectedLabels = ['Dashboard', 'Treemap', 'Trends', 'Confidence', 'Sources', 'Evidence', 'Scale'];
+    const expectedLabels = ['Overview', 'Stats', 'Treemap', 'Trends', 'Confidence', 'Data Flow', 'Evidence'];
     expectedLabels.forEach(label => {
       expect(screen.getByText(label)).toBeTruthy();
     });

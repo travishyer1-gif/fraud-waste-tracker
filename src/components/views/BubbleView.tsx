@@ -1,22 +1,41 @@
-"use client";
+'use client';
 
 import { useEvidenceData } from '@/hooks/useEvidenceData';
-import BubbleChart from '@/components/charts/BubbleChart';
+import { BubbleChart } from '@/components/charts/BubbleChart';
+import { GlobalControls } from '@/components/controls/GlobalControls';
 
 export default function BubbleView() {
-  const { filteredEntries } = useEvidenceData();
+  const { filteredEntries, filteredStats } = useEvidenceData();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full min-h-0">
+      {/* Header */}
       <div>
-        <h2 className="text-2xl font-bold text-white">Scale Perspective</h2>
-        <p className="text-gray-400 mt-1">
-          Each bubble represents a single fraud or waste entry, sized by estimated dollar amount.
-          Bubbles cluster by category. Click any bubble to see full details below the chart.
+        <h2 className="text-lg font-bold text-white">
+          Bubble Chart <span className="text-muted-foreground font-normal text-sm">— force-directed clusters</span>
+        </h2>
+        <p className="text-xs text-muted-foreground mt-0.5">
+          Each bubble is one evidence entry. Size = dollar amount. Color = confidence tier. Bubbles cluster by category.
+          Showing <span className="text-white font-medium">{filteredStats.totalFiltered}</span> entries — drag, hover, and click to explore.
         </p>
       </div>
-      <div className="min-h-[500px] w-full bg-white/5 border border-white/10 rounded-xl p-4">
-        <BubbleChart entries={filteredEntries} />
+
+      <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0">
+        {/* Sidebar */}
+        <div className="lg:w-64 flex-shrink-0">
+          <GlobalControls />
+        </div>
+
+        {/* Chart container — needs a defined height */}
+        <div className="flex-1 relative min-h-[520px] lg:min-h-0 rounded-lg overflow-hidden">
+          {filteredEntries.length > 0 ? (
+            <BubbleChart entries={filteredEntries} />
+          ) : (
+            <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+              No entries match current filters.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

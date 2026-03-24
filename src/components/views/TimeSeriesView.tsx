@@ -1,6 +1,6 @@
 import { TimeSeries } from '@/components/charts/TimeSeries';
 
-export function TimeSeriesView() {
+export default function TimeSeriesView() {
   return (
     <div className="space-y-6">
       {/* Header */}

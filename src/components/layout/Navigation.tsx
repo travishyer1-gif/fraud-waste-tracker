@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { LayoutDashboard, TreePine, TrendingUp, BookOpen, Table2, Circle } from 'lucide-react';
+import { LayoutDashboard, TreePine, TrendingUp, BookOpen, Table2, Circle, Layers } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const VIEWS = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { id: 'treemap', label: 'Treemap', icon: TreePine },
   { id: 'trends', label: 'Trends', icon: TrendingUp },
+  { id: 'confidence', label: 'Confidence', icon: Layers },
   { id: 'sources', label: 'Sources', icon: BookOpen },
-  { id: 'table', label: 'Evidence Table', icon: Table2 },
-  { id: 'bubble', label: 'Bubble', icon: Circle },
+  { id: 'table', label: 'Evidence', icon: Table2 },
+  { id: 'bubble', label: 'Scale', icon: Circle },
 ] as const;
 
 export type ViewId = typeof VIEWS[number]['id'];

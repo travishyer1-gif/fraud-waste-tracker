@@ -1,6 +1,6 @@
 import { ConfidenceExplorer } from '@/components/charts/ConfidenceExplorer';
 
-export function ConfidenceView() {
+export default function ConfidenceView() {
   return (
     <div className="space-y-6">
       {/* Header */}

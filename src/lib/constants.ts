@@ -31,3 +31,42 @@ export const YEAR_RANGE = {
   min: 2003,
   max: 2025,
 } as const;
+
+/** Federal outlays by fiscal year (in dollars) */
+export const FEDERAL_BUDGET: Record<number, number> = {
+  2018: 4_100_000_000_000,
+  2019: 4_400_000_000_000,
+  2020: 6_600_000_000_000,
+  2021: 6_800_000_000_000,
+  2022: 6_300_000_000_000,
+  2023: 6_100_000_000_000,
+  2024: 6_800_000_000_000,
+  2025: 7_000_000_000_000,
+};
+
+/** Average of all known FEDERAL_BUDGET values (fallback for unknown years) */
+const FEDERAL_BUDGET_AVERAGE =
+  Object.values(FEDERAL_BUDGET).reduce((a, b) => a + b, 0) /
+  Object.values(FEDERAL_BUDGET).length;
+
+/**
+ * Format a dollar amount as a percentage of the federal budget.
+ * @param amount - Dollar amount
+ * @param year - Fiscal year (uses average budget if unknown/omitted)
+ * @returns Formatted string like "0.042% of federal budget"
+ */
+export function formatAsPercent(amount: number, year?: number): string {
+  const budget =
+    year !== undefined && FEDERAL_BUDGET[year] !== undefined
+      ? FEDERAL_BUDGET[year]
+      : FEDERAL_BUDGET_AVERAGE;
+  const pct = (amount / budget) * 100;
+  // Show enough precision to be meaningful even for small numbers
+  const formatted =
+    pct >= 1
+      ? pct.toFixed(2)
+      : pct >= 0.01
+        ? pct.toFixed(4)
+        : pct.toFixed(6);
+  return `${formatted}% of fed. budget`;
+}

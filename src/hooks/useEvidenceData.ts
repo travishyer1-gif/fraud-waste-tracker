@@ -12,8 +12,11 @@ export function useEvidenceData() {
 
   const filteredEntries = useMemo<EvidenceEntry[]>(() => {
     return data.entries.filter(entry => {
-      // Tier filter
-      if (entry.certaintyTier !== null && entry.certaintyTier > filters.maxTier) {
+      // Tier filter (dual range)
+      if (
+        entry.certaintyTier !== null &&
+        (entry.certaintyTier < filters.minTier || entry.certaintyTier > filters.maxTier)
+      ) {
         return false;
       }
 

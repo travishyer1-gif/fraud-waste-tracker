@@ -3,12 +3,13 @@
 import { useState, useEffect } from 'react';
 import { Sun, Moon, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useFilters } from '@/context/FilterContext';
 
 export function Header() {
   const [isDark, setIsDark] = useState(true);
+  const { filters, setShowStateData } = useFilters();
 
   useEffect(() => {
-    // Check current class
     const html = document.documentElement;
     setIsDark(html.classList.contains('dark'));
   }, []);
@@ -43,10 +44,43 @@ export function Header() {
         </div>
 
         {/* Right controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <span className="hidden sm:block text-xs text-muted-foreground">
             Data: FY2003–FY2025
           </span>
+
+          {/* Fix 4: State Data toggle with "Coming Soon" tooltip */}
+          <div className="relative group">
+            <button
+              onClick={() => setShowStateData(!filters.showStateData)}
+              className={`flex items-center gap-1.5 px-2.5 py-1 text-xs rounded-md font-medium border transition-colors ${
+                filters.showStateData
+                  ? 'bg-blue-500/20 text-blue-400 border-blue-500/30'
+                  : 'bg-muted/30 text-muted-foreground/50 border-border/30 cursor-not-allowed'
+              }`}
+              aria-label="Toggle state data overlay"
+            >
+              <span
+                className={`w-6 h-3.5 rounded-full relative inline-block transition-colors ${
+                  filters.showStateData ? 'bg-blue-500' : 'bg-muted-foreground/30'
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 w-2.5 h-2.5 rounded-full bg-white shadow transition-transform ${
+                    filters.showStateData ? 'translate-x-3' : 'translate-x-0.5'
+                  }`}
+                />
+              </span>
+              State Data
+            </button>
+            {/* Coming Soon tooltip */}
+            <div className="absolute right-0 top-full mt-1.5 z-50 hidden group-hover:block">
+              <div className="bg-popover border border-border rounded-md px-2.5 py-1.5 text-[11px] text-muted-foreground whitespace-nowrap shadow-md">
+                🚧 Coming Soon — state-level entries not yet available
+              </div>
+            </div>
+          </div>
+
           <Button
             variant="ghost"
             size="icon"

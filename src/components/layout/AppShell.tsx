@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Navigation, type ViewId } from './Navigation';
+import { Header } from './Header';
 import { FilterProvider } from '@/context/FilterContext';
 import { Dashboard } from '@/components/dashboard/Dashboard';
 import { EvidenceTable } from '@/components/table/EvidenceTable';
@@ -31,6 +32,8 @@ export function AppShell() {
   return (
     <TooltipProvider>
       <FilterProvider>
+        {/* Header now lives inside FilterProvider so it can access filter context */}
+        <Header />
         <Navigation activeView={activeView} onViewChange={setActiveView} />
         <main className="container mx-auto px-4 py-6 flex-1">
           <ViewContent view={activeView} />

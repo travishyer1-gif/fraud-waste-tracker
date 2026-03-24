@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Search, X, RotateCcw } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Search, X, RotateCcw, DollarSign, Percent } from 'lucide-react';
 import { useFilters, type DataType } from '@/context/FilterContext';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -10,8 +10,22 @@ import { Separator } from '@/components/ui/separator';
 import { TIER_COLORS, YEAR_RANGE } from '@/lib/constants';
 
 export function GlobalControls() {
-  const { filters, setMaxTier, setYearRange, setDataType, setSearchQuery, resetFilters } = useFilters();
+  const {
+    filters,
+    setTierRange,
+    setYearRange,
+    setDataType,
+    setSearchQuery,
+    setShowAsPercent,
+    resetFilters,
+  } = useFilters();
+
   const [localSearch, setLocalSearch] = useState(filters.searchQuery);
+
+  // Fix 2: sync localSearch when filters.searchQuery changes externally (e.g. reset)
+  useEffect(() => {
+    setLocalSearch(filters.searchQuery);
+  }, [filters.searchQuery]);
 
   const handleSearchChange = (value: string) => {
     setLocalSearch(value);
@@ -23,12 +37,13 @@ export function GlobalControls() {
     setSearchQuery('');
   };
 
-  // Tier slider: 1 = Tier 1 only, 4 = all tiers
-  const tierLabel = filters.maxTier === 1
-    ? 'Confirmed Only (Tier 1)'
-    : filters.maxTier === 4
-      ? 'All Tiers (1–4)'
-      : `Tiers 1–${filters.maxTier}`;
+  // Fix 1: dual-range tier label
+  const tierLabel =
+    filters.minTier === filters.maxTier
+      ? `Tier ${filters.minTier} Only`
+      : filters.minTier === 1 && filters.maxTier === 4
+        ? 'All Tiers (1–4)'
+        : `Tiers ${filters.minTier}–${filters.maxTier}`;
 
   return (
     <div className="glass-card p-4 space-y-4">
@@ -78,7 +93,7 @@ export function GlobalControls() {
         </div>
       </div>
 
-      {/* Row 3: Confidence tier slider */}
+      {/* Row 3: Confidence tier dual-range slider */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground">Confidence:</span>
@@ -86,28 +101,25 @@ export function GlobalControls() {
             {tierLabel}
           </Badge>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-            {TIER_COLORS[1].icon} Confirmed
-          </span>
-          <Slider
-            min={1}
-            max={4}
-            step={1}
-            value={[filters.maxTier]}
-            onValueChange={([val]) => setMaxTier(val)}
-            className="flex-1"
-          />
-          <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-            All {TIER_COLORS[4].icon}
-          </span>
+        <Slider
+          min={1}
+          max={4}
+          step={1}
+          value={[filters.minTier, filters.maxTier]}
+          onValueChange={([min, max]) => setTierRange(min, max)}
+          className="flex-1"
+        />
+        <div className="flex justify-between text-[10px] text-muted-foreground">
+          <span>{TIER_COLORS[1].icon} Confirmed</span>
+          <span>All Tiers {TIER_COLORS[4].icon}</span>
         </div>
+        {/* Tier color bars — only highlight tiers in selected range */}
         <div className="flex gap-1 mt-1">
           {([1, 2, 3, 4] as const).map(t => (
             <div
               key={t}
               className={`flex-1 h-1 rounded-full transition-opacity ${
-                t <= filters.maxTier ? 'opacity-100' : 'opacity-20'
+                t >= filters.minTier && t <= filters.maxTier ? 'opacity-100' : 'opacity-20'
               }`}
               style={{ backgroundColor: TIER_COLORS[t].bg }}
             />
@@ -133,6 +145,35 @@ export function GlobalControls() {
         <div className="flex justify-between text-[10px] text-muted-foreground">
           <span>FY{YEAR_RANGE.min}</span>
           <span>FY{YEAR_RANGE.max}</span>
+        </div>
+      </div>
+
+      {/* Row 5: % of Budget toggle (Fix 3) */}
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-muted-foreground">Display Amounts:</span>
+        <div className="flex gap-1">
+          <button
+            onClick={() => setShowAsPercent(false)}
+            className={`flex items-center gap-1 px-3 py-1 text-xs rounded-md font-medium transition-colors ${
+              !filters.showAsPercent
+                ? 'bg-primary/20 text-primary border border-primary/30'
+                : 'bg-muted/50 text-muted-foreground border border-transparent hover:border-border'
+            }`}
+          >
+            <DollarSign className="w-3 h-3" />
+            $ Amount
+          </button>
+          <button
+            onClick={() => setShowAsPercent(true)}
+            className={`flex items-center gap-1 px-3 py-1 text-xs rounded-md font-medium transition-colors ${
+              filters.showAsPercent
+                ? 'bg-primary/20 text-primary border border-primary/30'
+                : 'bg-muted/50 text-muted-foreground border border-transparent hover:border-border'
+            }`}
+          >
+            <Percent className="w-3 h-3" />
+            % of Budget
+          </button>
         </div>
       </div>
 

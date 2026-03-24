@@ -22,7 +22,7 @@
       "certaintyTier": 1,
       "certaintyScore": 0.85,
       "jurisdiction": "federal",
-      "sourceName": "paymentaccuracy.gov HHS Agency Profile FY2025 — Confirmed Fraud Section",
+      "sourceName": "paymentaccuracy.gov HHS Agency Profile FY2025 \u2014 Confirmed Fraud Section",
       "sourceUrl": "https://paymentaccuracy.gov/agency/HHS/2025",
       "sourceType": "agency_data",
       "sourceMethodology": "Agency-reported intentional monetary loss improper payments under PIIA definitions. Explicitly labeled as confirmed fraud (intentional), distinct from unintentional improper payments. Covers 10 risk-susceptible programs.",
@@ -58,9 +58,9 @@
       "sourceName": "DOJ Civil Division FCA Statistics FY2024",
       "sourceUrl": "https://www.justice.gov/civil/false-claims-act",
       "sourceType": "doj_settlement",
-      "sourceMethodology": "DOJ official reported figure for civil settlements and judgments under the False Claims Act. Does NOT include criminal fines/forfeiture. Healthcare represents ~75% of total; defense ~20%; other ~5%. As of FY2024, 83%+ of FCA actions initiated by whistleblowers (qui tam). Treble damages + per-claim penalties ($13,000–$27,000/claim).",
+      "sourceMethodology": "DOJ official reported figure for civil settlements and judgments under the False Claims Act. Does NOT include criminal fines/forfeiture. Healthcare represents ~75% of total; defense ~20%; other ~5%. As of FY2024, 83%+ of FCA actions initiated by whistleblowers (qui tam). Treble damages + per-claim penalties ($13,000\u2013$27,000/claim).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "RECOVERIES ≠ TOTAL FRAUD. Total underlying fraud is much larger — DOJ only recovers a fraction of what is stolen. Healthcare portion (~$2.2B) overlaps with HHS confirmed fraud (F1-001) if the same cases are counted by both HHS OIG and DOJ. Defense portion (~$580M) overlaps with F2-004 (DOJ FCA defense contractor fraud). DO NOT sum with HHS confirmed fraud figures directly.",
+      "overlapNotes": "RECOVERIES \u2260 TOTAL FRAUD. Total underlying fraud is much larger \u2014 DOJ only recovers a fraction of what is stolen. Healthcare portion (~$2.2B) overlaps with HHS confirmed fraud (F1-001) if the same cases are counted by both HHS OIG and DOJ. Defense portion (~$580M) overlaps with F2-004 (DOJ FCA defense contractor fraud). DO NOT sum with HHS confirmed fraud figures directly.",
       "entityLinks": [
         "DOJ Civil Division",
         "Medicare",
@@ -130,7 +130,7 @@
     },
     {
       "id": "F1-005",
-      "title": "DOJ FCA Cumulative Recoveries 1987–2019",
+      "title": "DOJ FCA Cumulative Recoveries 1987\u20132019",
       "category": "F1",
       "categoryLabel": "Healthcare Fraud",
       "type": "fraud",
@@ -146,9 +146,9 @@
       "sourceName": "DOJ Civil Division FCA Cumulative Statistics; Wikipedia False Claims Act (citing DOJ)",
       "sourceUrl": "https://en.wikipedia.org/wiki/False_Claims_Act",
       "sourceType": "doj_settlement",
-      "sourceMethodology": "DOJ official cumulative figure. $62.1B in FCA recoveries between 1987–2019. Of this, $44.7B (72%) from qui tam whistleblower cases.",
+      "sourceMethodology": "DOJ official cumulative figure. $62.1B in FCA recoveries between 1987\u20132019. Of this, $44.7B (72%) from qui tam whistleblower cases.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "CUMULATIVE ONLY. Do not annualize or add to post-2019 annual figures without adjusting. Post-2019 recoveries add approximately $15–20B more through 2024 (F1-002 through F1-004 combined ≈ $19.7B for FY2020+2021+2022+2023+2024 approximate).",
+      "overlapNotes": "CUMULATIVE ONLY. Do not annualize or add to post-2019 annual figures without adjusting. Post-2019 recoveries add approximately $15\u201320B more through 2024 (F1-002 through F1-004 combined \u2248 $19.7B for FY2020+2021+2022+2023+2024 approximate).",
       "entityLinks": [
         "DOJ",
         "Medicare",
@@ -160,7 +160,7 @@
     },
     {
       "id": "F1-006",
-      "title": "DOJ FCA Pharmaceutical/Opioid Settlements FY2018–2021 (Cumulative)",
+      "title": "DOJ FCA Pharmaceutical/Opioid Settlements FY2018\u20132021 (Cumulative)",
       "category": "F1",
       "categoryLabel": "Healthcare Fraud",
       "type": "fraud",
@@ -178,7 +178,7 @@
       "sourceType": "doj_settlement",
       "sourceMethodology": "Major opioid-related FCA settlements including Purdue Pharma ($6B+), McKinsey & Co, and numerous pharmaceutical distributor off-label marketing settlements. Only federal portion counted (not state AG portions).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of the FY2018–2021 annual DOJ FCA totals (F1-002 through F1-004 era). These same dollars appear in those annual totals. F1-003 (FY2021 record $5.6B) is substantially driven by settlements counted here. DO NOT add to annual totals.",
+      "overlapNotes": "SUBSET of the FY2018\u20132021 annual DOJ FCA totals (F1-002 through F1-004 era). These same dollars appear in those annual totals. F1-003 (FY2021 record $5.6B) is substantially driven by settlements counted here. DO NOT add to annual totals.",
       "entityLinks": [
         "DOJ",
         "Purdue Pharma",
@@ -191,7 +191,7 @@
     },
     {
       "id": "F1-007",
-      "title": "Medicare Fee-for-Service CERT Annual Improper Payments (FY2019–2024)",
+      "title": "Medicare Fee-for-Service CERT Annual Improper Payments (FY2019\u20132024)",
       "category": "F1",
       "categoryLabel": "Healthcare Fraud",
       "type": "fraud",
@@ -207,9 +207,9 @@
       "sourceName": "CMS Comprehensive Error Rate Testing (CERT) Program; paymentaccuracy.gov HHS Agency Profile",
       "sourceUrl": "https://paymentaccuracy.gov/agency/HHS",
       "sourceType": "agency_data",
-      "sourceMethodology": "CMS uses the CERT program — statistically valid sample of Medicare FFS claims reviewed by independent contractors. Claims compared against coverage and documentation requirements. One of the most rigorous sampling methodologies in federal government. Range reflects year-to-year variation.",
+      "sourceMethodology": "CMS uses the CERT program \u2014 statistically valid sample of Medicare FFS claims reviewed by independent contractors. Claims compared against coverage and documentation requirements. One of the most rigorous sampling methodologies in federal government. Range reflects year-to-year variation.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of W6-001 (total HHS improper payments). Medicare FFS is the single largest component of HHS improper payments (~$25–50B/year). NOT all of this is fraud — most is documentation failures and billing errors. The fraud subset is much smaller and is the portion eligible for DOJ FCA recovery (F1-002). DO NOT add to W6-001 total.",
+      "overlapNotes": "SUBSET of W6-001 (total HHS improper payments). Medicare FFS is the single largest component of HHS improper payments (~$25\u201350B/year). NOT all of this is fraud \u2014 most is documentation failures and billing errors. The fraud subset is much smaller and is the portion eligible for DOJ FCA recovery (F1-002). DO NOT add to W6-001 total.",
       "entityLinks": [
         "CMS",
         "Medicare",
@@ -235,9 +235,9 @@
       "sourceName": "paymentaccuracy.gov HHS Agency Profile; CMS T-MSIS data; GAO High-Risk GAO-25-107743",
       "sourceUrl": "https://paymentaccuracy.gov/agency/HHS",
       "sourceType": "agency_data",
-      "sourceMethodology": "CMS uses T-MSIS supplemented by state-level reviews. Medicaid is jointly federal-state; federal share typically 50–75%. Massive expansion under COVID continuous enrollment provision 2020–2023; unwinding reduced rolls ~25M enrollees in 2023–2024.",
+      "sourceMethodology": "CMS uses T-MSIS supplemented by state-level reviews. Medicaid is jointly federal-state; federal share typically 50\u201375%. Massive expansion under COVID continuous enrollment provision 2020\u20132023; unwinding reduced rolls ~25M enrollees in 2023\u20132024.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of W6-001 through W6-005 (HHS annual improper payments). Medicaid and Medicare FFS together typically account for ~70–80% of total HHS improper payments. DO NOT add Medicaid estimate to HHS total — it is already included. The fraud fraction is further counted in DOJ FCA healthcare recoveries.",
+      "overlapNotes": "SUBSET of W6-001 through W6-005 (HHS annual improper payments). Medicaid and Medicare FFS together typically account for ~70\u201380% of total HHS improper payments. DO NOT add Medicaid estimate to HHS total \u2014 it is already included. The fraud fraction is further counted in DOJ FCA healthcare recoveries.",
       "entityLinks": [
         "CMS",
         "Medicaid",
@@ -276,7 +276,7 @@
     },
     {
       "id": "F1-010",
-      "title": "DOJ FCA Recoveries FY2018–FY2019 (Annual)",
+      "title": "DOJ FCA Recoveries FY2018\u2013FY2019 (Annual)",
       "category": "F1",
       "categoryLabel": "Healthcare Fraud",
       "type": "fraud",
@@ -289,12 +289,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.9,
       "jurisdiction": "federal",
-      "sourceName": "DOJ FCA Annual Statistics FY2018–2019",
+      "sourceName": "DOJ FCA Annual Statistics FY2018\u20132019",
       "sourceUrl": "https://www.justice.gov/civil/false-claims-act",
       "sourceType": "doj_settlement",
-      "sourceMethodology": "FY2018: $2.9B; FY2019: $3.0B. Average used as AMOUNT_BEST. Consistent with annual range of $2.2–$3B outside anomalous years.",
+      "sourceMethodology": "FY2018: $2.9B; FY2019: $3.0B. Average used as AMOUNT_BEST. Consistent with annual range of $2.2\u2013$3B outside anomalous years.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "Same structure as F1-002. Healthcare ~70–80% of recoveries in this period.",
+      "overlapNotes": "Same structure as F1-002. Healthcare ~70\u201380% of recoveries in this period.",
       "entityLinks": [
         "DOJ",
         "Medicare",
@@ -305,7 +305,7 @@
     },
     {
       "id": "F2-001",
-      "title": "DOD OIG DCIS — Civil Judgments/Settlements (Oct 2022–Mar 2023, 6 months)",
+      "title": "DOD OIG DCIS \u2014 Civil Judgments/Settlements (Oct 2022\u2013Mar 2023, 6 months)",
       "category": "F2",
       "categoryLabel": "Defense/Contractor Fraud",
       "type": "fraud",
@@ -318,12 +318,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.93,
       "jurisdiction": "federal",
-      "sourceName": "DOD OIG Semiannual Report to Congress, Oct 1 2022–Mar 31 2023",
+      "sourceName": "DOD OIG Semiannual Report to Congress, Oct 1 2022\u2013Mar 31 2023",
       "sourceUrl": "https://www.dodig.mil/Reports/Semiannual-Report-to-the-Congress/Article/3411239/semiannual-report-to-the-congress-october-1-2022-through-march-31-2023/",
       "sourceType": "ig_report",
       "sourceMethodology": "DCIS (Defense Criminal Investigative Service) completed 172 criminal investigations in 6-month period. 118 arrests, 115 criminal charges, 116 convictions. This figure covers civil judgments and settlements only.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "6-MONTH SNAPSHOT ONLY. Annual total would require combining both semiannual reports. Civil judgments may overlap with DOJ FCA totals (F1-002) if DOJ jointly prosecuted — the same case may be counted in both. F2-002 (criminal fines) is a SEPARATE, non-overlapping figure from the same report. If estimating annual: ~$565M civil + ~$295M criminal = ~$860M/year (rough extrapolation).",
+      "overlapNotes": "6-MONTH SNAPSHOT ONLY. Annual total would require combining both semiannual reports. Civil judgments may overlap with DOJ FCA totals (F1-002) if DOJ jointly prosecuted \u2014 the same case may be counted in both. F2-002 (criminal fines) is a SEPARATE, non-overlapping figure from the same report. If estimating annual: ~$565M civil + ~$295M criminal = ~$860M/year (rough extrapolation).",
       "entityLinks": [
         "DOD",
         "DCIS",
@@ -334,7 +334,7 @@
     },
     {
       "id": "F2-002",
-      "title": "DOD OIG DCIS — Criminal Fines, Penalties, Restitution (Oct 2022–Mar 2023, 6 months)",
+      "title": "DOD OIG DCIS \u2014 Criminal Fines, Penalties, Restitution (Oct 2022\u2013Mar 2023, 6 months)",
       "category": "F2",
       "categoryLabel": "Defense/Contractor Fraud",
       "type": "fraud",
@@ -347,12 +347,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.93,
       "jurisdiction": "federal",
-      "sourceName": "DOD OIG Semiannual Report to Congress, Oct 1 2022–Mar 31 2023",
+      "sourceName": "DOD OIG Semiannual Report to Congress, Oct 1 2022\u2013Mar 31 2023",
       "sourceUrl": "https://www.dodig.mil/Reports/Semiannual-Report-to-the-Congress/Article/3411239/semiannual-report-to-the-congress-october-1-2022-through-march-31-2023/",
       "sourceType": "ig_report",
       "sourceMethodology": "Criminal disposition reporting from DCIS. Includes fines, penalties, and restitution ordered in criminal proceedings.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SEPARATE from F2-001 (civil amounts). Criminal fines ≠ civil settlements — these are different legal proceedings. Combined civil + criminal for this 6-month period = ~$429.8M. NOT part of DOJ FCA statistics (FCA is civil only). Can be safely added to F2-001 without double-counting.",
+      "overlapNotes": "SEPARATE from F2-001 (civil amounts). Criminal fines \u2260 civil settlements \u2014 these are different legal proceedings. Combined civil + criminal for this 6-month period = ~$429.8M. NOT part of DOJ FCA statistics (FCA is civil only). Can be safely added to F2-001 without double-counting.",
       "entityLinks": [
         "DOD",
         "DCIS",
@@ -362,7 +362,7 @@
     },
     {
       "id": "F2-003",
-      "title": "DOD Financial Audit — Sixth Consecutive Failure (FY2023)",
+      "title": "DOD Financial Audit \u2014 Sixth Consecutive Failure (FY2023)",
       "category": "F2",
       "categoryLabel": "Defense/Contractor Fraud",
       "type": "fraud",
@@ -380,7 +380,7 @@
       "sourceType": "ig_report",
       "sourceMethodology": "Independent public accounting firms (Big 4) conduct annual DOD financial statement audit since FY2018. Disclaimer of opinion = auditors cannot express opinion. $800B+ annual budget; cannot reconcile trillions in transactions. Marine Corps recently achieved clean opinion; other components have not.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "AUDIT FAILURE ≠ FRAUD. Indicates unauditable books (missing documentation, unsupported journal entries, unreconciled accounts) — a necessary precondition for undetected fraud at scale, but no specific fraud dollar can be derived from this finding alone. Related to W5-004 (DOD Financial Management as GAO High-Risk area).",
+      "overlapNotes": "AUDIT FAILURE \u2260 FRAUD. Indicates unauditable books (missing documentation, unsupported journal entries, unreconciled accounts) \u2014 a necessary precondition for undetected fraud at scale, but no specific fraud dollar can be derived from this finding alone. Related to W5-004 (DOD Financial Management as GAO High-Risk area).",
       "entityLinks": [
         "DOD",
         "Pentagon",
@@ -391,7 +391,7 @@
     },
     {
       "id": "F2-004",
-      "title": "DOJ FCA Defense Contractor Fraud — Annual Estimate (FY2018–2024)",
+      "title": "DOJ FCA Defense Contractor Fraud \u2014 Annual Estimate (FY2018\u20132024)",
       "category": "F2",
       "categoryLabel": "Defense/Contractor Fraud",
       "type": "fraud",
@@ -407,9 +407,9 @@
       "sourceName": "DOJ False Claims Act Annual Statistics; GAO DOD Contract Management High-Risk",
       "sourceUrl": "https://www.justice.gov/civil/false-claims-act",
       "sourceType": "doj_settlement",
-      "sourceMethodology": "Defense sector FCA cases involve overbilling, defective pricing, cost mischarging, and subcontractor fraud. Annual defense FCA recoveries approximately 15–20% of total FCA recoveries. Applied to $2.2B–$5.6B annual totals yields ~$300M–$1B/year defense fraud recovery.",
+      "sourceMethodology": "Defense sector FCA cases involve overbilling, defective pricing, cost mischarging, and subcontractor fraud. Annual defense FCA recoveries approximately 15\u201320% of total FCA recoveries. Applied to $2.2B\u2013$5.6B annual totals yields ~$300M\u2013$1B/year defense fraud recovery.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of annual DOJ FCA totals (F1-002 series) — the defense portion thereof. Some cases also trigger DCIS criminal investigations counted in F2-001/F2-002. DO NOT add to DOJ FCA totals.",
+      "overlapNotes": "SUBSET of annual DOJ FCA totals (F1-002 series) \u2014 the defense portion thereof. Some cases also trigger DCIS criminal investigations counted in F2-001/F2-002. DO NOT add to DOJ FCA totals.",
       "entityLinks": [
         "DOD",
         "defense contractors",
@@ -434,12 +434,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.9,
       "jurisdiction": "federal",
-      "sourceName": "SSA PIIA FY2025 Reporting — paymentaccuracy.gov; SSA Annual Stewardship Reviews",
+      "sourceName": "SSA PIIA FY2025 Reporting \u2014 paymentaccuracy.gov; SSA Annual Stewardship Reviews",
       "sourceUrl": "https://paymentaccuracy.gov/agency/SSA",
       "sourceType": "agency_data",
       "sourceMethodology": "SSA annual stewardship reviews using stratified random sampling. Total OASDI outlays ~$1.4T; overpayments $3.0B (0.21%); underpayments $975.5M. Down from $3.3B in FY2023.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "OASDI overpayments ≠ SSDI fraud. Primary causes: beneficiary failure to self-report marital status or wage changes (outside SSA control) — mostly administrative error, not intentional fraud. F3-002 (OASI $1.1B) and F3-003 (DI $1.8B) are SUBSETS of this $3.0B total. DO NOT add F3-001 + F3-002 + F3-003. Criminal SSDI fraud rings prosecuted by DOJ are a tiny subset of the $1.8B DI figure.",
+      "overlapNotes": "OASDI overpayments \u2260 SSDI fraud. Primary causes: beneficiary failure to self-report marital status or wage changes (outside SSA control) \u2014 mostly administrative error, not intentional fraud. F3-002 (OASI $1.1B) and F3-003 (DI $1.8B) are SUBSETS of this $3.0B total. DO NOT add F3-001 + F3-002 + F3-003. Criminal SSDI fraud rings prosecuted by DOJ are a tiny subset of the $1.8B DI figure.",
       "entityLinks": [
         "SSA",
         "SSA-OIG",
@@ -464,7 +464,7 @@
       "certaintyTier": 1,
       "certaintyScore": 0.9,
       "jurisdiction": "federal",
-      "sourceName": "SSA PIIA FY2025 Reporting — paymentaccuracy.gov",
+      "sourceName": "SSA PIIA FY2025 Reporting \u2014 paymentaccuracy.gov",
       "sourceUrl": "https://paymentaccuracy.gov/agency/SSA",
       "sourceType": "agency_data",
       "sourceMethodology": "OASI outlays $1.3T; overpayments $1.1B (0.09%); underpayments $470.2M. First year SSA reported OASI and DI separately.",
@@ -491,12 +491,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.9,
       "jurisdiction": "federal",
-      "sourceName": "SSA PIIA FY2025 Reporting — paymentaccuracy.gov",
+      "sourceName": "SSA PIIA FY2025 Reporting \u2014 paymentaccuracy.gov",
       "sourceUrl": "https://paymentaccuracy.gov/agency/SSA",
       "sourceType": "agency_data",
       "sourceMethodology": "DI outlays $143.4B; overpayments $1.8B (1.28%); underpayments $505.3M. OIG non-compliant finding: SSI program failed to demonstrate improvement.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of F3-001 (total OASDI $3.0B). Higher error rate than OASI (1.28% vs 0.09%) due to complexity of disability determination. Most are not fraud — top cause: employment/wage information not timely reported. SSA-OIG criminal fraud referrals are a small subset.",
+      "overlapNotes": "SUBSET of F3-001 (total OASDI $3.0B). Higher error rate than OASI (1.28% vs 0.09%) due to complexity of disability determination. Most are not fraud \u2014 top cause: employment/wage information not timely reported. SSA-OIG criminal fraud referrals are a small subset.",
       "entityLinks": [
         "SSA",
         "SSA-OIG",
@@ -520,7 +520,7 @@
       "certaintyTier": 1,
       "certaintyScore": 0.9,
       "jurisdiction": "federal",
-      "sourceName": "SSA PIIA FY2025 Reporting — paymentaccuracy.gov (prior year comparison)",
+      "sourceName": "SSA PIIA FY2025 Reporting \u2014 paymentaccuracy.gov (prior year comparison)",
       "sourceUrl": "https://paymentaccuracy.gov/agency/SSA",
       "sourceType": "agency_data",
       "sourceMethodology": "Prior-year stewardship review comparison. Total OASDI outlays ~$1.4T; overpayments $3.3B (0.24%).",
@@ -547,12 +547,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.88,
       "jurisdiction": "federal",
-      "sourceName": "USDA PIIA Reporting FY2025 — paymentaccuracy.gov (Confirmed Fraud Section); paymentaccuracy.gov USDA Agency Profile FY2025",
+      "sourceName": "USDA PIIA Reporting FY2025 \u2014 paymentaccuracy.gov (Confirmed Fraud Section); paymentaccuracy.gov USDA Agency Profile FY2025",
       "sourceUrl": "https://paymentaccuracy.gov/agency/USDA",
       "sourceType": "agency_data",
       "sourceMethodology": "USDA OIG determines \"intentional monetary loss improper payments\" separately from unintentional. This $155.1M is explicitly confirmed fraud (intentional) per FY2025 PIIA reporting.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of W6-006 (total USDA improper payments $13.42B). Represents ~1.2% of total USDA improper payments — confirmed intentional fraud only. SNAP (food stamps) is USDA's largest program. SNAP fraud cases also prosecuted by USDA-OIG; DOJ prosecutions are included here. Some may be counted in DOJ FCA statistics.",
+      "overlapNotes": "SUBSET of W6-006 (total USDA improper payments $13.42B). Represents ~1.2% of total USDA improper payments \u2014 confirmed intentional fraud only. SNAP (food stamps) is USDA's largest program. SNAP fraud cases also prosecuted by USDA-OIG; DOJ prosecutions are included here. Some may be counted in DOJ FCA statistics.",
       "entityLinks": [
         "USDA",
         "USDA-OIG",
@@ -577,12 +577,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.87,
       "jurisdiction": "federal",
-      "sourceName": "USDA PIIA Reporting FY2025 — paymentaccuracy.gov",
+      "sourceName": "USDA PIIA Reporting FY2025 \u2014 paymentaccuracy.gov",
       "sourceUrl": "https://paymentaccuracy.gov/agency/USDA",
       "sourceType": "agency_data",
       "sourceMethodology": "Recovery activities: $652.56M identified, $458.39M recovered (70.24% recovery rate). OIG found USDA non-compliant with 4 of 6 PIIA requirements in FY2024.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "RECOVERIES ≠ NEW FRAUD. Recoveries represent recaptured overpayments, some of which may be from prior-year payments. Do not interpret as a separate \"fraud\" figure. This 70% recovery rate is strong compared to IRS (1.85% recovery rate on tax credit overpayments).",
+      "overlapNotes": "RECOVERIES \u2260 NEW FRAUD. Recoveries represent recaptured overpayments, some of which may be from prior-year payments. Do not interpret as a separate \"fraud\" figure. This 70% recovery rate is strong compared to IRS (1.85% recovery rate on tax credit overpayments).",
       "entityLinks": [
         "USDA",
         "SNAP",
@@ -608,9 +608,9 @@
       "sourceName": "paymentaccuracy.gov DOL Agency Profile FY2025",
       "sourceUrl": "https://paymentaccuracy.gov/agency/DOL",
       "sourceType": "agency_data",
-      "sourceMethodology": "BAM (Benefit Accuracy Measurement) survey — statistically valid nationwide sample. 12.16% rate on $41.6B outlays. DOES NOT include pandemic UI programs (PUA, PEUC, FPUC, MEUC — expired Sept 2021). Recovery audits: $1,841.39M identified, $762.36M recovered (41.4%).",
+      "sourceMethodology": "BAM (Benefit Accuracy Measurement) survey \u2014 statistically valid nationwide sample. 12.16% rate on $41.6B outlays. DOES NOT include pandemic UI programs (PUA, PEUC, FPUC, MEUC \u2014 expired Sept 2021). Recovery audits: $1,841.39M identified, $762.36M recovered (41.4%).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SEPARATE from F7-001 (COVID PUA fraud). The BAM survey explicitly excludes pandemic programs. The $5.06B reflects ongoing structural issues in regular UI. Not all $5.06B is fraud — includes eligibility errors, employer mis-reportings, claimant self-reporting failures. Confirmed fraud is a subset.",
+      "overlapNotes": "SEPARATE from F7-001 (COVID PUA fraud). The BAM survey explicitly excludes pandemic programs. The $5.06B reflects ongoing structural issues in regular UI. Not all $5.06B is fraud \u2014 includes eligibility errors, employer mis-reportings, claimant self-reporting failures. Confirmed fraud is a subset.",
       "entityLinks": [
         "DOL",
         "DOL-OIG",
@@ -621,7 +621,7 @@
     },
     {
       "id": "F4-001",
-      "title": "IRS Gross Tax Gap — Projected Annual (Tax Years 2017–2019)",
+      "title": "IRS Gross Tax Gap \u2014 Projected Annual (Tax Years 2017\u20132019)",
       "category": "F4",
       "categoryLabel": "Tax Fraud/Evasion",
       "type": "fraud",
@@ -634,12 +634,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.88,
       "jurisdiction": "federal",
-      "sourceName": "IRS Tax Gap Estimates — Tax Years 2017–2019 Projection",
+      "sourceName": "IRS Tax Gap Estimates \u2014 Tax Years 2017\u20132019 Projection",
       "sourceUrl": "https://www.irs.gov/newsroom/the-tax-gap",
       "sourceType": "agency_data",
       "sourceMethodology": "IRS periodic estimates via National Research Program (NRP), completed examination data, and statistical models. Gross tax gap = true tax liability minus taxes paid on time. Components: nonfiling ($41B), underreporting ($433B), underpayment ($66B).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "TAX GAP ≠ CRIMINAL FRAUD. Includes honest mistakes, ambiguous law, estimated omissions, and intentional evasion. Criminal prosecution component (TIGTA) is a tiny subset. Does not overlap with benefit fraud categories (F1–F3, F5–F7) unless the same individual commits both. SUPERSEDES F4-002 (earlier period). The $540B is GROSS — net of late payments and enforcement is lower. See F4-003 for net gap methodology (FY2022).",
+      "overlapNotes": "TAX GAP \u2260 CRIMINAL FRAUD. Includes honest mistakes, ambiguous law, estimated omissions, and intentional evasion. Criminal prosecution component (TIGTA) is a tiny subset. Does not overlap with benefit fraud categories (F1\u2013F3, F5\u2013F7) unless the same individual commits both. SUPERSEDES F4-002 (earlier period). The $540B is GROSS \u2014 net of late payments and enforcement is lower. See F4-003 for net gap methodology (FY2022).",
       "entityLinks": [
         "IRS",
         "Treasury",
@@ -649,7 +649,7 @@
     },
     {
       "id": "F4-002",
-      "title": "IRS Gross Tax Gap — Measured (Tax Years 2014–2016)",
+      "title": "IRS Gross Tax Gap \u2014 Measured (Tax Years 2014\u20132016)",
       "category": "F4",
       "categoryLabel": "Tax Fraud/Evasion",
       "type": "fraud",
@@ -662,12 +662,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.92,
       "jurisdiction": "federal",
-      "sourceName": "Federal Tax Compliance Research: Tax Gap Estimates for Tax Years 2014–2016 (IRS Pub 1415)",
+      "sourceName": "Federal Tax Compliance Research: Tax Gap Estimates for Tax Years 2014\u20132016 (IRS Pub 1415)",
       "sourceUrl": "https://www.irs.gov/pub/irs-pdf/p1415.pdf",
       "sourceType": "agency_data",
-      "sourceMethodology": "IRS NRP — measured, not projected. Net gap after enforcement: $428B. Components: underreporting $398B, underpayment $59B, nonfiling $39B. Voluntary compliance rate ~85%.",
+      "sourceMethodology": "IRS NRP \u2014 measured, not projected. Net gap after enforcement: $428B. Components: underreporting $398B, underpayment $59B, nonfiling $39B. Voluntary compliance rate ~85%.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "PRIOR PERIOD than F4-001. These represent a consistent trend across decades ($441B gross 2011-2013, $496B 2014-2016, $540B 2017-2019, $696B gross 2022). Do not add sequential periods — these are annual averages for each period. The $68B net-to-gross difference (late payments + enforcement) represents what IRS eventually collects.",
+      "overlapNotes": "PRIOR PERIOD than F4-001. These represent a consistent trend across decades ($441B gross 2011-2013, $496B 2014-2016, $540B 2017-2019, $696B gross 2022). Do not add sequential periods \u2014 these are annual averages for each period. The $68B net-to-gross difference (late payments + enforcement) represents what IRS eventually collects.",
       "entityLinks": [
         "IRS",
         "Treasury"
@@ -676,7 +676,7 @@
     },
     {
       "id": "F4-003",
-      "title": "IRS Net Tax Gap — Projected (Tax Year 2022)",
+      "title": "IRS Net Tax Gap \u2014 Projected (Tax Year 2022)",
       "category": "F4",
       "categoryLabel": "Tax Fraud/Evasion",
       "type": "fraud",
@@ -692,9 +692,9 @@
       "sourceName": "GAO High-Risk Series GAO-25-107743; IRS 2024 projection",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
-      "sourceMethodology": "IRS statistical projection. Gross gap $696B for TY2022; IRS estimates collecting ~$90B through late payments/enforcement; net gap = $606B uncollected. 3–5 year lag in IRS tax gap measurement.",
+      "sourceMethodology": "IRS statistical projection. Gross gap $696B for TY2022; IRS estimates collecting ~$90B through late payments/enforcement; net gap = $606B uncollected. 3\u20135 year lag in IRS tax gap measurement.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "MOST RECENT AVAILABLE. $696B gross / $606B net. Shows significant growth from $540B (2017-19) and $496B (2014-16). Likely reflects increased gig economy unreported income and cryptocurrency. Also cited identically in W5-003 from the waste thinktank file — that W5-003 entry is a DUPLICATE of this entry. The same data appears under F4 (fraud) and W5 (waste/failed programs) in different source files; it belongs in F4 (tax non-compliance).",
+      "overlapNotes": "MOST RECENT AVAILABLE. $696B gross / $606B net. Shows significant growth from $540B (2017-19) and $496B (2014-16). Likely reflects increased gig economy unreported income and cryptocurrency. Also cited identically in W5-003 from the waste thinktank file \u2014 that W5-003 entry is a DUPLICATE of this entry. The same data appears under F4 (fraud) and W5 (waste/failed programs) in different source files; it belongs in F4 (tax non-compliance).",
       "entityLinks": [
         "IRS",
         "Treasury",
@@ -723,7 +723,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "IRS measurement using statistical sampling and tax return compliance data. 26.54% improper payment rate on $105.7B susceptible outlays. Covers EITC, AOTC (American Opportunity Tax Credit), ACTC (Additional Child Tax Credit), Net Premium Tax Credit. Rate not statistically different from FY2024.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "STRUCTURAL PROBLEM — IRS has stated without major legislation it cannot achieve compliance. This is not all intentional fraud: complexity of eligibility rules, lack of third-party wage data, inability to pre-verify before issuing refund. EITC alone historically $18–26B/year (see F4-005). Total $28B covers all four refundable credits. Recovery rate extraordinarily low: $34.49M recovered on $1,872.58M identified (1.84%). PARTIAL OVERLAP with F4-003 (tax gap) — EITC improper payments are a component of the underreporting gap.",
+      "overlapNotes": "STRUCTURAL PROBLEM \u2014 IRS has stated without major legislation it cannot achieve compliance. This is not all intentional fraud: complexity of eligibility rules, lack of third-party wage data, inability to pre-verify before issuing refund. EITC alone historically $18\u201326B/year (see F4-005). Total $28B covers all four refundable credits. Recovery rate extraordinarily low: $34.49M recovered on $1,872.58M identified (1.84%). PARTIAL OVERLAP with F4-003 (tax gap) \u2014 EITC improper payments are a component of the underreporting gap.",
       "entityLinks": [
         "IRS",
         "Treasury",
@@ -733,7 +733,7 @@
     },
     {
       "id": "F4-005",
-      "title": "EITC Improper Payments — Annual Structural Estimate (FY2023)",
+      "title": "EITC Improper Payments \u2014 Annual Structural Estimate (FY2023)",
       "category": "F4",
       "categoryLabel": "Tax Fraud/Evasion",
       "type": "fraud",
@@ -749,7 +749,7 @@
       "sourceName": "IRS EITC Annual Report; paymentaccuracy.gov Treasury Profile",
       "sourceUrl": "https://paymentaccuracy.gov/agency/TREASURY",
       "sourceType": "agency_data",
-      "sourceMethodology": "IRS statistical sampling. EITC historically has 21–26% improper rate. Structural causes: complexity, lack of third-party wage data for gig/cash workers, inability to pre-verify.",
+      "sourceMethodology": "IRS statistical sampling. EITC historically has 21\u201326% improper rate. Structural causes: complexity, lack of third-party wage data for gig/cash workers, inability to pre-verify.",
       "sourceOrientation": "nonpartisan",
       "overlapNotes": "SUBSET of F4-004 (the EITC component of the broader $28B refundable credits figure). EITC is the single largest component. Do not add F4-005 to F4-004. Also partially overlaps with tax gap (F4-003) since EITC fraud is one form of underreporting.",
       "entityLinks": [
@@ -774,12 +774,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.87,
       "jurisdiction": "federal",
-      "sourceName": "Treasury PIIA FY2025 Reporting — paymentaccuracy.gov",
+      "sourceName": "Treasury PIIA FY2025 Reporting \u2014 paymentaccuracy.gov",
       "sourceUrl": "https://paymentaccuracy.gov/agency/TREASURY",
       "sourceType": "agency_data",
-      "sourceMethodology": "Recovery activities and audits combined. Identified $1,877.67M; recovered only $34.69M. Recovery rate: 1.85% — extraordinarily low. IRS cannot recover payments already distributed as refunds without due process; EITC claimants typically cannot repay.",
+      "sourceMethodology": "Recovery activities and audits combined. Identified $1,877.67M; recovered only $34.69M. Recovery rate: 1.85% \u2014 extraordinarily low. IRS cannot recover payments already distributed as refunds without due process; EITC claimants typically cannot repay.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of F4-004/$28B — represents what was specifically identified for recovery processes, not the full improper payment universe. The 1.85% recovery rate contrasts sharply with USDA's 70% rate, illustrating how program design affects recoverability.",
+      "overlapNotes": "SUBSET of F4-004/$28B \u2014 represents what was specifically identified for recovery processes, not the full improper payment universe. The 1.85% recovery rate contrasts sharply with USDA's 70% rate, illustrating how program design affects recoverability.",
       "entityLinks": [
         "IRS",
         "Treasury",
@@ -789,7 +789,7 @@
     },
     {
       "id": "F4-007",
-      "title": "IRS Gross Tax Gap — Measured (Tax Years 2011–2013)",
+      "title": "IRS Gross Tax Gap \u2014 Measured (Tax Years 2011\u20132013)",
       "category": "F4",
       "categoryLabel": "Tax Fraud/Evasion",
       "type": "fraud",
@@ -802,12 +802,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.92,
       "jurisdiction": "federal",
-      "sourceName": "Federal Tax Compliance Research: Tax Gap Estimates for Tax Years 2011–2013 (IRS Pub 1415, 2019)",
+      "sourceName": "Federal Tax Compliance Research: Tax Gap Estimates for Tax Years 2011\u20132013 (IRS Pub 1415, 2019)",
       "sourceUrl": "https://www.irs.gov/pub/irs-prior/p1415--2019.pdf",
       "sourceType": "agency_data",
       "sourceMethodology": "IRS NRP measured. Net gap after enforcement: $381B. Voluntary compliance rate 83.6%.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "EARLIEST PERIOD IN SERIES. Pre-2018 coverage. Establishes baseline showing consistent increase in tax gap over time (~$441B → $496B → $540B → $696B gross over 2011–2022). Do not sum across periods.",
+      "overlapNotes": "EARLIEST PERIOD IN SERIES. Pre-2018 coverage. Establishes baseline showing consistent increase in tax gap over time (~$441B \u2192 $496B \u2192 $540B \u2192 $696B gross over 2011\u20132022). Do not sum across periods.",
       "entityLinks": [
         "IRS",
         "Treasury"
@@ -816,7 +816,7 @@
     },
     {
       "id": "F7-001",
-      "title": "DOL Pandemic Unemployment Assistance (PUA) — Lifetime Improper Payments",
+      "title": "DOL Pandemic Unemployment Assistance (PUA) \u2014 Lifetime Improper Payments",
       "category": "F7",
       "categoryLabel": "Disaster/Emergency Fraud",
       "type": "fraud",
@@ -832,9 +832,9 @@
       "sourceName": "DOL PUA S&EMP Report FY2023; GAO High-Risk Series GAO-25-107743; PRAC COVID-19 fraud data",
       "sourceUrl": "https://paymentaccuracy.gov/agency/DOL",
       "sourceType": "ig_report",
-      "sourceMethodology": "DOL established PUA improper payment rate at 18.53% for the life of the program. Total PUA outlays estimated ~$246B; applying 18.53% = ~$45.6B. PRAC estimates range to $60–80B when including organized fraud rings by criminal networks. Program expired September 6, 2021; further sampling not possible.",
+      "sourceMethodology": "DOL established PUA improper payment rate at 18.53% for the life of the program. Total PUA outlays estimated ~$246B; applying 18.53% = ~$45.6B. PRAC estimates range to $60\u201380B when including organized fraud rings by criminal networks. Program expired September 6, 2021; further sampling not possible.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "CRITICAL MULTI-SOURCE OVERLAP. The PUA 18.53% rate is SEPARATE from regular UI BAM survey (F3-007 covers regular UI; PUA excluded from BAM). The PRAC $60–80B range aggregates PUA + some PEUC/FPUC; DOJ COVID prosecution totals (F7-003) are a SUBSET of this. W5-005 (COVID UI GAO $60–163B range) includes this figure plus additional amounts — DO NOT double-count. The $80B high end of PRAC overlaps substantially with W5-005.",
+      "overlapNotes": "CRITICAL MULTI-SOURCE OVERLAP. The PUA 18.53% rate is SEPARATE from regular UI BAM survey (F3-007 covers regular UI; PUA excluded from BAM). The PRAC $60\u201380B range aggregates PUA + some PEUC/FPUC; DOJ COVID prosecution totals (F7-003) are a SUBSET of this. W5-005 (COVID UI GAO $60\u2013163B range) includes this figure plus additional amounts \u2014 DO NOT double-count. The $80B high end of PRAC overlaps substantially with W5-005.",
       "entityLinks": [
         "DOL",
         "DOL-OIG",
@@ -864,7 +864,7 @@
       "sourceType": "ig_report",
       "sourceMethodology": "SBA OIG estimated $206B+ in potentially fraudulent PPP/EIDL loans. SBA's current FY2025 improper rate is 12.29% on $66.2B outlays ($8.14B current). COVID programs were the dominant fraud vector. Multiple Congressional investigations and DOJ prosecutions ongoing. Wide range reflects different methodologies (approved loans to suspicious entities vs. confirmed fraud vs. prosecuted fraud).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "MAJOR MULTI-SOURCE OVERLAP. Overlaps with: (1) DOJ COVID-19 Fraud Task Force prosecutions (F7-003) — DOJ is a subset; (2) SBA current improper payments FY2025 (F7-006) — different measurement; (3) PRAC aggregate estimates. The wide $76B–$200B range reflects uncertainty. The $136B best estimate represents the midpoint of SBA-OIG methodologies. Prosecution totals in F7-003 ($1.9B) are a tiny fraction of estimated fraud — most never prosecuted.",
+      "overlapNotes": "MAJOR MULTI-SOURCE OVERLAP. Overlaps with: (1) DOJ COVID-19 Fraud Task Force prosecutions (F7-003) \u2014 DOJ is a subset; (2) SBA current improper payments FY2025 (F7-006) \u2014 different measurement; (3) PRAC aggregate estimates. The wide $76B\u2013$200B range reflects uncertainty. The $136B best estimate represents the midpoint of SBA-OIG methodologies. Prosecution totals in F7-003 ($1.9B) are a tiny fraction of estimated fraud \u2014 most never prosecuted.",
       "entityLinks": [
         "SBA",
         "SBA-OIG",
@@ -877,7 +877,7 @@
     },
     {
       "id": "F7-003",
-      "title": "DOJ COVID-19 Fraud Enforcement Task Force — Pandemic Fraud Prosecutions (Cumulative 2020–2024)",
+      "title": "DOJ COVID-19 Fraud Enforcement Task Force \u2014 Pandemic Fraud Prosecutions (Cumulative 2020\u20132024)",
       "category": "F7",
       "categoryLabel": "Disaster/Emergency Fraud",
       "type": "fraud",
@@ -895,7 +895,7 @@
       "sourceType": "doj_settlement",
       "sourceMethodology": "DOJ CFETF established 2021. Hundreds of defendants prosecuted for PPP, EIDL, UI, and healthcare COVID fraud. Combines criminal charges, civil FCA cases, and administrative enforcement. Includes seized assets and civil settlements through 2024.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of estimated total COVID fraud. F7-002 ($76–200B SBA fraud) and F7-001 ($45–80B UI fraud) dwarf this prosecution total — prosecutions represent what was detected and charged, not the full universe. Some amounts also appear in regular annual DOJ FCA totals. Do not add to the broader COVID fraud estimates.",
+      "overlapNotes": "SUBSET of estimated total COVID fraud. F7-002 ($76\u2013200B SBA fraud) and F7-001 ($45\u201380B UI fraud) dwarf this prosecution total \u2014 prosecutions represent what was detected and charged, not the full universe. Some amounts also appear in regular annual DOJ FCA totals. Do not add to the broader COVID fraud estimates.",
       "entityLinks": [
         "DOJ",
         "SBA",
@@ -907,7 +907,7 @@
     },
     {
       "id": "F7-004",
-      "title": "FEMA COVID-19 Funeral Assistance — Duplicate Payments (as of Feb 2022)",
+      "title": "FEMA COVID-19 Funeral Assistance \u2014 Duplicate Payments (as of Feb 2022)",
       "category": "F7",
       "categoryLabel": "Disaster/Emergency Fraud",
       "type": "fraud",
@@ -935,7 +935,7 @@
     },
     {
       "id": "F7-005",
-      "title": "FEMA COVID-19 Funeral Assistance — Total Program Disbursed (as of Feb 2022)",
+      "title": "FEMA COVID-19 Funeral Assistance \u2014 Total Program Disbursed (as of Feb 2022)",
       "category": "F7",
       "categoryLabel": "Disaster/Emergency Fraud",
       "type": "fraud",
@@ -975,12 +975,12 @@
       "certaintyTier": 2,
       "certaintyScore": 0.7,
       "jurisdiction": "federal",
-      "sourceName": "paymentaccuracy.gov Agency Rankings — SBA FY2025",
+      "sourceName": "paymentaccuracy.gov Agency Rankings \u2014 SBA FY2025",
       "sourceUrl": "https://paymentaccuracy.gov/agency/SBA",
       "sourceType": "agency_data",
       "sourceMethodology": "12.29% improper rate on $66.2B susceptible outlays. SBA ranked second-lowest performing agency. SBA notes it is restructuring PIIA process with improvements anticipated by FY2027.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "FY2025 SBA improper payments likely reflect residual COVID program effects (SBA's $76–200B COVID fraud from F7-002 is still in recovery/processing cycle). This is a CURRENT annual figure, not the COVID-era total. Do not confuse with the peak COVID fraud estimate.",
+      "overlapNotes": "FY2025 SBA improper payments likely reflect residual COVID program effects (SBA's $76\u2013200B COVID fraud from F7-002 is still in recovery/processing cycle). This is a CURRENT annual figure, not the COVID-era total. Do not confuse with the peak COVID fraud estimate.",
       "entityLinks": [
         "SBA",
         "SBA-OIG",
@@ -991,7 +991,7 @@
     },
     {
       "id": "W1-001",
-      "title": "GAO Annual Report on Fragmentation, Overlap, and Duplication — Cumulative Financial Benefits Through 2021",
+      "title": "GAO Annual Report on Fragmentation, Overlap, and Duplication \u2014 Cumulative Financial Benefits Through 2021",
       "category": "W1",
       "categoryLabel": "Duplicative Programs",
       "type": "waste",
@@ -1009,7 +1009,7 @@
       "sourceType": "gao_audit",
       "sourceMethodology": "GAO tracks implementation of its annual recommendations for its duplication series. Financial benefits = actual savings/revenues identified as agencies implemented GAO-identified actions. $393B accrued through 2019; $36B projected future savings; $30B+ from HHS Medicaid waiver changes 2019.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "DO NOT ADD TO W1-002/W1-003 (GAO High-Risk savings). The $429B (duplication series 2011-2021) and the $759B (High-Risk series 1990-2025) overlap substantially — both track saved money from congressional/executive action on GAO recommendations, and many of the same actions are counted in both series. The High-Risk $759B is broader (covers more areas) but includes the duplication savings. Summing them would significantly double-count.",
+      "overlapNotes": "DO NOT ADD TO W1-002/W1-003 (GAO High-Risk savings). The $429B (duplication series 2011-2021) and the $759B (High-Risk series 1990-2025) overlap substantially \u2014 both track saved money from congressional/executive action on GAO recommendations, and many of the same actions are counted in both series. The High-Risk $759B is broader (covers more areas) but includes the duplication savings. Summing them would significantly double-count.",
       "entityLinks": [
         "OMB",
         "Congress",
@@ -1020,7 +1020,7 @@
     },
     {
       "id": "W1-002",
-      "title": "GAO Annual Duplication Report — New Actions FY2021 (Potential Future Savings)",
+      "title": "GAO Annual Duplication Report \u2014 New Actions FY2021 (Potential Future Savings)",
       "category": "W1",
       "categoryLabel": "Duplicative Programs",
       "type": "waste",
@@ -1049,7 +1049,7 @@
     },
     {
       "id": "W1-003",
-      "title": "Cato Institute — Annual Federal Waste Estimate (Downsizing Government)",
+      "title": "Cato Institute \u2014 Annual Federal Waste Estimate (Downsizing Government)",
       "category": "W1",
       "categoryLabel": "Duplicative Programs",
       "type": "waste",
@@ -1062,12 +1062,12 @@
       "certaintyTier": 3,
       "certaintyScore": 0.45,
       "jurisdiction": "federal",
-      "sourceName": "Cato Institute — Downsizing the Federal Government (Chris Edwards, various years)",
+      "sourceName": "Cato Institute \u2014 Downsizing the Federal Government (Chris Edwards, various years)",
       "sourceUrl": "https://www.downsizinggovernment.org/",
       "sourceType": "think_tank",
-      "sourceMethodology": "Reviews federal program budgets, IG reports, GAO findings, and government performance data. Identifies programs Cato argues should be eliminated or reformed. Definition of \"waste\" is broader than GAO's — includes programs Cato considers philosophically inappropriate.",
+      "sourceMethodology": "Reviews federal program budgets, IG reports, GAO findings, and government performance data. Identifies programs Cato argues should be eliminated or reformed. Definition of \"waste\" is broader than GAO's \u2014 includes programs Cato considers philosophically inappropriate.",
       "sourceOrientation": "libertarian",
-      "overlapNotes": "Substantial overlap with GAO duplication findings (W1-001). Cato's broader \"waste\" definition includes programs others view as performing their missions. The $200–500B range reflects this definitional dispute. Should NOT be added to GAO-sourced figures.",
+      "overlapNotes": "Substantial overlap with GAO duplication findings (W1-001). Cato's broader \"waste\" definition includes programs others view as performing their missions. The $200\u2013500B range reflects this definitional dispute. Should NOT be added to GAO-sourced figures.",
       "entityLinks": [
         "Cato Institute",
         "all federal agencies"
@@ -1076,7 +1076,7 @@
     },
     {
       "id": "W1-004",
-      "title": "Heritage Foundation — Blueprint for Balance Federal Waste Estimate",
+      "title": "Heritage Foundation \u2014 Blueprint for Balance Federal Waste Estimate",
       "category": "W1",
       "categoryLabel": "Duplicative Programs",
       "type": "waste",
@@ -1089,10 +1089,10 @@
       "certaintyTier": 3,
       "certaintyScore": 0.4,
       "jurisdiction": "federal",
-      "sourceName": "Heritage Foundation — Budget Blueprint for Balance (various editions)",
+      "sourceName": "Heritage Foundation \u2014 Budget Blueprint for Balance (various editions)",
       "sourceUrl": "https://www.heritage.org/budget-and-spending",
       "sourceType": "think_tank",
-      "sourceMethodology": "Identifies federal programs Heritage considers wasteful, duplicative, or outside legitimate federal responsibility. Methodology based on constitutional/policy criteria — goes beyond operational efficiency.",
+      "sourceMethodology": "Identifies federal programs Heritage considers wasteful, duplicative, or outside legitimate federal responsibility. Methodology based on constitutional/policy criteria \u2014 goes beyond operational efficiency.",
       "sourceOrientation": "right",
       "overlapNotes": "Overlaps with GAO duplication findings but extends further to philosophically opposed programs (education subsidies, certain welfare). Not an operational audit. DO NOT add to GAO figures.",
       "entityLinks": [
@@ -1103,7 +1103,7 @@
     },
     {
       "id": "W1-005",
-      "title": "Peterson Foundation / BPC — Federal Discretionary Waste Estimate",
+      "title": "Peterson Foundation / BPC \u2014 Federal Discretionary Waste Estimate",
       "category": "W1",
       "categoryLabel": "Duplicative Programs",
       "type": "waste",
@@ -1116,10 +1116,10 @@
       "certaintyTier": 3,
       "certaintyScore": 0.5,
       "jurisdiction": "federal",
-      "sourceName": "Peterson Foundation / BPC — Federal Budget Reform Analysis (various)",
+      "sourceName": "Peterson Foundation / BPC \u2014 Federal Budget Reform Analysis (various)",
       "sourceUrl": "https://www.pgpf.org/",
       "sourceType": "think_tank",
-      "sourceMethodology": "Compares U.S. administrative costs to OECD averages + identified program inefficiencies from IG/GAO findings. Methodology overlaps substantially with GAO data — largely a repackaging.",
+      "sourceMethodology": "Compares U.S. administrative costs to OECD averages + identified program inefficiencies from IG/GAO findings. Methodology overlaps substantially with GAO data \u2014 largely a repackaging.",
       "sourceOrientation": "nonpartisan",
       "overlapNotes": "Much of this repackages GAO, OMB, and IG findings. Do not add to official GAO figures.",
       "entityLinks": [
@@ -1130,7 +1130,7 @@
     },
     {
       "id": "W2-001",
-      "title": "F-35 Joint Strike Fighter — Program Cost Growth Above Baseline (Cumulative)",
+      "title": "F-35 Joint Strike Fighter \u2014 Program Cost Growth Above Baseline (Cumulative)",
       "category": "W2",
       "categoryLabel": "Cost Overruns",
       "type": "waste",
@@ -1146,9 +1146,9 @@
       "sourceName": "DOD F-35 Selected Acquisition Reports; GAO Defense Acquisition Assessments",
       "sourceUrl": "https://www.gao.gov/topics/defense-acquisitions",
       "sourceType": "gao_audit",
-      "sourceMethodology": "DOD Selected Acquisition Reports (SAR) track program cost vs. original baseline. F-35 original estimate ~$233B; has grown to ~$398B total program cost. Per-unit costs grew from ~$60M to $80–100M+. Lifetime sustainment costs exceed $1.7T (a different figure — procurement + 55 years of operations).",
+      "sourceMethodology": "DOD Selected Acquisition Reports (SAR) track program cost vs. original baseline. F-35 original estimate ~$233B; has grown to ~$398B total program cost. Per-unit costs grew from ~$60M to $80\u2013100M+. Lifetime sustainment costs exceed $1.7T (a different figure \u2014 procurement + 55 years of operations).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "The $165B is the cost GROWTH above the original baseline — the \"overrun\" portion. The $1.7T lifetime figure includes decades of planned sustainment and is not an overrun. Both are cited by think tanks; clarify which is being referenced. This is a SUBSET of DOD Weapon Systems Acquisition High-Risk area. Not double-counted with W2-002 through W2-005 which are different programs.",
+      "overlapNotes": "The $165B is the cost GROWTH above the original baseline \u2014 the \"overrun\" portion. The $1.7T lifetime figure includes decades of planned sustainment and is not an overrun. Both are cited by think tanks; clarify which is being referenced. This is a SUBSET of DOD Weapon Systems Acquisition High-Risk area. Not double-counted with W2-002 through W2-005 which are different programs.",
       "entityLinks": [
         "DOD",
         "Air Force",
@@ -1161,7 +1161,7 @@
     },
     {
       "id": "W2-002",
-      "title": "Gerald R. Ford Aircraft Carrier — Cost Overrun (CVN-78)",
+      "title": "Gerald R. Ford Aircraft Carrier \u2014 Cost Overrun (CVN-78)",
       "category": "W2",
       "categoryLabel": "Cost Overruns",
       "type": "waste",
@@ -1190,7 +1190,7 @@
     },
     {
       "id": "W2-003",
-      "title": "Sentinel ICBM (Ground Based Strategic Deterrent) — Nunn-McCurdy Cost Breach",
+      "title": "Sentinel ICBM (Ground Based Strategic Deterrent) \u2014 Nunn-McCurdy Cost Breach",
       "category": "W2",
       "categoryLabel": "Cost Overruns",
       "type": "waste",
@@ -1203,7 +1203,7 @@
       "certaintyTier": 1,
       "certaintyScore": 0.8,
       "jurisdiction": "federal",
-      "sourceName": "GAO-25-107743 High-Risk 2025 — DOD Weapon Systems Acquisition; DOD Selected Acquisition Reports",
+      "sourceName": "GAO-25-107743 High-Risk 2025 \u2014 DOD Weapon Systems Acquisition; DOD Selected Acquisition Reports",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
       "sourceMethodology": "In 2023, Sentinel breached the Nunn-McCurdy threshold (cost grew >25% above baseline). Air Force estimates grew from ~$77B (2020) to $131B+ (2023). Pentagon confirmed 37% cost increase above original baseline in Nov 2023. Program restructuring ongoing.",
@@ -1220,7 +1220,7 @@
     },
     {
       "id": "W2-004",
-      "title": "FAA NextGen Air Traffic Modernization — Total Program Cost (Through FY2022)",
+      "title": "FAA NextGen Air Traffic Modernization \u2014 Total Program Cost (Through FY2022)",
       "category": "W2",
       "categoryLabel": "Cost Overruns",
       "type": "waste",
@@ -1238,7 +1238,7 @@
       "sourceType": "gao_audit",
       "sourceMethodology": "$14B spent through FY2022. Projected total government + industry cost through 2030 = $35B. Mixed progress: some milestones met, others missed by years. Life-cycle cost estimate not updated since 2017.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "IMPORTANT DISTINCTION: The $14B is SPENT to date; the $35B is total projected. The \"overrun\" is the schedule slippage and cost growth vs. original plan. W2-004 and W5-006 both reference the same FAA NextGen program — W2-004 focuses on cost; W5-006 focuses on performance failure. Same program, different analytical lens.",
+      "overlapNotes": "IMPORTANT DISTINCTION: The $14B is SPENT to date; the $35B is total projected. The \"overrun\" is the schedule slippage and cost growth vs. original plan. W2-004 and W5-006 both reference the same FAA NextGen program \u2014 W2-004 focuses on cost; W5-006 focuses on performance failure. Same program, different analytical lens.",
       "entityLinks": [
         "FAA",
         "DOT",
@@ -1248,7 +1248,7 @@
     },
     {
       "id": "W2-005",
-      "title": "NASA Major Projects Portfolio — Cumulative Cost Overruns FY2024",
+      "title": "NASA Major Projects Portfolio \u2014 Cumulative Cost Overruns FY2024",
       "category": "W2",
       "categoryLabel": "Cost Overruns",
       "type": "waste",
@@ -1261,10 +1261,10 @@
       "certaintyTier": 1,
       "certaintyScore": 0.9,
       "jurisdiction": "federal",
-      "sourceName": "NASA: Assessments of Major Projects — GAO-24-106767",
+      "sourceName": "NASA: Assessments of Major Projects \u2014 GAO-24-106767",
       "sourceUrl": "https://www.gao.gov/products/gao-24-106767",
       "sourceType": "gao_audit",
-      "sourceMethodology": "16th annual GAO assessment. $82B+ portfolio of major projects. Cumulative overruns decreased from $7.6B (2023) to $4.4B (2024) — improvement as SLS/EGS exited portfolio after completion. Orion accounts for $2.9B (65%) of remaining overruns. Schedule overruns also decreased.",
+      "sourceMethodology": "16th annual GAO assessment. $82B+ portfolio of major projects. Cumulative overruns decreased from $7.6B (2023) to $4.4B (2024) \u2014 improvement as SLS/EGS exited portfolio after completion. Orion accounts for $2.9B (65%) of remaining overruns. Schedule overruns also decreased.",
       "sourceOrientation": "nonpartisan",
       "overlapNotes": "Improvement from FY2023 ($7.6B) to FY2024 ($4.4B) is partly because overrun-heavy projects completed (SLS/EGS), not purely performance improvement. NASA acquisition management remains on GAO High-Risk List. Separate from DOD programs above.",
       "entityLinks": [
@@ -1277,7 +1277,7 @@
     },
     {
       "id": "W2-006",
-      "title": "DOD Nuclear Weapons Modernization — CBO 10-Year Projected Cost (FY2024–2033)",
+      "title": "DOD Nuclear Weapons Modernization \u2014 CBO 10-Year Projected Cost (FY2024\u20132033)",
       "category": "W2",
       "categoryLabel": "Cost Overruns",
       "type": "waste",
@@ -1290,12 +1290,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.85,
       "jurisdiction": "federal",
-      "sourceName": "CBO — Projected Costs of U.S. Nuclear Forces (2024 edition)",
+      "sourceName": "CBO \u2014 Projected Costs of U.S. Nuclear Forces (2024 edition)",
       "sourceUrl": "https://www.cbo.gov/publication/59054",
       "sourceType": "agency_data",
       "sourceMethodology": "CBO projects costs of nuclear triad modernization: ICBMs (Sentinel), submarines (Columbia class), bombers (B-21 Raider), plus DOE/NNSA weapons programs. 10-year projection = $756B. This is PLANNED COST, not an overrun.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "NOT all waste — this is planned replacement of aging Cold War systems. The waste/overrun portion is tracked separately via DOD SARs (W2-003 for Sentinel specifically). The $756B total includes W2-003 Sentinel costs but extends to all nuclear programs. Citing this figure as \"waste\" misrepresents it; it is better described as a cost commitment with embedded overrun risk.",
+      "overlapNotes": "NOT all waste \u2014 this is planned replacement of aging Cold War systems. The waste/overrun portion is tracked separately via DOD SARs (W2-003 for Sentinel specifically). The $756B total includes W2-003 Sentinel costs but extends to all nuclear programs. Citing this figure as \"waste\" misrepresents it; it is better described as a cost commitment with embedded overrun risk.",
       "entityLinks": [
         "DOD",
         "DOE/NNSA",
@@ -1307,7 +1307,7 @@
     },
     {
       "id": "W2-007",
-      "title": "DOD Weapon Systems Acquisition — High-Risk Designation (Regressed 2025)",
+      "title": "DOD Weapon Systems Acquisition \u2014 High-Risk Designation (Regressed 2025)",
       "category": "W2",
       "categoryLabel": "Cost Overruns",
       "type": "waste",
@@ -1335,7 +1335,7 @@
     },
     {
       "id": "W3-001",
-      "title": "Federal Real Property — Annual Maintenance and Operating Costs FY2023",
+      "title": "Federal Real Property \u2014 Annual Maintenance and Operating Costs FY2023",
       "category": "W3",
       "categoryLabel": "Idle/Underused Assets",
       "type": "waste",
@@ -1353,7 +1353,7 @@
       "sourceType": "gao_audit",
       "sourceMethodology": "Federal government owns 277,000 buildings. Annual maintenance and operating costs exceeded $10.3B in FY2023. Managing Federal Real Property designated High-Risk in 2003; REGRESSED in 2025 update.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "The $10.3B is the TOTAL operating cost of ALL 277,000 buildings — not just excess/unused. The waste/excess portion is a subset — GSA estimates ~$1.7–5B in carrying costs for properties not actively serving mission (W3-003). W3-002 (deferred maintenance backlog $370B) is a SEPARATE figure — the accumulated UNFUNDED repairs, not annual operating costs. Do not add W3-001 + W3-002 as they measure different things.",
+      "overlapNotes": "The $10.3B is the TOTAL operating cost of ALL 277,000 buildings \u2014 not just excess/unused. The waste/excess portion is a subset \u2014 GSA estimates ~$1.7\u20135B in carrying costs for properties not actively serving mission (W3-003). W3-002 (deferred maintenance backlog $370B) is a SEPARATE figure \u2014 the accumulated UNFUNDED repairs, not annual operating costs. Do not add W3-001 + W3-002 as they measure different things.",
       "entityLinks": [
         "GSA",
         "DOD",
@@ -1364,7 +1364,7 @@
     },
     {
       "id": "W3-002",
-      "title": "Federal Real Property — Deferred Maintenance Backlog (2024 Snapshot)",
+      "title": "Federal Real Property \u2014 Deferred Maintenance Backlog (2024 Snapshot)",
       "category": "W3",
       "categoryLabel": "Idle/Underused Assets",
       "type": "waste",
@@ -1377,12 +1377,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.85,
       "jurisdiction": "federal",
-      "sourceName": "GAO High-Risk Series 2025 — Managing Federal Real Property (GAO-25-107743)",
+      "sourceName": "GAO High-Risk Series 2025 \u2014 Managing Federal Real Property (GAO-25-107743)",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
-      "sourceMethodology": "Annual GAO tracking. Backlog rose from $170B (2017) to $370B (2024) — more than doubled in 7 years. Represents known needed maintenance agencies have not funded. Underfunded deferred maintenance compounds over time (assets degrade, requiring more expensive eventual replacement).",
+      "sourceMethodology": "Annual GAO tracking. Backlog rose from $170B (2017) to $370B (2024) \u2014 more than doubled in 7 years. Represents known needed maintenance agencies have not funded. Underfunded deferred maintenance compounds over time (assets degrade, requiring more expensive eventual replacement).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "BALANCE SHEET FIGURE, NOT ANNUAL SPENDING. The $370B is the cumulative unfunded maintenance backlog — not $370B wasted per year. Annual waste attributable to deferred maintenance is better estimated as the cost delta between deferred and eventual replacement ($20–50B/year if the backlog grew by ~$30B/year from 2017-2024). DOD accounts for the largest share (~$150B+ of the total).",
+      "overlapNotes": "BALANCE SHEET FIGURE, NOT ANNUAL SPENDING. The $370B is the cumulative unfunded maintenance backlog \u2014 not $370B wasted per year. Annual waste attributable to deferred maintenance is better estimated as the cost delta between deferred and eventual replacement ($20\u201350B/year if the backlog grew by ~$30B/year from 2017-2024). DOD accounts for the largest share (~$150B+ of the total).",
       "entityLinks": [
         "GSA",
         "DOD",
@@ -1393,7 +1393,7 @@
     },
     {
       "id": "W3-003",
-      "title": "GSA — Excess and Underutilized Federal Properties Annual Carrying Costs",
+      "title": "GSA \u2014 Excess and Underutilized Federal Properties Annual Carrying Costs",
       "category": "W3",
       "categoryLabel": "Idle/Underused Assets",
       "type": "waste",
@@ -1409,9 +1409,9 @@
       "sourceName": "GSA Federal Real Property Profile (FRPP) Annual Reports; GAO Federal Real Property reports",
       "sourceUrl": "https://www.gsa.gov/policy-regulations/policy/real-property-policy/asset-management/federal-real-property-profile-frpp",
       "sourceType": "agency_data",
-      "sourceMethodology": "GSA tracks excess, surplus, and underutilized properties in FRPP database. Post-COVID telework increased underutilized federal offices substantially. Annual carrying costs for non-mission-serving properties estimated $1.7B–$5B/year.",
+      "sourceMethodology": "GSA tracks excess, surplus, and underutilized properties in FRPP database. Post-COVID telework increased underutilized federal offices substantially. Annual carrying costs for non-mission-serving properties estimated $1.7B\u2013$5B/year.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "SUBSET of W3-001 ($10.3B total operating costs). The $1.7–5B represents the portion attributable to excess/unused space only. OMB has pushed disposal programs with mixed results. Post-COVID telework has exacerbated this problem.",
+      "overlapNotes": "SUBSET of W3-001 ($10.3B total operating costs). The $1.7\u20135B represents the portion attributable to excess/unused space only. OMB has pushed disposal programs with mixed results. Post-COVID telework has exacerbated this problem.",
       "entityLinks": [
         "GSA",
         "OMB",
@@ -1421,7 +1421,7 @@
     },
     {
       "id": "W3-004",
-      "title": "FAA Air Traffic Control — 51 Unsustainable Legacy Systems",
+      "title": "FAA Air Traffic Control \u2014 51 Unsustainable Legacy Systems",
       "category": "W3",
       "categoryLabel": "Idle/Underused Assets",
       "type": "waste",
@@ -1437,9 +1437,9 @@
       "sourceName": "Air Traffic Control: FAA Actions Are Urgently Needed (GAO-24-107001)",
       "sourceUrl": "https://www.gao.gov/products/gao-24-107001",
       "sourceType": "gao_audit",
-      "sourceMethodology": "FAA 2023 operational risk assessment found 51 of 138 systems unsustainable, 54 more potentially unsustainable. 17 critical systems won't be modernized for 6–13 years. Some 30–50 years old. 4 critical systems have NO investment plans.",
+      "sourceMethodology": "FAA 2023 operational risk assessment found 51 of 138 systems unsustainable, 54 more potentially unsustainable. 17 critical systems won't be modernized for 6\u201313 years. Some 30\u201350 years old. 4 critical systems have NO investment plans.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "Related to W2-004 (FAA NextGen cost overruns) — these legacy systems are what NextGen was supposed to replace. The risk cost (flight delays, ground stops) is separate from the replacement cost. NOTAM outage January 2023 caused nationwide ground stop, illustrating the economic exposure. Dollar value of economic disruption not quantified in this source.",
+      "overlapNotes": "Related to W2-004 (FAA NextGen cost overruns) \u2014 these legacy systems are what NextGen was supposed to replace. The risk cost (flight delays, ground stops) is separate from the replacement cost. NOTAM outage January 2023 caused nationwide ground stop, illustrating the economic exposure. Dollar value of economic disruption not quantified in this source.",
       "entityLinks": [
         "FAA",
         "DOT",
@@ -1449,7 +1449,7 @@
     },
     {
       "id": "W4-001",
-      "title": "Cato Institute — Federal Civilian Pay Premium vs. Private Sector",
+      "title": "Cato Institute \u2014 Federal Civilian Pay Premium vs. Private Sector",
       "category": "W4",
       "categoryLabel": "Administrative Overhead",
       "type": "waste",
@@ -1462,12 +1462,12 @@
       "certaintyTier": 3,
       "certaintyScore": 0.4,
       "jurisdiction": "federal",
-      "sourceName": "Cato Institute — Federal Pay and Benefits vs. Private Sector (Chris Edwards, various)",
+      "sourceName": "Cato Institute \u2014 Federal Pay and Benefits vs. Private Sector (Chris Edwards, various)",
       "sourceUrl": "https://www.downsizinggovernment.org/federal-pay",
       "sourceType": "think_tank",
-      "sourceMethodology": "BLS compensation data comparing federal workers to private sector by occupation. Cato finds 17–30% total compensation premium (wages + benefits). ~2.9M civilian federal employees × average premium = $30–80B/year estimated excess.",
+      "sourceMethodology": "BLS compensation data comparing federal workers to private sector by occupation. Cato finds 17\u201330% total compensation premium (wages + benefits). ~2.9M civilian federal employees \u00d7 average premium = $30\u201380B/year estimated excess.",
       "sourceOrientation": "libertarian",
-      "overlapNotes": "CONTESTED DATA. CBO analyses find smaller premiums (~3–5% wages, larger for benefits). OPM disputes Cato's job classification methodology. Not an operational audit. Treat as Tier 3 advocacy estimate. Do not add to official figures.",
+      "overlapNotes": "CONTESTED DATA. CBO analyses find smaller premiums (~3\u20135% wages, larger for benefits). OPM disputes Cato's job classification methodology. Not an operational audit. Treat as Tier 3 advocacy estimate. Do not add to official figures.",
       "entityLinks": [
         "OPM",
         "BLS",
@@ -1478,7 +1478,7 @@
     },
     {
       "id": "W5-001",
-      "title": "VA Electronic Health Record Modernization — Program Cost Estimate",
+      "title": "VA Electronic Health Record Modernization \u2014 Program Cost Estimate",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1496,7 +1496,7 @@
       "sourceType": "gao_audit",
       "sourceMethodology": "VA contracted Oracle/Cerner in 2018 for $10B to replace legacy VistA. IDA 2022 estimate: $32.7B implementation + $17.1B sustainment = $49.8B lifecycle. Costs grew to $21B+ direct contract value. Program paused multiple times due to patient safety incidents (Spokane, Walla Walla, Columbus). As of Dec 2024, deployed at only 6 of 160+ locations.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "TWO DISTINCT ESTIMATES IN SOURCE FILES. DP23 ($49.8B) = IDA lifecycle estimate for the full 28-year program. TT-Independent-008 ($21B) = contract value + known cost growth. The $49.8B includes 15 years of sustainment costs beyond deployment — different metric. Use AMOUNT_LOW ($16–21B) for \"confirmed spent/committed\" and AMOUNT_HIGH ($49.8B) for \"lifecycle projection.\" VA Acquisition Management is a separate GAO High-Risk area. DOD has parallel MHS GENESIS (same Oracle/Cerner) with similar issues.",
+      "overlapNotes": "TWO DISTINCT ESTIMATES IN SOURCE FILES. DP23 ($49.8B) = IDA lifecycle estimate for the full 28-year program. TT-Independent-008 ($21B) = contract value + known cost growth. The $49.8B includes 15 years of sustainment costs beyond deployment \u2014 different metric. Use AMOUNT_LOW ($16\u201321B) for \"confirmed spent/committed\" and AMOUNT_HIGH ($49.8B) for \"lifecycle projection.\" VA Acquisition Management is a separate GAO High-Risk area. DOD has parallel MHS GENESIS (same Oracle/Cerner) with similar issues.",
       "entityLinks": [
         "VA",
         "Oracle/Cerner",
@@ -1508,7 +1508,7 @@
     },
     {
       "id": "W5-002",
-      "title": "Healthcare.gov Launch Failure — Total Cost",
+      "title": "Healthcare.gov Launch Failure \u2014 Total Cost",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1526,7 +1526,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "HHS spent $628M on original Healthcare.gov development before Oct 2013 launch failure. Site crashed within 2 hours; only 6 successful Day 1 enrollments. Emergency contractor swap (CGI Federal replaced by QSSI). Subsequent rescue + ongoing costs through 2016 = ~$2.1B total.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "Distinct from VA EHR (W5-001) — different agency, different program. Often grouped with IT failures under GAO High-Risk area \"Improving IT Acquisitions and Management.\" The $2.1B is a SUBSET of total federal IT spend at-risk (W5-007). Original CGI Federal contract was $292M; full cost estimate includes emergency remediation.",
+      "overlapNotes": "Distinct from VA EHR (W5-001) \u2014 different agency, different program. Often grouped with IT failures under GAO High-Risk area \"Improving IT Acquisitions and Management.\" The $2.1B is a SUBSET of total federal IT spend at-risk (W5-007). Original CGI Federal contract was $292M; full cost estimate includes emergency remediation.",
       "entityLinks": [
         "HHS",
         "CMS",
@@ -1538,7 +1538,7 @@
     },
     {
       "id": "W5-003",
-      "title": "COVID-19 Unemployment Insurance Improper Payments 2020–2022 (GAO High-Risk)",
+      "title": "COVID-19 Unemployment Insurance Improper Payments 2020\u20132022 (GAO High-Risk)",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1551,12 +1551,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.8,
       "jurisdiction": "federal",
-      "sourceName": "GAO High-Risk Series 2023 — Unemployment Insurance System (GAO-23-106203)",
+      "sourceName": "GAO High-Risk Series 2023 \u2014 Unemployment Insurance System (GAO-23-106203)",
       "sourceUrl": "https://www.gao.gov/products/gao-23-106203",
       "sourceType": "gao_audit",
-      "sourceMethodology": "UI added to High-Risk List in 2022. COVID-19 expanded UI dramatically — PUA, FPUC, PEUC. DOL estimated $60B+ in improper payments 2020–2022; GAO and DOL IG estimates range higher (up to $163B including fraud by criminal networks). System lacked identity verification and eligibility checks.",
+      "sourceMethodology": "UI added to High-Risk List in 2022. COVID-19 expanded UI dramatically \u2014 PUA, FPUC, PEUC. DOL estimated $60B+ in improper payments 2020\u20132022; GAO and DOL IG estimates range higher (up to $163B including fraud by criminal networks). System lacked identity verification and eligibility checks.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "CRITICAL OVERLAP. This $60–163B range encompasses F7-001 (DOL PUA fraud estimate $45–80B). The ranges overlap substantially. The $60B floor is DOL's own estimate; the $163B ceiling comes from methodology including organized criminal networks. DO NOT add W5-003 to F7-001 — they measure the same pool. Choose the higher-confidence W5-003 (GAO Tier 1) as the primary figure; F7-001 (DOL-OIG Tier 2) is corroborating.",
+      "overlapNotes": "CRITICAL OVERLAP. This $60\u2013163B range encompasses F7-001 (DOL PUA fraud estimate $45\u201380B). The ranges overlap substantially. The $60B floor is DOL's own estimate; the $163B ceiling comes from methodology including organized criminal networks. DO NOT add W5-003 to F7-001 \u2014 they measure the same pool. Choose the higher-confidence W5-003 (GAO Tier 1) as the primary figure; F7-001 (DOL-OIG Tier 2) is corroborating.",
       "entityLinks": [
         "DOL",
         "DOL-OIG",
@@ -1568,7 +1568,7 @@
     },
     {
       "id": "W5-004",
-      "title": "DOD Financial Management — Never Achieved Clean Audit (GAO High-Risk)",
+      "title": "DOD Financial Management \u2014 Never Achieved Clean Audit (GAO High-Risk)",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1581,7 +1581,7 @@
       "certaintyTier": 1,
       "certaintyScore": 0.95,
       "jurisdiction": "federal",
-      "sourceName": "GAO High-Risk Series 2025 — DOD Financial Management (GAO-25-107743)",
+      "sourceName": "GAO High-Risk Series 2025 \u2014 DOD Financial Management (GAO-25-107743)",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
       "sourceMethodology": "DOD is the ONLY major federal agency to have NEVER achieved an unmodified \"clean\" audit opinion. $3.8 trillion in assets. Without clean audit, material errors and waste are undetectable at scale. Marine Corps recently received clean opinion; Army, Navy, Air Force have not.",
@@ -1600,7 +1600,7 @@
     },
     {
       "id": "W5-005",
-      "title": "Government-Wide Improper Payments — Reported Annually Since 2003 (Cumulative)",
+      "title": "Government-Wide Improper Payments \u2014 Reported Annually Since 2003 (Cumulative)",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1616,9 +1616,9 @@
       "sourceName": "GAO High-Risk Series: GAO-25-107743 (Feb 2025)",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
-      "sourceMethodology": "Federal agencies have reported ~$2.8 trillion in estimated improper payments since 2003 under IPIA/PIIA frameworks. Over $150B reported government-wide in EACH of the last 7 years (FY2018–2024). High-Risk List programs account for ~80% of the total. Acknowledged undercount: agencies failed to report FY2023 estimates for at least 9 risk-susceptible programs.",
+      "sourceMethodology": "Federal agencies have reported ~$2.8 trillion in estimated improper payments since 2003 under IPIA/PIIA frameworks. Over $150B reported government-wide in EACH of the last 7 years (FY2018\u20132024). High-Risk List programs account for ~80% of the total. Acknowledged undercount: agencies failed to report FY2023 estimates for at least 9 risk-susceptible programs.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "CUMULATIVE TOTAL OF W6 ANNUAL ENTRIES. This $2.8T = sum of the annual W6 figures over 22 years. Do not add to annual W6 entries — it will quadruple the count. The $2.8T includes both fraud and administrative error. Understates true total due to unreported programs. The $150B/year annual figure is the W6 series root entry.",
+      "overlapNotes": "CUMULATIVE TOTAL OF W6 ANNUAL ENTRIES. This $2.8T = sum of the annual W6 figures over 22 years. Do not add to annual W6 entries \u2014 it will quadruple the count. The $2.8T includes both fraud and administrative error. Understates true total due to unreported programs. The $150B/year annual figure is the W6 series root entry.",
       "entityLinks": [
         "OMB",
         "all federal agencies",
@@ -1629,7 +1629,7 @@
     },
     {
       "id": "W5-006",
-      "title": "FAA NextGen — Failed to Meet Key Milestones Since 2018",
+      "title": "FAA NextGen \u2014 Failed to Meet Key Milestones Since 2018",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1657,7 +1657,7 @@
     },
     {
       "id": "W5-007",
-      "title": "Federal IT Acquisitions — Annual Federal IT Spend (At-Risk Portion)",
+      "title": "Federal IT Acquisitions \u2014 Annual Federal IT Spend (At-Risk Portion)",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1673,9 +1673,9 @@
       "sourceName": "GAO High-Risk Series GAO-25-107743; OMB IT Dashboard (itdashboard.gov)",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
-      "sourceMethodology": "Federal agencies self-report IT spending via OMB IT Dashboard. Total ~$100B/year. Majority goes to O&M of legacy systems. 1,881 GAO recommendations made since 2010; 463 remain open as of Jan 2025. Status REGRESSED in 2025 High-Risk update. GAO estimates 20–30% at-risk based on persistent findings ($18–27B/year at risk).",
+      "sourceMethodology": "Federal agencies self-report IT spending via OMB IT Dashboard. Total ~$100B/year. Majority goes to O&M of legacy systems. 1,881 GAO recommendations made since 2010; 463 remain open as of Jan 2025. Status REGRESSED in 2025 High-Risk update. GAO estimates 20\u201330% at-risk based on persistent findings ($18\u201327B/year at risk).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "The $100B is TOTAL IT spend — not all waste. Estimated $18–27B/year truly at-risk for waste per GAO patterns. W5-001 (VA EHR $21B) and W5-002 (Healthcare.gov $2.1B) are specific failure examples within this pool. Do not add them to the $100B — they are already counted within it.",
+      "overlapNotes": "The $100B is TOTAL IT spend \u2014 not all waste. Estimated $18\u201327B/year truly at-risk for waste per GAO patterns. W5-001 (VA EHR $21B) and W5-002 (Healthcare.gov $2.1B) are specific failure examples within this pool. Do not add them to the $100B \u2014 they are already counted within it.",
       "entityLinks": [
         "OMB",
         "CIO Council",
@@ -1690,7 +1690,7 @@
     },
     {
       "id": "W5-008",
-      "title": "GAO High-Risk List — 38 Areas of Serious Vulnerability (2025)",
+      "title": "GAO High-Risk List \u2014 38 Areas of Serious Vulnerability (2025)",
       "category": "W5",
       "categoryLabel": "Failed Programs/IT",
       "type": "waste",
@@ -1743,7 +1743,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "PIIA-mandated statistical sampling across 10 risk-susceptible programs (Medicare, Medicaid, CHIP, APTC, Foster Care, CCDF, Head Start). Overpayments $90.63B, underpayments $4.06B, technically improper $2.63B, unknown $1.01B. 5.83% rate on $1.67T susceptible outlays.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "ROOT ENTRY for HHS improper payments (FY2025). Contains: F1-007 (Medicare FFS ~$25-50B), F1-008 (Medicaid ~$36B), and other program components. F1-001 (HHS confirmed fraud $3.51B) is a SUBSET. DO NOT add to subsidiary HHS program entries. Not all improper payments are fraud — ~3.6% confirmed intentional. OIG found HHS non-compliant for programs with >10% improper rates. Represents highest-ever (FY2021: $153.9B) to current decline; FY2023 was $104.2B, FY2024 $88.5B.",
+      "overlapNotes": "ROOT ENTRY for HHS improper payments (FY2025). Contains: F1-007 (Medicare FFS ~$25-50B), F1-008 (Medicaid ~$36B), and other program components. F1-001 (HHS confirmed fraud $3.51B) is a SUBSET. DO NOT add to subsidiary HHS program entries. Not all improper payments are fraud \u2014 ~3.6% confirmed intentional. OIG found HHS non-compliant for programs with >10% improper rates. Represents highest-ever (FY2021: $153.9B) to current decline; FY2023 was $104.2B, FY2024 $88.5B.",
       "entityLinks": [
         "HHS",
         "CMS",
@@ -1777,7 +1777,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "Statistical sampling, PIIA-compliant. Overpayments $82.75B, underpayments $3.37B, technically improper $2.43B, unknown $939.31M. COVID-19 PHE unwinding affected eligibility redeterminations.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "Same structure as W6-001 for FY2024. Do not add to W6-001 — sequential years.",
+      "overlapNotes": "Same structure as W6-001 for FY2024. Do not add to W6-001 \u2014 sequential years.",
       "entityLinks": [
         "HHS",
         "CMS",
@@ -1807,7 +1807,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "Overpayments $98.70B, underpayments $4.33B, technically improper $1.20B, unknown $564.98M. Elevated due to COVID-era eligibility carryovers; Medicaid continuous enrollment unwinding began.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "Sequential year — do not add to adjacent years. COVID-era inflated Medicaid figures start declining as continuous enrollment ended.",
+      "overlapNotes": "Sequential year \u2014 do not add to adjacent years. COVID-era inflated Medicaid figures start declining as continuous enrollment ended.",
       "entityLinks": [
         "HHS",
         "CMS",
@@ -1836,7 +1836,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "Overpayments $129.93B, underpayments $2.49B, technically improper $0, unknown $230.53M. COVID continuous enrollment drove elevated Medicaid numbers.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "Sequential year — do not add to adjacent years. Near-peak COVID year for HHS improper payments.",
+      "overlapNotes": "Sequential year \u2014 do not add to adjacent years. Near-peak COVID year for HHS improper payments.",
       "entityLinks": [
         "HHS",
         "CMS",
@@ -1865,7 +1865,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "Highest in series. Overpayments $144.33B, underpayments $9.54B, unknown $408.94M. Driven by COVID PHE suspensions of eligibility requirements.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "PEAK YEAR — substantially elevated by COVID waivers. Sequential year — do not add. Pandemic-era programs (DOL, USDA) reported separately.",
+      "overlapNotes": "PEAK YEAR \u2014 substantially elevated by COVID waivers. Sequential year \u2014 do not add. Pandemic-era programs (DOL, USDA) reported separately.",
       "entityLinks": [
         "HHS",
         "CMS",
@@ -1953,7 +1953,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "1.09% rate on $201.1B susceptible outlays. Added Compensation program ($160.6B) to reporting for first time since FY2020. Actual monetary loss $1.49B; non-monetary $691M; unknown $1.74B. First year below 10% error rate since FY2014.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "VA EHR modernization ($21B+ W5-001) is a SEPARATE issue — IT program cost, not improper payments. VA improper payments are benefits/healthcare payment errors. The $3.92B is the current annual improper payment total; it does not overlap with the IT program cost.",
+      "overlapNotes": "VA EHR modernization ($21B+ W5-001) is a SEPARATE issue \u2014 IT program cost, not improper payments. VA improper payments are benefits/healthcare payment errors. The $3.92B is the current annual improper payment total; it does not overlap with the IT program cost.",
       "entityLinks": [
         "VA",
         "VA-OIG",
@@ -2006,12 +2006,12 @@
       "certaintyTier": 2,
       "certaintyScore": 0.7,
       "jurisdiction": "federal",
-      "sourceName": "paymentaccuracy.gov Agency Rankings — SBA FY2025",
+      "sourceName": "paymentaccuracy.gov Agency Rankings \u2014 SBA FY2025",
       "sourceUrl": "https://paymentaccuracy.gov/agency/SBA",
       "sourceType": "agency_data",
       "sourceMethodology": "12.29% rate on $66.2B susceptible outlays. Second-lowest performing agency.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "CROSS-LISTED with F7-006 (same figure). Current SBA improper payments reflect residual COVID program effects. Do not add to F7-002 (COVID SBA fraud estimate $76–200B) — different measurement periods and methodologies.",
+      "overlapNotes": "CROSS-LISTED with F7-006 (same figure). Current SBA improper payments reflect residual COVID program effects. Do not add to F7-002 (COVID SBA fraud estimate $76\u2013200B) \u2014 different measurement periods and methodologies.",
       "entityLinks": [
         "SBA",
         "SBA-OIG",
@@ -2022,7 +2022,7 @@
     },
     {
       "id": "W6-011",
-      "title": "Government-Wide Improper Payments — Annual Floor (FY2018–2024)",
+      "title": "Government-Wide Improper Payments \u2014 Annual Floor (FY2018\u20132024)",
       "category": "W6",
       "categoryLabel": "Improper Payments",
       "type": "waste",
@@ -2038,9 +2038,9 @@
       "sourceName": "GAO High-Risk Series GAO-25-107743; OMB Annual Improper Payments Report",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
-      "sourceMethodology": "$150B+ government-wide in EACH of the last 7 years (FY2018–2024). High-Risk programs account for ~80% of total. Known undercount: 9 risk-susceptible programs failed to report FY2023 estimates.",
+      "sourceMethodology": "$150B+ government-wide in EACH of the last 7 years (FY2018\u20132024). High-Risk programs account for ~80% of total. Known undercount: 9 risk-susceptible programs failed to report FY2023 estimates.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "AGGREGATE FIGURE encompassing W6-001 through W6-010 plus other agencies not separately listed here. The $150B is the floor (reported); actual is higher. FY2021 peak was ~$281B. DO NOT add this to the individual agency figures — it IS those figures aggregated. For totaling: use this as the government-wide root and individual agency entries as drill-down.",
+      "overlapNotes": "AGGREGATE FIGURE encompassing W6-001 through W6-010 plus other agencies not separately listed here. The $150B is the floor (reported); actual is higher. FY2021 peak was ~$281B. DO NOT add this to the individual agency figures \u2014 it IS those figures aggregated. For totaling: use this as the government-wide root and individual agency entries as drill-down.",
       "entityLinks": [
         "OMB",
         "all federal agencies",
@@ -2069,7 +2069,7 @@
       "sourceType": "agency_data",
       "sourceMethodology": "Aggregate of all agency-reported PIIA estimates for FY2021. Spike driven by COVID-19 programs: expanded UI, Medicaid continuous enrollment, SNAP expansion, EIDL, PPP. Relaxed eligibility verification requirements.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "Sequential year — do not add to W6-011 or other annual figures. The $281B is the FY2021 total; W6-011 ($150B floor) represents non-COVID-peak years. Significantly understates actual COVID fraud since many programs like PUA excluded from BAM sampling.",
+      "overlapNotes": "Sequential year \u2014 do not add to W6-011 or other annual figures. The $281B is the FY2021 total; W6-011 ($150B floor) represents non-COVID-peak years. Significantly understates actual COVID fraud since many programs like PUA excluded from BAM sampling.",
       "entityLinks": [
         "OMB",
         "HHS",
@@ -2082,7 +2082,7 @@
     },
     {
       "id": "W7-001",
-      "title": "CAGW Congressional Pig Book FY2024 — Total Earmarks",
+      "title": "CAGW Congressional Pig Book FY2024 \u2014 Total Earmarks",
       "category": "W7",
       "categoryLabel": "Earmarks/Pork",
       "type": "waste",
@@ -2095,12 +2095,12 @@
       "certaintyTier": 2,
       "certaintyScore": 0.75,
       "jurisdiction": "federal",
-      "sourceName": "2024 Congressional Pig Book — Citizens Against Government Waste",
+      "sourceName": "2024 Congressional Pig Book \u2014 Citizens Against Government Waste",
       "sourceUrl": "https://www.cagw.org/2024-congressional-pig-book/",
       "sourceType": "think_tank",
       "sourceMethodology": "Reviews all 12 appropriations bills annually. Counts items meeting one or more of 7 criteria (not competitively awarded, requested by only one chamber, not specifically authorized, etc.). FY2024: 8,222 earmarks costing $22.7B. 11.2% more earmarks than FY2023 but 13% less in dollar value.",
       "sourceOrientation": "right",
-      "overlapNotes": "CAGW counts more than GAO's formal CPF/CDS. GAO FY2024 (W7-003) shows $14.6B for same year — gap of ~$8B reflects CAGW's broader criteria. Both are valid but measure different things. Some items CAGW counts are legitimate directed spending. For conservative estimates use W7-003 (GAO); for maximal estimate use W7-001 (CAGW).",
+      "overlapNotes": "CAGW counts more than GAO's formal CPF/CDS. GAO FY2024 (W7-003) shows $14.6B for same year \u2014 gap of ~$8B reflects CAGW's broader criteria. Both are valid but measure different things. Some items CAGW counts are legitimate directed spending. For conservative estimates use W7-003 (GAO); for maximal estimate use W7-001 (CAGW).",
       "entityLinks": [
         "CAGW",
         "Congress",
@@ -2110,7 +2110,7 @@
     },
     {
       "id": "W7-002",
-      "title": "CAGW Congressional Pig Book FY2023 — Total Earmarks",
+      "title": "CAGW Congressional Pig Book FY2023 \u2014 Total Earmarks",
       "category": "W7",
       "categoryLabel": "Earmarks/Pork",
       "type": "waste",
@@ -2123,12 +2123,12 @@
       "certaintyTier": 2,
       "certaintyScore": 0.75,
       "jurisdiction": "federal",
-      "sourceName": "2023 Congressional Pig Book — Citizens Against Government Waste",
+      "sourceName": "2023 Congressional Pig Book \u2014 Citizens Against Government Waste",
       "sourceUrl": "https://www.cagw.org/reporting/pig-book",
       "sourceType": "think_tank",
       "sourceMethodology": "Same methodology as W7-001 applied to FY2023 appropriations. 7,396 earmarks costing $26.1B. Record high (at the time) since earmarks re-authorized in 2021.",
       "sourceOrientation": "right",
-      "overlapNotes": "Sequential year — do not add to W7-001. GAO FY2023 (W7-004) shows $15.3B for same year.",
+      "overlapNotes": "Sequential year \u2014 do not add to W7-001. GAO FY2023 (W7-004) shows $15.3B for same year.",
       "entityLinks": [
         "CAGW",
         "Congress",
@@ -2138,7 +2138,7 @@
     },
     {
       "id": "W7-003",
-      "title": "GAO FY2024 CPF/CDS Tracking — Official Earmark Total",
+      "title": "GAO FY2024 CPF/CDS Tracking \u2014 Official Earmark Total",
       "category": "W7",
       "categoryLabel": "Earmarks/Pork",
       "type": "waste",
@@ -2151,12 +2151,12 @@
       "certaintyTier": 1,
       "certaintyScore": 0.95,
       "jurisdiction": "federal",
-      "sourceName": "GAO: Tracking the Funds — Specific FY2024 Provisions (GAO-25-107549)",
+      "sourceName": "GAO: Tracking the Funds \u2014 Specific FY2024 Provisions (GAO-25-107549)",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107549",
       "sourceType": "gao_audit",
       "sourceMethodology": "Analyzed all FY2024 appropriations legislation and joint explanatory statements. 8,098 CPF/CDS provisions across 19 federal agencies. Down from $15.3B (7,233 provisions) in FY2023. Formal designations only.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "OFFICIAL LOWER BOUND for FY2024 earmarks. W7-001 (CAGW $22.7B) is a broader count of the same year. These are not double-counting the same money — they are different methodological counts of the same appropriations. For a single FY2024 earmark figure use W7-003 (Tier 1) or note the CAGW range.",
+      "overlapNotes": "OFFICIAL LOWER BOUND for FY2024 earmarks. W7-001 (CAGW $22.7B) is a broader count of the same year. These are not double-counting the same money \u2014 they are different methodological counts of the same appropriations. For a single FY2024 earmark figure use W7-003 (Tier 1) or note the CAGW range.",
       "entityLinks": [
         "GAO",
         "Congress",
@@ -2166,7 +2166,7 @@
     },
     {
       "id": "W7-004",
-      "title": "GAO FY2023 CPF/CDS Tracking — Official Earmark Total",
+      "title": "GAO FY2023 CPF/CDS Tracking \u2014 Official Earmark Total",
       "category": "W7",
       "categoryLabel": "Earmarks/Pork",
       "type": "waste",
@@ -2206,10 +2206,10 @@
       "certaintyTier": 2,
       "certaintyScore": 0.7,
       "jurisdiction": "federal",
-      "sourceName": "2024 Congressional Pig Book — CAGW",
+      "sourceName": "2024 Congressional Pig Book \u2014 CAGW",
       "sourceUrl": "https://www.cagw.org/2024-congressional-pig-book/",
       "sourceType": "think_tank",
-      "sourceMethodology": "Since FY1991, CAGW identified 132,434 earmarks costing $460.3B. Includes 11-year moratorium (FY2011–2021) where earmarks averaged $9.4B/year.",
+      "sourceMethodology": "Since FY1991, CAGW identified 132,434 earmarks costing $460.3B. Includes 11-year moratorium (FY2011\u20132021) where earmarks averaged $9.4B/year.",
       "sourceOrientation": "right",
       "overlapNotes": "CUMULATIVE TOTAL of W7-001/W7-002 annual series plus prior years. Do not add to annual entries. CAGW methodology applies throughout; same definitional caveats as W7-001.",
       "entityLinks": [
@@ -2220,7 +2220,7 @@
     },
     {
       "id": "W7-006",
-      "title": "GAO High-Risk Program — Cumulative Financial Benefits 1990–2025",
+      "title": "GAO High-Risk Program \u2014 Cumulative Financial Benefits 1990\u20132025",
       "category": "W7",
       "categoryLabel": "Earmarks/Pork",
       "type": "waste",
@@ -2238,7 +2238,7 @@
       "sourceType": "gao_audit",
       "sourceMethodology": "GAO tracks financial benefits (cost avoidances, savings, revenue increases) from congressional and executive actions taken in response to High-Risk designations. Since 2023 update: ~$84B in additional benefits. Average ~$40B/year. Three areas regressed in 2025.",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "CRITICAL DISTINCTION. These are SAVINGS ACHIEVED — the amount the government avoided spending due to GAO High-Risk designations driving reform. This is NOT the remaining waste or fraud estimate. It is also NOT additive with W1-001 (GAO Duplication $429B savings) because both track congressional/executive actions on GAO recommendations — many of the same actions are counted in both series. The $759B High-Risk total is the broader figure that subsumes much of the $429B duplication savings.",
+      "overlapNotes": "CRITICAL DISTINCTION. These are SAVINGS ACHIEVED \u2014 the amount the government avoided spending due to GAO High-Risk designations driving reform. This is NOT the remaining waste or fraud estimate. It is also NOT additive with W1-001 (GAO Duplication $429B savings) because both track congressional/executive actions on GAO recommendations \u2014 many of the same actions are counted in both series. The $759B High-Risk total is the broader figure that subsumes much of the $429B duplication savings.",
       "entityLinks": [
         "GAO",
         "Congress",
@@ -2249,7 +2249,7 @@
     },
     {
       "id": "W7-007",
-      "title": "National Flood Insurance Program — Annual Fiscal Exposure",
+      "title": "National Flood Insurance Program \u2014 Annual Fiscal Exposure",
       "category": "W7",
       "categoryLabel": "Earmarks/Pork",
       "type": "waste",
@@ -2265,14 +2265,77 @@
       "sourceName": "GAO High-Risk Series GAO-25-107743",
       "sourceUrl": "https://www.gao.gov/products/gao-25-107743",
       "sourceType": "gao_audit",
-      "sourceMethodology": "NFIP is structurally underpriced — premiums set below actuarially sound levels for political reasons. Annual fiscal exposure estimated from historical debt accumulation and premium gap analysis. Related to new FY2025 High-Risk area on Federal Disaster Assistance (27 billion-dollar disasters in 2024).",
+      "sourceMethodology": "NFIP is structurally underpriced \u2014 premiums set below actuarially sound levels for political reasons. Annual fiscal exposure estimated from historical debt accumulation and premium gap analysis. Related to new FY2025 High-Risk area on Federal Disaster Assistance (27 billion-dollar disasters in 2024).",
       "sourceOrientation": "nonpartisan",
-      "overlapNotes": "The new FY2025 GAO High-Risk area on Federal Disaster Assistance (FEMA) is related. The $50B disaster assistance waste estimate (from the payments/GAO file) partially overlaps this NFIP figure. NFIP fiscal exposure is the actuarial shortfall — not the same as improper payments or fraud.",
+      "overlapNotes": "The new FY2025 GAO High-Risk area on Federal Disaster Assistance (FEMA) is related. The $50B disaster assistance waste estimate (from the payments/GAO file) partially overlaps this NFIP figure. NFIP fiscal exposure is the actuarial shortfall \u2014 not the same as improper payments or fraud.",
       "entityLinks": [
         "FEMA",
         "NFIP",
         "DHS",
         "Congress"
+      ],
+      "safeToSum": false
+    },
+    {
+      "id": "W4-002",
+      "title": "Procurement-Lobbying Nexus \u2014 Estimated Annual Premium",
+      "category": "W4",
+      "categoryLabel": "Administrative Overhead",
+      "type": "waste",
+      "amountBest": 77000000000,
+      "amountLow": 38500000000,
+      "amountHigh": 115500000000,
+      "fiscalYearStart": 2024,
+      "fiscalYearEnd": 2024,
+      "periodType": "single_year",
+      "certaintyTier": 3,
+      "certaintyScore": 0.55,
+      "jurisdiction": "federal",
+      "sourceName": "Academic research on lobbying returns; USAspending.gov FY2024 contract data ($773.68B total)",
+      "sourceUrl": "https://www.usaspending.gov",
+      "sourceType": "academic",
+      "sourceMethodology": "Firms that lobby receive ~35% more in government contracts (defense sector strongest). If lobbying premium adds 10% to procurement costs on $773.68B total = $77B. Range: 5-15% premium.",
+      "sourceOrientation": "nonpartisan",
+      "overlapNotes": "Overlaps with W2 (Cost Overruns) \u2014 some defense cost overruns are caused by this dynamic. Do NOT sum with defense overrun entries. This is an alternative framing of the same waste.",
+      "entityLinks": [
+        "DOD",
+        "Lockheed Martin",
+        "RTX",
+        "Boeing",
+        "General Dynamics",
+        "Northrop Grumman",
+        "USAspending"
+      ],
+      "safeToSum": false
+    },
+    {
+      "id": "W4-003",
+      "title": "Top 5 Defense Contractor Concentration (FY2020-2024)",
+      "category": "W4",
+      "categoryLabel": "Administrative Overhead",
+      "type": "waste",
+      "amountBest": 771000000000,
+      "amountLow": null,
+      "amountHigh": null,
+      "fiscalYearStart": 2020,
+      "fiscalYearEnd": 2024,
+      "periodType": "multi_year",
+      "certaintyTier": 1,
+      "certaintyScore": 0.95,
+      "jurisdiction": "federal",
+      "sourceName": "USAspending.gov contract data for Lockheed Martin, RTX, Boeing, General Dynamics, Northrop Grumman",
+      "sourceUrl": "https://www.usaspending.gov",
+      "sourceType": "agency_data",
+      "sourceMethodology": "Direct sum of contract awards to top 5 defense firms FY2020-2024 from USAspending.gov. Not all is waste \u2014 this is the total spend subject to concentration risk.",
+      "sourceOrientation": "nonpartisan",
+      "overlapNotes": "This is TOTAL SPEND, not waste. The waste component is the premium paid due to lack of competition. See W4-002 for the estimated waste portion. Do NOT add this to any waste total.",
+      "entityLinks": [
+        "DOD",
+        "Lockheed Martin",
+        "RTX",
+        "Boeing",
+        "General Dynamics",
+        "Northrop Grumman"
       ],
       "safeToSum": false
     }
@@ -2321,7 +2384,9 @@
       "F2-001",
       "F2-004",
       "W5-001",
-      "W5-004"
+      "W5-004",
+      "W4-002",
+      "W4-003"
     ],
     "Internal Revenue Service (IRS) / Treasury": [
       "F4-001",
@@ -2456,7 +2521,9 @@
       "W3-002",
       "W5-004",
       "W5-007",
-      "W5-008"
+      "W5-008",
+      "W4-002",
+      "W4-003"
     ],
     "HHS-OIG": [
       "F1-002"
@@ -2754,13 +2821,17 @@
       "W2-001"
     ],
     "Lockheed Martin": [
-      "W2-001"
+      "W2-001",
+      "W4-002",
+      "W4-003"
     ],
     "Huntington Ingalls Industries": [
       "W2-002"
     ],
     "Northrop Grumman": [
-      "W2-003"
+      "W2-003",
+      "W4-002",
+      "W4-003"
     ],
     "DOE/NNSA": [
       "W2-003",
@@ -2876,6 +2947,21 @@
     ],
     "NFIP": [
       "W7-007"
+    ],
+    "RTX": [
+      "W4-002",
+      "W4-003"
+    ],
+    "Boeing": [
+      "W4-002",
+      "W4-003"
+    ],
+    "General Dynamics": [
+      "W4-002",
+      "W4-003"
+    ],
+    "USAspending": [
+      "W4-002"
     ]
   },
   "doubleCountMatrix": [
@@ -2906,7 +2992,7 @@
     {
       "entryA": "W6-001",
       "entryB": "W6-007",
-      "relationship": "PARTIAL OVERLAP — W6-007 is multi-year cumulative (FY2020–2022); W6-001 is annual. COVID period W6-001 figures include some COVID UI.",
+      "relationship": "PARTIAL OVERLAP \u2014 W6-007 is multi-year cumulative (FY2020\u20132022); W6-001 is annual. COVID period W6-001 figures include some COVID UI.",
       "safeToSum": null
     },
     {
@@ -2936,13 +3022,13 @@
     {
       "entryA": "W6-003",
       "entryB": "F1-001",
-      "relationship": "F1-001 is a SUBSET of W6-003 — confirmed fraud is ~3.6% of HHS improper payments",
+      "relationship": "F1-001 is a SUBSET of W6-003 \u2014 confirmed fraud is ~3.6% of HHS improper payments",
       "safeToSum": false
     },
     {
       "entryA": "W6-007",
       "entryB": "F7-002",
-      "relationship": "MAJOR OVERLAP — both cover COVID UI. F7-002 fraud estimate is within the W6-007 range",
+      "relationship": "MAJOR OVERLAP \u2014 both cover COVID UI. F7-002 fraud estimate is within the W6-007 range",
       "safeToSum": false
     },
     {
@@ -2984,7 +3070,7 @@
     {
       "entryA": "W7-001",
       "entryB": "W7-002",
-      "relationship": "DIFFERENT FISCAL YEARS — do not add for annual estimate",
+      "relationship": "DIFFERENT FISCAL YEARS \u2014 do not add for annual estimate",
       "safeToSum": false
     },
     {
@@ -3004,6 +3090,18 @@
       "entryB": "W6-004",
       "relationship": "DIFFERENT MEASURES. Tax gap = taxes owed but uncollected. EITC improper = payments to ineligible recipients. Partially overlapping but conceptually distinct",
       "safeToSum": null
+    },
+    {
+      "entryA": "W4-002",
+      "entryB": "W2-001",
+      "relationship": "W4-002 is alternative framing of waste caused by lobbying premium; W2-001 covers defense cost overruns. Same underlying dynamic.",
+      "safeToSum": false
+    },
+    {
+      "entryA": "W4-002",
+      "entryB": "W4-003",
+      "relationship": "W4-003 is total spend; W4-002 is estimated waste premium (10% of W4-003 total). Do not sum.",
+      "safeToSum": false
     }
   ],
   "summaryStats": {
@@ -3014,9 +3112,9 @@
     "combinedFloor": 187000000000,
     "combinedCeiling": 353000000000,
     "tierCounts": {
-      "1": 55,
+      "1": 56,
       "2": 18,
-      "3": 5,
+      "3": 6,
       "4": 0
     }
   },

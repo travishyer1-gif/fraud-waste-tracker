@@ -2,14 +2,14 @@
 
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { TreePine, Layers, GitBranch, X } from 'lucide-react';
+import { LayoutDashboard, Table2, GitBranch, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { ViewId } from './Navigation';
 
 const MORE_ITEMS: { id: ViewId; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { id: 'treemap',    label: 'Treemap',     icon: TreePine  },
-  { id: 'confidence', label: 'Confidence',  icon: Layers    },
-  { id: 'dataflow',   label: 'Data Flow',   icon: GitBranch },
+  { id: 'dashboard', label: 'Explore',   icon: LayoutDashboard },
+  { id: 'table',     label: 'Evidence',  icon: Table2          },
+  { id: 'dataflow',  label: 'Data Flow', icon: GitBranch       },
 ];
 
 interface MoreDrawerProps {

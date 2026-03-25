@@ -12,7 +12,7 @@ export default function BubbleView() {
       {/* Header */}
       <div>
         <h2 className="text-lg font-bold text-white">
-          Bubble Chart <span className="text-muted-foreground font-normal text-sm">— force-directed clusters</span>
+          Explore <span className="text-muted-foreground font-normal text-sm">— interactive evidence map</span>
         </h2>
         <p className="text-xs text-muted-foreground mt-0.5">
           Each bubble is one evidence entry. Size = dollar amount. Color = confidence tier. Bubbles cluster by category.

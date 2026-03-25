@@ -81,7 +81,7 @@ describe('Navigation', () => {
     const { Navigation } = await import('@/components/layout/Navigation');
     renderWithProviders(<Navigation />);
 
-    const expectedLabels = ['Overview', 'Stats', 'Treemap', 'Trends', 'Confidence', 'Data Flow', 'Evidence'];
+    const expectedLabels = ['Explore', 'Stats', 'Treemap', 'Historical', 'Methodology', 'Data Flow', 'Evidence'];
     expectedLabels.forEach(label => {
       expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(1);
     });
@@ -95,13 +95,13 @@ describe('Navigation', () => {
 });
 
 describe('BottomTabBar', () => {
-  it('renders 5 primary tabs + More button', async () => {
+  it('renders 4 primary tabs + More button', async () => {
     const { BottomTabBar } = await import('@/components/layout/BottomTabBar');
-    renderWithProviders(<BottomTabBar activeView="dashboard" onViewChange={vi.fn()} />);
-    expect(screen.getByText('Overview')).toBeTruthy();
+    renderWithProviders(<BottomTabBar activeView="stats" onViewChange={vi.fn()} />);
     expect(screen.getByText('Stats')).toBeTruthy();
-    expect(screen.getByText('Trends')).toBeTruthy();
-    expect(screen.getByText('Evidence')).toBeTruthy();
+    expect(screen.getByText('Historical')).toBeTruthy();
+    expect(screen.getByText('Treemap')).toBeTruthy();
+    expect(screen.getByText('Methodology')).toBeTruthy();
     expect(screen.getByText('More')).toBeTruthy();
   });
 });

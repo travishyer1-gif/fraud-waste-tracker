@@ -272,20 +272,19 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
       .attr('stroke-width', 1.2)
       .attr('stroke-opacity', 0.6);
 
-    // Tiny tier label inside large bubbles — hidden on mobile (show on tap instead)
-    if (!isMobile) {
-      groups.filter(d => d.r >= 24)
-        .append('text')
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'middle')
-        .attr('dy', '0.05em')
-        .attr('font-size', d => Math.min(d.r * 0.42, 13))
-        .attr('fill', '#ffffffcc')
-        .attr('font-weight', '600')
-        .style('pointer-events', 'none')
-        .style('user-select', 'none')
-        .text(d => formatCompact(d.entry.amountBest));
-    }
+    // Amount label inside bubbles — show on both mobile and desktop for bubbles large enough
+    const minLabelRadius = isMobile ? 18 : 24;
+    groups.filter(d => d.r >= minLabelRadius)
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('dy', '0.05em')
+      .attr('font-size', d => Math.min(d.r * (isMobile ? 0.5 : 0.42), isMobile ? 11 : 13))
+      .attr('fill', '#ffffffcc')
+      .attr('font-weight', '600')
+      .style('pointer-events', 'none')
+      .style('user-select', 'none')
+      .text(d => formatCompact(d.entry.amountBest));
 
     // ── drag behavior ────────────────────────────────────────────────────────
     const drag = d3.drag<SVGGElement, SimNode>()

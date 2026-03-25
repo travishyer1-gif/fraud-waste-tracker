@@ -4,11 +4,11 @@ import { LayoutDashboard, TreePine, TrendingUp, GitBranch, Table2, BarChart3, La
 import { cn } from '@/lib/utils';
 
 const VIEWS = [
-  { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+  { id: 'dashboard', label: 'Explore', icon: LayoutDashboard },
   { id: 'stats', label: 'Stats', icon: BarChart3 },
   { id: 'treemap', label: 'Treemap', icon: TreePine },
-  { id: 'trends', label: 'Trends', icon: TrendingUp },
-  { id: 'confidence', label: 'Confidence', icon: Layers },
+  { id: 'trends', label: 'Historical', icon: TrendingUp },
+  { id: 'confidence', label: 'Methodology', icon: Layers },
   { id: 'dataflow', label: 'Data Flow', icon: GitBranch },
   { id: 'table', label: 'Evidence', icon: Table2 },
 ] as const;

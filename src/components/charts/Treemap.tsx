@@ -36,6 +36,7 @@ interface TmNode {
   x0: number; y0: number;
   x1: number; y1: number;
   clickable: boolean;
+  entry?: EvidenceEntry;
 }
 
 interface TooltipState {
@@ -154,7 +155,8 @@ function buildNodes(
         sourceName: e.sourceName,
         color: leaf.data.color!,
         x0: rn.x0, y0: rn.y0, x1: rn.x1, y1: rn.y1,
-        clickable: false,
+        clickable: true,
+        entry: e,
       };
     });
   }
@@ -170,6 +172,7 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
   const [breadcrumb, setBreadcrumb] = useState<BreadcrumbItem[]>([{ label: 'All', level: 0 }]);
   const [nodes, setNodes] = useState<TmNode[]>([]);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const [detailEntry, setDetailEntry] = useState<EvidenceEntry | null>(null);
 
   // ResizeObserver
   useEffect(() => {
@@ -202,6 +205,8 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
         ...prev,
         { label: `${node.id}: ${catLabel}`, level: 2, categoryFilter: node.id },
       ]);
+    } else if (current.level === 2 && node.entry) {
+      setDetailEntry(node.entry);
     }
   }, [breadcrumb]);
 
@@ -254,6 +259,11 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
           {breadcrumb.length === 1
             ? 'Click Fraud or Waste to drill into subcategories'
             : 'Click a category to explore individual entries · use breadcrumb to navigate back'}
+        </p>
+      )}
+      {breadcrumb.length === 3 && (
+        <p className="text-[10px] text-muted-foreground/50 flex-shrink-0">
+          Click any entry to view details · use breadcrumb to navigate back
         </p>
       )}
 
@@ -329,6 +339,123 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
           </div>
         )}
       </div>
+      {/* Detail Modal */}
+      {detailEntry && (() => {
+        const entry = detailEntry;
+        const tierInfo = getTierInfo(entry.certaintyTier);
+        return (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+            style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+            onClick={() => setDetailEntry(null)}
+          >
+            <div
+              className="relative max-w-lg w-full rounded-2xl p-6 space-y-4 overflow-y-auto max-h-[85vh]"
+              style={{
+                background: 'rgba(15,23,42,0.85)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                boxShadow: '0 24px 64px rgba(0,0,0,0.6)',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Close */}
+              <button
+                onClick={() => setDetailEntry(null)}
+                className="absolute top-4 right-4 w-7 h-7 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors text-sm"
+              >
+                ✕
+              </button>
+
+              {/* Title */}
+              <h2 className="text-base font-semibold text-white leading-snug pr-8">{entry.title}</h2>
+
+              {/* Amount */}
+              <div className="flex flex-wrap gap-3">
+                {entry.amountBest != null && (
+                  <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Best</p>
+                    <p className="font-mono font-bold text-emerald-400">{formatCompact(entry.amountBest)}</p>
+                  </div>
+                )}
+                {entry.amountLow != null && (
+                  <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Low</p>
+                    <p className="font-mono text-white/70">{formatCompact(entry.amountLow)}</p>
+                  </div>
+                )}
+                {entry.amountHigh != null && (
+                  <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">High</p>
+                    <p className="font-mono text-white/70">{formatCompact(entry.amountHigh)}</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Tier badge */}
+              <div className="flex items-center gap-2">
+                <span
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
+                  style={{ background: tierInfo.bg + '25', color: tierInfo.bg, border: `1px solid ${tierInfo.bg}40` }}
+                >
+                  {tierInfo.icon} Tier {entry.certaintyTier} — {tierInfo.label}
+                </span>
+              </div>
+
+              {/* Source */}
+              <div className="space-y-1">
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Source</p>
+                {entry.sourceUrl ? (
+                  <a
+                    href={entry.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-2 break-all"
+                  >
+                    {entry.sourceName || entry.sourceUrl}
+                  </a>
+                ) : (
+                  <p className="text-sm text-white/70">{entry.sourceName || '—'}</p>
+                )}
+              </div>
+
+              {/* Methodology */}
+              {entry.sourceMethodology && (
+                <div className="space-y-1">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Methodology</p>
+                  <p className="text-xs text-white/70 leading-relaxed line-clamp-4">{entry.sourceMethodology}</p>
+                </div>
+              )}
+
+              {/* Overlap notes */}
+              {entry.overlapNotes && (
+                <div className="space-y-1">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Overlap Notes</p>
+                  <p className="text-xs text-amber-300/80 leading-relaxed">{entry.overlapNotes}</p>
+                </div>
+              )}
+
+              {/* Entity links */}
+              {entry.entityLinks && entry.entityLinks.length > 0 && (
+                <div className="space-y-1">
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Entities</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {entry.entityLinks.map((ent, i) => (
+                      <span
+                        key={i}
+                        className="text-[11px] px-2 py-0.5 rounded-full"
+                        style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}
+                      >
+                        {ent}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

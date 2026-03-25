@@ -149,8 +149,8 @@ export function SankeyDiagram({ entries }: Props) {
       });
 
       // ── D3 Sankey ────────────────────────────────────────────────────────────
+      // Use numeric indices for links (d3-sankey default expects index-based refs)
       const sankeyGen = sankey<{ name: string; color: string; column: number }, object>()
-        .nodeId((d) => d.name)
         .nodeWidth(16)
         .nodePadding(12)
         .extent([
@@ -158,12 +158,17 @@ export function SankeyDiagram({ entries }: Props) {
           [innerW, innerH],
         ]);
 
+      // Filter out any links with undefined source/target indices
+      const validLinks = links.filter(
+        (l) => l.source !== undefined && l.target !== undefined && l.source !== l.target
+      );
+
       const graph: SankeyGraph<
         { name: string; color: string; column: number },
         object
       > = sankeyGen({
         nodes: allNodes.map((d) => ({ ...d })),
-        links: links.map((d) => ({ ...d })),
+        links: validLinks.map((d) => ({ ...d })),
       });
 
       // ── Render ───────────────────────────────────────────────────────────────

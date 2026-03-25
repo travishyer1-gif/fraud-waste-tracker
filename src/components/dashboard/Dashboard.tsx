@@ -4,9 +4,10 @@ import { useMemo, useEffect, useRef, useState } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { useEvidenceData } from '@/hooks/useEvidenceData';
 import { formatCompact } from '@/lib/utils';
-import { TIER_COLORS, CATEGORY_LABELS } from '@/lib/constants';
+import { TIER_COLORS, CATEGORY_LABELS, FEDERAL_BUDGET, formatAsPercent } from '@/lib/constants';
 import { GlobalControls } from '@/components/controls/GlobalControls';
 import { InfoTooltip } from '@/components/ui/InfoTooltip';
+import { useFilters } from '@/context/FilterContext';
 
 // ─── Animated number counter using RAF ────────────────────────────────────────
 function AnimatedNumber({ value }: { value: number }) {
@@ -97,11 +98,15 @@ function CategoryRow({
   amount,
   minTier,
   maxAmount,
+  showAsPercent,
+  refYear,
 }: {
   catKey: string;
   amount: number;
   minTier: number;
   maxAmount: number;
+  showAsPercent?: boolean;
+  refYear?: number;
 }) {
   const label = CATEGORY_LABELS[catKey]?.label ?? catKey;
   const tierColor =
@@ -110,6 +115,13 @@ function CategoryRow({
       : '#6b7280';
   const barPct = maxAmount > 0 ? (amount / maxAmount) * 100 : 0;
 
+  const displayAmount =
+    amount > 0
+      ? showAsPercent
+        ? formatAsPercent(amount, refYear)
+        : formatCompact(amount)
+      : '—';
+
   return (
     <div className="flex items-center gap-2 py-1.5">
       <div
@@ -117,8 +129,8 @@ function CategoryRow({
         style={{ backgroundColor: tierColor }}
       />
       <span className="text-xs text-muted-foreground w-28 truncate">{label}</span>
-      <span className="text-xs font-mono font-semibold text-foreground w-16 text-right shrink-0">
-        {amount > 0 ? formatCompact(amount) : '—'}
+      <span className="text-xs font-mono font-semibold text-foreground w-20 text-right shrink-0">
+        {displayAmount}
       </span>
       <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
         <div
@@ -133,6 +145,7 @@ function CategoryRow({
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 export function Dashboard() {
   const { filteredEntries, filteredStats } = useEvidenceData();
+  const { filters } = useFilters();
 
   // Derived from filtered entries
   const {
@@ -239,35 +252,62 @@ export function Dashboard() {
             transition={{ duration: 0.35, ease: 'easeOut' }}
             className="glass-card p-6 space-y-4"
           >
-            <div className="space-y-1">
-              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Annual Federal Fraud &amp; Waste — Filtered Estimate
-              </p>
-              <div className="flex items-baseline gap-3 flex-wrap">
-                <span
-                  className="text-5xl font-mono font-extrabold leading-none"
-                  style={{ color: '#ef4444' }}
-                >
-                  <AnimatedNumber value={filteredFloor} />
-                </span>
-                <span className="text-2xl text-muted-foreground font-mono">—</span>
-                <span
-                  className="text-5xl font-mono font-extrabold leading-none"
-                  style={{ color: '#f97316' }}
-                >
-                  <AnimatedNumber value={filteredCeiling} />
-                </span>
-                <span className="text-sm text-muted-foreground self-end pb-1">
-                  / year
-                </span>
-                <span className="self-end pb-1.5">
-                  <InfoTooltip
-                    tier={2}
-                    content="This range spans all filtered entries using their low/high bounds. We sum only root-level findings — entries tagged as subsets of a larger finding are excluded from the headline to avoid double-counting. Hover individual tier badges below for confidence definitions."
-                  />
-                </span>
-              </div>
-            </div>
+            {(() => {
+              const yearCount = filters.yearEnd - filters.yearStart + 1;
+              const refYear = filters.yearEnd;
+              const refBudget = FEDERAL_BUDGET[refYear] ?? Object.values(FEDERAL_BUDGET).reduce((a, b) => a + b, 0) / Object.values(FEDERAL_BUDGET).length;
+              const floorPct = ((filteredFloor / refBudget) * 100).toFixed(1);
+              const ceilingPct = ((filteredCeiling / refBudget) * 100).toFixed(1);
+              const avgFloor = filteredFloor / yearCount;
+              const avgCeiling = filteredCeiling / yearCount;
+              return (
+                <div className="space-y-1">
+                  <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                    Federal Fraud &amp; Waste — Total Estimated ({filters.yearStart}–{filters.yearEnd})
+                  </p>
+                  <div className="flex items-baseline gap-3 flex-wrap">
+                    {filters.showAsPercent ? (
+                      <>
+                        <span className="text-5xl font-mono font-extrabold leading-none" style={{ color: '#ef4444' }}>
+                          {floorPct}%
+                        </span>
+                        <span className="text-2xl text-muted-foreground font-mono">—</span>
+                        <span className="text-5xl font-mono font-extrabold leading-none" style={{ color: '#f97316' }}>
+                          {ceilingPct}%
+                        </span>
+                        <span className="text-sm text-muted-foreground self-end pb-1">
+                          of fed. budget ({refYear})
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-5xl font-mono font-extrabold leading-none" style={{ color: '#ef4444' }}>
+                          <AnimatedNumber value={filteredFloor} />
+                        </span>
+                        <span className="text-2xl text-muted-foreground font-mono">—</span>
+                        <span className="text-5xl font-mono font-extrabold leading-none" style={{ color: '#f97316' }}>
+                          <AnimatedNumber value={filteredCeiling} />
+                        </span>
+                        <span className="text-sm text-muted-foreground self-end pb-1">
+                          total estimated
+                        </span>
+                      </>
+                    )}
+                    <span className="self-end pb-1.5">
+                      <InfoTooltip
+                        tier={2}
+                        content="This range spans all filtered entries using their low/high bounds. We sum only root-level findings — entries tagged as subsets of a larger finding are excluded from the headline to avoid double-counting. Hover individual tier badges below for confidence definitions."
+                      />
+                    </span>
+                  </div>
+                  {!filters.showAsPercent && yearCount > 1 && (
+                    <p className="text-sm text-muted-foreground font-mono">
+                      ~<AnimatedNumber value={avgFloor} /> — <AnimatedNumber value={avgCeiling} /> / year average
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
 
             {/* Tier breakdown bar */}
             {totalTierAmount > 0 && (
@@ -354,6 +394,8 @@ export function Dashboard() {
                       amount={d ? d[1].amount : 0}
                       minTier={d ? d[1].minTier : 5}
                       maxAmount={maxFraudAmount}
+                      showAsPercent={filters.showAsPercent}
+                      refYear={filters.yearEnd}
                     />
                   );
                 })}
@@ -383,6 +425,8 @@ export function Dashboard() {
                       amount={d ? d[1].amount : 0}
                       minTier={d ? d[1].minTier : 5}
                       maxAmount={maxWasteAmount}
+                      showAsPercent={filters.showAsPercent}
+                      refYear={filters.yearEnd}
                     />
                   );
                 })}

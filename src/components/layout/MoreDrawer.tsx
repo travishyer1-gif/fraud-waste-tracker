@@ -51,11 +51,11 @@ export function MoreDrawer({ isOpen, onClose, activeView, onViewChange }: MoreDr
           {/* Drawer */}
           <motion.div
             key="more-drawer"
-            initial={{ y: '100%' }}
+            initial={{ y: '-100%' }}
             animate={{ y: 0 }}
-            exit={{ y: '100%' }}
+            exit={{ y: '-100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-t border-white/10 rounded-t-2xl pb-[calc(56px+env(safe-area-inset-bottom))]"
+            className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10 rounded-b-2xl pt-[env(safe-area-inset-top)]"
           >
             {/* Drag handle */}
             <div className="flex justify-center pt-3 pb-2">

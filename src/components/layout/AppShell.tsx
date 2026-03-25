@@ -43,15 +43,16 @@ export function AppShell() {
           <Navigation activeView={activeView} onViewChange={setActiveView} />
         </div>
 
+        {/* Mobile top tab bar — hidden on desktop */}
+        <BottomTabBar activeView={activeView} onViewChange={setActiveView} />
+
         {/* Desktop: inline GlobalControls above main content */}
         <div className="hidden md:block container mx-auto px-4 pt-4">
           <GlobalControls />
         </div>
 
-        {/* Main content
-            - Mobile: add bottom padding (72px) so content clears the bottom tab bar
-            - Mobile: add top-right FloatingFilterChip  */}
-        <main className="container mx-auto px-4 py-6 flex-1 pb-[88px] md:pb-6 relative">
+        {/* Main content */}
+        <main className="container mx-auto px-4 py-6 flex-1 relative">
           {/* Mobile filter chip — floats top-right of content area */}
           <div className="md:hidden flex justify-end mb-3">
             <FilterChip />
@@ -60,14 +61,11 @@ export function AppShell() {
           <ViewContent view={activeView} />
         </main>
 
-        {/* Methodology + Footer pinned at bottom of app */}
-        <div className="container mx-auto px-4 pb-4 space-y-3 pb-[88px] md:pb-4">
+        {/* Methodology + Footer */}
+        <div className="container mx-auto px-4 pb-4 space-y-3">
           <MethodologyPanel />
         </div>
         <Footer onViewSourceData={() => setActiveView('table' as ViewId)} />
-
-        {/* Mobile bottom tab bar — hidden on desktop */}
-        <BottomTabBar activeView={activeView} onViewChange={setActiveView} />
       </FilterProvider>
     </TooltipProvider>
   );

@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 import { BarChart3, TrendingUp, TreePine, Layers, MoreHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MoreDrawer } from './MoreDrawer';
 import type { ViewId } from './Navigation';
 
-/** The 4 primary tabs visible in the bottom bar. */
+/** The 4 primary tabs visible in the top bar on mobile. */
 const PRIMARY_TABS: { id: ViewId; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: 'stats',      label: 'Stats',       icon: BarChart3   },
   { id: 'trends',     label: 'Historical',  icon: TrendingUp  },
@@ -25,83 +24,46 @@ interface BottomTabBarProps {
 
 export function BottomTabBar({ activeView, onViewChange }: BottomTabBarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
-  const [visible, setVisible] = useState(true);
-  const lastScrollY = useRef(0);
-  const ticking = useRef(false);
-
-  // Scroll direction detector: hide on scroll-down, show on scroll-up
-  useEffect(() => {
-    const onScroll = () => {
-      if (!ticking.current) {
-        window.requestAnimationFrame(() => {
-          const currentY = window.scrollY;
-          if (currentY > lastScrollY.current + 8) {
-            setVisible(false);
-          } else if (currentY < lastScrollY.current - 8) {
-            setVisible(true);
-          }
-          lastScrollY.current = currentY;
-          ticking.current = false;
-        });
-        ticking.current = true;
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   const isMoreActive = MORE_VIEW_IDS.includes(activeView);
 
   return (
     <>
-      <AnimatePresence>
-        {visible && (
-          <motion.nav
-            key="bottom-tab-bar"
-            initial={{ y: 80 }}
-            animate={{ y: 0 }}
-            exit={{ y: 80 }}
-            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-t border-white/10 md:hidden"
-            style={{
-              paddingBottom: 'env(safe-area-inset-bottom)',
-              height: 'calc(56px + env(safe-area-inset-bottom))',
-            }}
-          >
-            <div className="flex h-14 items-stretch">
-              {PRIMARY_TABS.map(tab => {
-                const Icon = tab.icon;
-                const isActive = activeView === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => onViewChange(tab.id)}
-                    className={cn(
-                      'flex flex-col items-center justify-center gap-1 flex-1 transition-colors',
-                      isActive ? 'text-primary' : 'text-muted-foreground'
-                    )}
-                  >
-                    <Icon className="w-6 h-6" />
-                    <span className="text-[10px] font-medium leading-none">{tab.label}</span>
-                  </button>
-                );
-              })}
-
-              {/* More tab */}
+      <nav
+        className="sticky top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-white/10 md:hidden"
+      >
+        <div className="flex h-12 items-stretch">
+          {PRIMARY_TABS.map(tab => {
+            const Icon = tab.icon;
+            const isActive = activeView === tab.id;
+            return (
               <button
-                onClick={() => setMoreOpen(prev => !prev)}
+                key={tab.id}
+                onClick={() => onViewChange(tab.id)}
                 className={cn(
-                  'flex flex-col items-center justify-center gap-1 flex-1 transition-colors',
-                  isMoreActive || moreOpen ? 'text-primary' : 'text-muted-foreground'
+                  'flex flex-col items-center justify-center gap-0.5 flex-1 transition-colors',
+                  isActive ? 'text-primary' : 'text-muted-foreground'
                 )}
               >
-                <MoreHorizontal className="w-6 h-6" />
-                <span className="text-[10px] font-medium leading-none">More</span>
+                <Icon className="w-5 h-5" />
+                <span className="text-[9px] font-medium leading-none">{tab.label}</span>
               </button>
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+            );
+          })}
+
+          {/* More tab */}
+          <button
+            onClick={() => setMoreOpen(prev => !prev)}
+            className={cn(
+              'flex flex-col items-center justify-center gap-0.5 flex-1 transition-colors',
+              isMoreActive || moreOpen ? 'text-primary' : 'text-muted-foreground'
+            )}
+          >
+            <MoreHorizontal className="w-5 h-5" />
+            <span className="text-[9px] font-medium leading-none">More</span>
+          </button>
+        </div>
+      </nav>
 
       <MoreDrawer
         isOpen={moreOpen}

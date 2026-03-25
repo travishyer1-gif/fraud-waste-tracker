@@ -16,6 +16,7 @@ import {
 
 import { useEvidenceData } from '@/hooks/useEvidenceData';
 import { useFilters } from '@/context/FilterContext';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 import { buildTypeTimeSeriesData, FEDERAL_BUDGET } from '@/lib/timeSeriesUtils';
 import { formatCompact } from '@/lib/utils';
 
@@ -130,8 +131,20 @@ function buildCounterfactualData(
 // ─── Tooltip ──────────────────────────────────────────────────────────────────
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload, label, isMobile }: any) {
   if (!active || !payload || payload.length === 0) return null;
+
+  // On mobile: simplified — just year + total combined
+  if (isMobile) {
+    const combinedEntry = payload.find((p: any) => String(p.dataKey).includes('combined') && !String(p.dataKey).includes('cf'));
+    const total = combinedEntry?.value ?? payload.reduce((s: number, p: any) => s + (typeof p.value === 'number' ? p.value : 0), 0);
+    return (
+      <div className="rounded-xl border border-white/10 bg-black/80 backdrop-blur-md p-2.5 shadow-2xl min-w-[130px]">
+        <p className="text-xs text-white/60 mb-1 font-semibold">FY{label}</p>
+        <p className="font-mono text-white font-bold text-sm">{typeof total === 'number' ? formatCompact(total) : '—'}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-xl border border-white/10 bg-black/80 backdrop-blur-md p-3 shadow-2xl min-w-[200px]">
@@ -175,12 +188,16 @@ interface TimeSeriesProps {
 export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }: TimeSeriesProps) {
   const { entries } = useEvidenceData();
   const { setYearRange } = useFilters();
+  const isMobile = useIsMobile();
 
   const [showBudget, setShowBudget] = useState(false);
   const [localShowAsPct, setLocalShowAsPct] = useState(false);
 
   // External prop overrides local toggle if provided
   const showAsPct = externalShowAsPct ?? localShowAsPct;
+
+  // Responsive chart height
+  const chartHeight = isMobile ? 300 : 420;
 
   const baseData = useMemo(() => buildTypeTimeSeriesData(entries), [entries]);
 
@@ -255,6 +272,14 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
   const brushStartIdx = 0;
   const brushEndIdx = chartData.length - 1;
 
+  // X-axis tick formatter: abbreviate years on mobile
+  const xTickFormatter = isMobile
+    ? (v: number) => `'${String(v).slice(2)}`
+    : (v: number) => `FY${v}`;
+
+  // Y-axis tick count: fewer on mobile
+  const yTickCount = isMobile ? 3 : 6;
+
   return (
     <div className="space-y-4">
       {/* Overlay toggles (only shown when parent didn't inject showAsPct) */}
@@ -270,7 +295,7 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
               }}
               className="accent-gray-400 w-3.5 h-3.5"
             />
-            Federal budget context
+            {isMobile ? 'Budget' : 'Federal budget context'}
           </label>
           <label
             className={`flex items-center gap-2 cursor-pointer select-none transition-colors ${
@@ -284,56 +309,63 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
               disabled={!showBudget}
               className="accent-blue-400 w-3.5 h-3.5"
             />
-            As % of federal budget
+            As % of budget
           </label>
         </div>
       )}
 
       {/* Chart */}
-      <div style={{ minHeight: 400 }}>
-        <ResponsiveContainer width="100%" height={420}>
+      <div
+        className="min-h-[300px] w-full"
+        style={{ touchAction: 'pan-y' }}
+      >
+        <ResponsiveContainer width="100%" height={chartHeight}>
           <ComposedChart
             data={chartData}
             margin={{
               top: 10,
               right: showBudget && !showAsPct ? 70 : 20,
-              left: 20,
+              left: isMobile ? 10 : 20,
               bottom: 30,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
             <XAxis
               dataKey="year"
-              tickFormatter={v => `FY${v}`}
-              tick={{ fill: '#888', fontSize: 11 }}
+              tickFormatter={xTickFormatter}
+              tick={{ fill: '#888', fontSize: isMobile ? 10 : 11 }}
               axisLine={false}
               tickLine={false}
+              angle={isMobile ? -45 : 0}
+              textAnchor={isMobile ? 'end' : 'middle'}
             />
             <YAxis
               yAxisId="left"
               tickFormatter={yTickFormatter}
-              tick={{ fill: '#888', fontSize: 11 }}
+              tickCount={yTickCount}
+              tick={{ fill: '#888', fontSize: isMobile ? 10 : 11 }}
               axisLine={false}
               tickLine={false}
-              width={65}
+              width={isMobile ? 50 : 65}
             />
             {showBudget && !showAsPct && (
               <YAxis
                 yAxisId="right"
                 orientation="right"
                 tickFormatter={v => formatCompact(v)}
-                tick={{ fill: '#555', fontSize: 11 }}
+                tickCount={yTickCount}
+                tick={{ fill: '#555', fontSize: isMobile ? 10 : 11 }}
                 axisLine={false}
                 tickLine={false}
-                width={65}
+                width={isMobile ? 45 : 65}
               />
             )}
 
-            <Tooltip content={<CustomTooltip />} />
-            <Legend wrapperStyle={{ paddingTop: 8, fontSize: 11 }} />
+            <Tooltip content={(props) => <CustomTooltip {...props} isMobile={isMobile} />} />
+            {!isMobile && <Legend wrapperStyle={{ paddingTop: 8, fontSize: 11 }} />}
 
-            {/* Reference lines for ENABLED spending events */}
-            {visibleEvents.map((evt, i) => (
+            {/* Reference lines for ENABLED spending events — hide on mobile */}
+            {!isMobile && visibleEvents.map((evt, i) => (
               <ReferenceLine
                 key={`${evt.label}-${i}`}
                 yAxisId="left"

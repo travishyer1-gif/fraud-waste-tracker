@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import type { EvidenceEntry } from '@/lib/types';
 import { CATEGORY_LABELS, TIER_COLORS } from '@/lib/constants';
 import { formatCompact, getTierInfo } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 // ─── constants ────────────────────────────────────────────────────────────────
 const MIN_RADIUS = 8;
@@ -150,6 +151,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const simulationRef = useRef<d3.Simulation<SimNode, undefined> | null>(null);
+  const isMobile = useIsMobile();
 
   const [dimensions, setDimensions] = useState({ width: 700, height: 500 });
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
@@ -184,16 +186,31 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
       simulationRef.current = null;
     }
 
-    // ── radius scale ────────────────────────────────────────────────────────
+    // ── radius scale (scaled by container width for mobile) ──────────────────
+    const radiusScale = Math.min(width / 800, 1);
+    const minR = Math.max(MIN_RADIUS * radiusScale, 5);
+    const maxR = Math.max(MAX_RADIUS * radiusScale, 20);
+
     const amounts = entries.map(e => e.amountBest ?? NULL_AMOUNT);
     const [minA, maxA] = [Math.min(...amounts), Math.max(...amounts)];
     const rScale = d3.scaleLog<number, number>()
       .domain([Math.max(minA, 1), Math.max(maxA, 1)])
-      .range([MIN_RADIUS, MAX_RADIUS])
+      .range([minR, maxR])
       .clamp(true);
 
     // ── category cluster centers ─────────────────────────────────────────────
     const cats = Array.from(new Set(entries.map(e => e.category))).sort();
+
+    // On mobile, only show labels for top 5 categories by entry count
+    const catEntryCounts = new Map<string, number>();
+    for (const e of entries) catEntryCounts.set(e.category, (catEntryCounts.get(e.category) ?? 0) + 1);
+    const top5Cats = new Set(
+      [...catEntryCounts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([c]) => c)
+    );
+
     const spread = Math.min(width, height) * 0.3;
 
     // ── build nodes ──────────────────────────────────────────────────────────
@@ -216,12 +233,14 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
     const categoryLabelLayer = svg.append('g').attr('class', 'category-labels');
     const bubbleLayer        = svg.append('g').attr('class', 'bubbles');
 
-    // ── category labels ──────────────────────────────────────────────────────
-    const catGroups = cats.map(cat => {
-      const center = getCategoryCenter(cat, cats, cx, cy, spread);
-      const info = CATEGORY_LABELS[cat];
-      return { cat, center, label: info ? `${cat}` : cat };
-    });
+    // ── category labels (mobile: only top 5) ────────────────────────────────
+    const catGroups = cats
+      .filter(cat => !isMobile || top5Cats.has(cat))
+      .map(cat => {
+        const center = getCategoryCenter(cat, cats, cx, cy, spread);
+        const info = CATEGORY_LABELS[cat];
+        return { cat, center, label: info ? `${cat}` : cat };
+      });
 
     categoryLabelLayer.selectAll('text')
       .data(catGroups)
@@ -253,18 +272,20 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
       .attr('stroke-width', 1.2)
       .attr('stroke-opacity', 0.6);
 
-    // Tiny tier label inside large bubbles
-    groups.filter(d => d.r >= 24)
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'middle')
-      .attr('dy', '0.05em')
-      .attr('font-size', d => Math.min(d.r * 0.42, 13))
-      .attr('fill', '#ffffffcc')
-      .attr('font-weight', '600')
-      .style('pointer-events', 'none')
-      .style('user-select', 'none')
-      .text(d => formatCompact(d.entry.amountBest));
+    // Tiny tier label inside large bubbles — hidden on mobile (show on tap instead)
+    if (!isMobile) {
+      groups.filter(d => d.r >= 24)
+        .append('text')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'middle')
+        .attr('dy', '0.05em')
+        .attr('font-size', d => Math.min(d.r * 0.42, 13))
+        .attr('fill', '#ffffffcc')
+        .attr('font-weight', '600')
+        .style('pointer-events', 'none')
+        .style('user-select', 'none')
+        .text(d => formatCompact(d.entry.amountBest));
+    }
 
     // ── drag behavior ────────────────────────────────────────────────────────
     const drag = d3.drag<SVGGElement, SimNode>()
@@ -285,7 +306,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
 
     groups.call(drag);
 
-    // ── hover / click ────────────────────────────────────────────────────────
+    // ── hover / click (touch-friendly) ───────────────────────────────────────
     groups
       .on('mouseenter', function (event: MouseEvent, d: SimNode) {
         d3.select(this).select('circle')
@@ -316,14 +337,34 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
           .attr('stroke-opacity', 0.6);
         setTooltip(null);
       })
-      .on('click', (_event: MouseEvent, d: SimNode) => {
+      .on('click', (event: MouseEvent, d: SimNode) => {
+        // On mobile, show tooltip on tap
+        if (isMobile) {
+          const containerRect = containerRef.current!.getBoundingClientRect();
+          setTooltip({
+            x: event.clientX - containerRect.left,
+            y: event.clientY - containerRect.top,
+            entry: d.entry,
+          });
+        }
         setSelected(prev => prev?.id === d.entry.id ? null : d.entry);
       });
 
+    // ── d3-zoom for pinch-to-zoom on mobile ─────────────────────────────────
+    const zoom = d3.zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.5, 4])
+      .on('zoom', (event) => {
+        bubbleLayer.attr('transform', event.transform);
+        categoryLabelLayer.attr('transform', event.transform);
+      });
+    svg.call(zoom as unknown as (selection: d3.Selection<SVGSVGElement, unknown, null, undefined>) => void);
+
     // ── simulation ───────────────────────────────────────────────────────────
+    const chargeStrength = isMobile ? -6 : -12; // tighter clusters on mobile
+
     const sim = d3.forceSimulation<SimNode>(nodes)
       .force('center', d3.forceCenter(cx, cy).strength(0.04))
-      .force('charge', d3.forceManyBody().strength(-12))
+      .force('charge', d3.forceManyBody().strength(chargeStrength))
       .force('collide', d3.forceCollide<SimNode>(d => d.r + 2.5).strength(0.85))
       .force('x', d3.forceX<SimNode>(d => d.targetX).strength(0.12))
       .force('y', d3.forceY<SimNode>(d => d.targetY).strength(0.12))
@@ -342,7 +383,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
     return () => {
       sim.stop();
     };
-  }, [entries, dimensions]);
+  }, [entries, dimensions, isMobile]);
 
   // Update SVG dimensions on resize
   useEffect(() => {
@@ -367,6 +408,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
         height={dimensions.height}
         viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
         className="block"
+        style={{ touchAction: 'none' }}
       />
 
       {/* Legends */}
@@ -382,27 +424,37 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
           ))}
         </div>
 
-        {/* Size legend */}
-        <div className="backdrop-blur-xl bg-black/70 border border-white/10 rounded-lg px-2.5 py-2">
-          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1.5">Size = Amount</p>
-          <div className="flex items-end gap-3">
-            {sizeLegend.map(({ label, amount }) => {
-              // Rough px radius for legend display
-              const pct = Math.log10(amount) / Math.log10(3e12);
-              const r = Math.round(MIN_RADIUS + pct * (MAX_RADIUS - MIN_RADIUS));
-              return (
-                <div key={label} className="flex flex-col items-center gap-1">
-                  <div
-                    className="rounded-full bg-white/15 border border-white/20"
-                    style={{ width: r * 2, height: r * 2 }}
-                  />
-                  <span className="text-[9px] text-white/50">{label}</span>
-                </div>
-              );
-            })}
+        {/* Size legend — hidden on mobile to save space */}
+        {!isMobile && (
+          <div className="backdrop-blur-xl bg-black/70 border border-white/10 rounded-lg px-2.5 py-2">
+            <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1.5">Size = Amount</p>
+            <div className="flex items-end gap-3">
+              {sizeLegend.map(({ label, amount }) => {
+                const pct = Math.log10(amount) / Math.log10(3e12);
+                const r = Math.round(MIN_RADIUS + pct * (MAX_RADIUS - MIN_RADIUS));
+                return (
+                  <div key={label} className="flex flex-col items-center gap-1">
+                    <div
+                      className="rounded-full bg-white/15 border border-white/20"
+                      style={{ width: r * 2, height: r * 2 }}
+                    />
+                    <span className="text-[9px] text-white/50">{label}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+
+      {/* Mobile pinch hint */}
+      {isMobile && (
+        <div className="absolute top-2 right-2 pointer-events-none">
+          <span className="text-[9px] text-white/30 bg-black/40 px-1.5 py-0.5 rounded">
+            Pinch to zoom · tap bubble
+          </span>
+        </div>
+      )}
 
       {/* Tooltip */}
       {tooltip && (
@@ -425,7 +477,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
             {tooltip.entry.category}: {CATEGORY_LABELS[tooltip.entry.category]?.label ?? tooltip.entry.category}
           </p>
           <p className="text-muted-foreground line-clamp-1 mt-0.5">{tooltip.entry.sourceName}</p>
-          <p className="text-white/30 mt-1 text-[9px]">Click to inspect · drag to move</p>
+          <p className="text-white/30 mt-1 text-[9px]">{isMobile ? 'Tap again to inspect' : 'Click to inspect · drag to move'}</p>
         </div>
       )}
 

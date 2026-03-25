@@ -2,12 +2,15 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import * as d3 from 'd3';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { EvidenceEntry } from '@/lib/types';
 import { CATEGORY_LABELS, TIER_COLORS } from '@/lib/constants';
 import { formatCompact, getTierInfo } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 // ─── constants ────────────────────────────────────────────────────────────────
 const MIN_AMOUNT = 5_000_000;
+const MIN_TAP_SIZE = 44; // minimum 44×44px for tappability
 const FRAUD_CAT_COLORS = [
   '#818cf8', '#a78bfa', '#c084fc', '#e879f9',
   '#f472b6', '#fb7185', '#f87171',
@@ -37,6 +40,8 @@ interface TmNode {
   x1: number; y1: number;
   clickable: boolean;
   entry?: EvidenceEntry;
+  isMerged?: boolean;
+  mergedCount?: number;
 }
 
 interface TooltipState {
@@ -63,12 +68,54 @@ function getScaledValue(amount: number | null, logScale: boolean): number {
   return logScale ? Math.log10(Math.max(raw, 1)) + 1 : raw;
 }
 
+/**
+ * Merge small rectangles (below MIN_TAP_SIZE threshold) into an "Other" bucket.
+ * Returns the surviving nodes plus an optional merged "Other" node.
+ */
+function mergeSmallNodes(nodes: TmNode[], width: number, height: number): TmNode[] {
+  const large: TmNode[] = [];
+  const small: TmNode[] = [];
+
+  for (const n of nodes) {
+    const w = n.x1 - n.x0;
+    const h = n.y1 - n.y0;
+    if (w >= MIN_TAP_SIZE && h >= MIN_TAP_SIZE) {
+      large.push(n);
+    } else {
+      small.push(n);
+    }
+  }
+
+  if (small.length === 0) return nodes;
+
+  // Create an "Other" node that fills remaining space
+  const totalSmallAmt = small.reduce((s, n) => s + (n.amount ?? 0), 0);
+  const otherNode: TmNode = {
+    id: '__other__',
+    label: `Other (${small.length})`,
+    sublabel: formatCompact(totalSmallAmt),
+    amount: totalSmallAmt,
+    color: '#334155cc',
+    // Place it in a small corner area — use last small node's space as fallback
+    x0: small[0].x0,
+    y0: small[0].y0,
+    x1: Math.min(small[0].x0 + 80, width),
+    y1: Math.min(small[0].y0 + 44, height),
+    clickable: false,
+    isMerged: true,
+    mergedCount: small.length,
+  };
+
+  return [...large, otherNode];
+}
+
 function buildNodes(
   entries: EvidenceEntry[],
   crumb: BreadcrumbItem[],
   width: number,
   height: number,
   logScale: boolean,
+  isMobile: boolean,
 ): TmNode[] {
   if (width < 10 || height < 10) return [];
 
@@ -111,7 +158,7 @@ function buildNodes(
 
     d3.treemap<TreeHDatum>().size([width, height]).paddingInner(2).paddingOuter(4).round(true)(root);
 
-    return root.leaves().map((leaf, i) => ({
+    const rawNodes = root.leaves().map((leaf, i) => ({
       id: leaf.data.id,
       label: CATEGORY_LABELS[leaf.data.id]?.label ?? leaf.data.id,
       sublabel: formatCompact(leaf.data.rawAmount ?? null),
@@ -123,6 +170,8 @@ function buildNodes(
       y1: (leaf as d3.HierarchyRectangularNode<TreeHDatum>).y1,
       clickable: true,
     }));
+
+    return isMobile ? mergeSmallNodes(rawNodes, width, height) : rawNodes;
   }
 
   // Level 2: individual entries
@@ -144,7 +193,7 @@ function buildNodes(
 
     d3.treemap<TreeHDatum>().size([width, height]).paddingInner(2).paddingOuter(4).round(true)(root);
 
-    return root.leaves().map(leaf => {
+    const rawNodes = root.leaves().map(leaf => {
       const e = leaf.data.entry!;
       const rn = leaf as d3.HierarchyRectangularNode<TreeHDatum>;
       return {
@@ -159,9 +208,176 @@ function buildNodes(
         entry: e,
       };
     });
+
+    return isMobile ? mergeSmallNodes(rawNodes, width, height) : rawNodes;
   }
 
   return [];
+}
+
+// ─── Detail modal / bottom sheet ──────────────────────────────────────────────
+function DetailModal({ entry, onClose, isMobile }: { entry: EvidenceEntry; onClose: () => void; isMobile: boolean }) {
+  const tierInfo = getTierInfo(entry.certaintyTier);
+
+  const content = (
+    <div className="relative space-y-4">
+      {/* Close */}
+      <button
+        onClick={onClose}
+        className="absolute top-0 right-0 w-7 h-7 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors text-sm"
+      >
+        ✕
+      </button>
+
+      {/* Title */}
+      <h2 className="text-base font-semibold text-white leading-snug pr-8">{entry.title}</h2>
+
+      {/* Amount */}
+      <div className="flex flex-wrap gap-3">
+        {entry.amountBest != null && (
+          <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Best</p>
+            <p className="font-mono font-bold text-emerald-400">{formatCompact(entry.amountBest)}</p>
+          </div>
+        )}
+        {entry.amountLow != null && (
+          <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Low</p>
+            <p className="font-mono text-white/70">{formatCompact(entry.amountLow)}</p>
+          </div>
+        )}
+        {entry.amountHigh != null && (
+          <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">High</p>
+            <p className="font-mono text-white/70">{formatCompact(entry.amountHigh)}</p>
+          </div>
+        )}
+      </div>
+
+      {/* Tier badge */}
+      <div className="flex items-center gap-2">
+        <span
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
+          style={{ background: tierInfo.bg + '25', color: tierInfo.bg, border: `1px solid ${tierInfo.bg}40` }}
+        >
+          {tierInfo.icon} Tier {entry.certaintyTier} — {tierInfo.label}
+        </span>
+      </div>
+
+      {/* Source */}
+      <div className="space-y-1">
+        <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Source</p>
+        {entry.sourceUrl ? (
+          <a
+            href={entry.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-2 break-all"
+          >
+            {entry.sourceName || entry.sourceUrl}
+          </a>
+        ) : (
+          <p className="text-sm text-white/70">{entry.sourceName || '—'}</p>
+        )}
+      </div>
+
+      {/* Methodology */}
+      {entry.sourceMethodology && (
+        <div className="space-y-1">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Methodology</p>
+          <p className="text-xs text-white/70 leading-relaxed line-clamp-4">{entry.sourceMethodology}</p>
+        </div>
+      )}
+
+      {/* Overlap notes */}
+      {entry.overlapNotes && (
+        <div className="space-y-1">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Overlap Notes</p>
+          <p className="text-xs text-amber-300/80 leading-relaxed">{entry.overlapNotes}</p>
+        </div>
+      )}
+
+      {/* Entity links */}
+      {entry.entityLinks && entry.entityLinks.length > 0 && (
+        <div className="space-y-1">
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Entities</p>
+          <div className="flex flex-wrap gap-1.5">
+            {entry.entityLinks.map((ent, i) => (
+              <span
+                key={i}
+                className="text-[11px] px-2 py-0.5 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}
+              >
+                {ent}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  if (isMobile) {
+    // Bottom sheet on mobile
+    return (
+      <AnimatePresence>
+        <motion.div
+          className="fixed inset-0 z-[100] flex items-end"
+          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+          onClick={onClose}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            className="w-full overflow-y-auto px-5 pb-8 pt-4"
+            style={{
+              background: 'rgba(15,23,42,0.97)',
+              backdropFilter: 'blur(20px)',
+              borderTop: '1px solid rgba(255,255,255,0.12)',
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              boxShadow: '0 -12px 40px rgba(0,0,0,0.5)',
+              maxHeight: '70vh',
+            }}
+            onClick={e => e.stopPropagation()}
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', stiffness: 400, damping: 40 }}
+          >
+            {/* Drag handle */}
+            <div className="flex justify-center mb-4">
+              <div className="w-10 h-1 rounded-full bg-white/20" />
+            </div>
+            {content}
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  // Centered modal on desktop
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+      onClick={onClose}
+    >
+      <div
+        className="relative max-w-lg w-full rounded-2xl p-6 space-y-4 overflow-y-auto max-h-[85vh]"
+        style={{
+          background: 'rgba(15,23,42,0.85)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.6)',
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        {content}
+      </div>
+    </div>
+  );
 }
 
 // ─── component ────────────────────────────────────────────────────────────────
@@ -173,6 +389,7 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
   const [nodes, setNodes] = useState<TmNode[]>([]);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [detailEntry, setDetailEntry] = useState<EvidenceEntry | null>(null);
+  const isMobile = useIsMobile();
 
   // ResizeObserver
   useEffect(() => {
@@ -188,11 +405,11 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
 
   // Recompute layout
   useEffect(() => {
-    setNodes(buildNodes(entries, breadcrumb, dimensions.width, dimensions.height, logScale));
-  }, [entries, breadcrumb, dimensions, logScale]);
+    setNodes(buildNodes(entries, breadcrumb, dimensions.width, dimensions.height, logScale, isMobile));
+  }, [entries, breadcrumb, dimensions, logScale, isMobile]);
 
   const handleNodeClick = useCallback((node: TmNode) => {
-    if (!node.clickable) return;
+    if (!node.clickable || node.isMerged) return;
     const current = breadcrumb[breadcrumb.length - 1];
     if (current.level === 0) {
       setBreadcrumb([
@@ -218,10 +435,10 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
     <div className="flex flex-col h-full gap-2 min-h-0">
       {/* Header row */}
       <div className="flex items-center justify-between gap-4 flex-shrink-0 flex-wrap">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-0.5 flex-wrap">
+        {/* Breadcrumb — horizontal scroll on mobile */}
+        <nav className="overflow-x-auto whitespace-nowrap flex items-center gap-0.5 max-w-full">
           {breadcrumb.map((item, i) => (
-            <span key={i} className="flex items-center gap-0.5">
+            <span key={i} className="inline-flex items-center gap-0.5">
               {i > 0 && <span className="text-muted-foreground/40 px-0.5 text-xs">›</span>}
               <button
                 onClick={() => jumpTo(i)}
@@ -238,7 +455,7 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
         </nav>
 
         {/* Log-scale toggle */}
-        <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer select-none">
+        <label className="flex items-center gap-2 text-xs text-muted-foreground cursor-pointer select-none flex-shrink-0">
           <span>Log scale</span>
           <button
             role="switch"
@@ -283,15 +500,24 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
             <div
               key={node.id}
               className={`absolute overflow-hidden border border-white/[0.06] transition-[filter] duration-150 ${
-                node.clickable ? 'cursor-pointer hover:brightness-125' : 'cursor-default'
+                node.clickable && !node.isMerged ? 'cursor-pointer hover:brightness-125' : 'cursor-default opacity-50'
               }`}
               style={{ left: node.x0, top: node.y0, width: w, height: h, backgroundColor: node.color, borderRadius: 4 }}
               onClick={() => handleNodeClick(node)}
               onMouseMove={e => {
+                if (isMobile) return; // don't show tooltip on hover for mobile
                 const rect = containerRef.current!.getBoundingClientRect();
                 setTooltip({ x: e.clientX - rect.left, y: e.clientY - rect.top, title: node.label, amount: node.amount, tier: node.tier, sourceName: node.sourceName });
               }}
               onMouseLeave={() => setTooltip(null)}
+              onTouchStart={e => {
+                // Show tooltip briefly on touch
+                if (!isMobile) return;
+                const touch = e.touches[0];
+                const rect = containerRef.current!.getBoundingClientRect();
+                setTooltip({ x: touch.clientX - rect.left, y: touch.clientY - rect.top, title: node.label, amount: node.amount, tier: node.tier, sourceName: node.sourceName });
+                setTimeout(() => setTooltip(null), 1500);
+              }}
             >
               {showLabel && (
                 <div className="p-1.5 h-full flex flex-col justify-between pointer-events-none select-none">
@@ -339,123 +565,15 @@ export function Treemap({ entries }: { entries: EvidenceEntry[] }) {
           </div>
         )}
       </div>
-      {/* Detail Modal */}
-      {detailEntry && (() => {
-        const entry = detailEntry;
-        const tierInfo = getTierInfo(entry.certaintyTier);
-        return (
-          <div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-            style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
-            onClick={() => setDetailEntry(null)}
-          >
-            <div
-              className="relative max-w-lg w-full rounded-2xl p-6 space-y-4 overflow-y-auto max-h-[85vh]"
-              style={{
-                background: 'rgba(15,23,42,0.85)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                boxShadow: '0 24px 64px rgba(0,0,0,0.6)',
-              }}
-              onClick={e => e.stopPropagation()}
-            >
-              {/* Close */}
-              <button
-                onClick={() => setDetailEntry(null)}
-                className="absolute top-4 right-4 w-7 h-7 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors text-sm"
-              >
-                ✕
-              </button>
 
-              {/* Title */}
-              <h2 className="text-base font-semibold text-white leading-snug pr-8">{entry.title}</h2>
-
-              {/* Amount */}
-              <div className="flex flex-wrap gap-3">
-                {entry.amountBest != null && (
-                  <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Best</p>
-                    <p className="font-mono font-bold text-emerald-400">{formatCompact(entry.amountBest)}</p>
-                  </div>
-                )}
-                {entry.amountLow != null && (
-                  <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Low</p>
-                    <p className="font-mono text-white/70">{formatCompact(entry.amountLow)}</p>
-                  </div>
-                )}
-                {entry.amountHigh != null && (
-                  <div className="rounded-lg px-3 py-2 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider">High</p>
-                    <p className="font-mono text-white/70">{formatCompact(entry.amountHigh)}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Tier badge */}
-              <div className="flex items-center gap-2">
-                <span
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
-                  style={{ background: tierInfo.bg + '25', color: tierInfo.bg, border: `1px solid ${tierInfo.bg}40` }}
-                >
-                  {tierInfo.icon} Tier {entry.certaintyTier} — {tierInfo.label}
-                </span>
-              </div>
-
-              {/* Source */}
-              <div className="space-y-1">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Source</p>
-                {entry.sourceUrl ? (
-                  <a
-                    href={entry.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-400 hover:text-blue-300 underline underline-offset-2 break-all"
-                  >
-                    {entry.sourceName || entry.sourceUrl}
-                  </a>
-                ) : (
-                  <p className="text-sm text-white/70">{entry.sourceName || '—'}</p>
-                )}
-              </div>
-
-              {/* Methodology */}
-              {entry.sourceMethodology && (
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Methodology</p>
-                  <p className="text-xs text-white/70 leading-relaxed line-clamp-4">{entry.sourceMethodology}</p>
-                </div>
-              )}
-
-              {/* Overlap notes */}
-              {entry.overlapNotes && (
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Overlap Notes</p>
-                  <p className="text-xs text-amber-300/80 leading-relaxed">{entry.overlapNotes}</p>
-                </div>
-              )}
-
-              {/* Entity links */}
-              {entry.entityLinks && entry.entityLinks.length > 0 && (
-                <div className="space-y-1">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Entities</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {entry.entityLinks.map((ent, i) => (
-                      <span
-                        key={i}
-                        className="text-[11px] px-2 py-0.5 rounded-full"
-                        style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)' }}
-                      >
-                        {ent}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      })()}
+      {/* Detail Modal / Bottom Sheet */}
+      {detailEntry && (
+        <DetailModal
+          entry={detailEntry}
+          onClose={() => setDetailEntry(null)}
+          isMobile={isMobile}
+        />
+      )}
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { useEvidenceData } from '@/hooks/useEvidenceData';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 import { buildTierTimeSeriesData } from '@/lib/timeSeriesUtils';
 import { formatCompact } from '@/lib/utils';
 import { TIER_COLORS } from '@/lib/constants';
@@ -25,11 +26,21 @@ const TYPE_BUTTONS: { id: TypeFilter; label: string }[] = [
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload, label, isMobile }: any) {
   if (!active || !payload || payload.length === 0) return null;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const total = payload.reduce((sum: number, p: any) => sum + (typeof p.value === 'number' ? p.value : 0), 0);
+
+  // Mobile: simplified tooltip
+  if (isMobile) {
+    return (
+      <div className="rounded-xl border border-white/10 bg-black/80 backdrop-blur-md p-2.5 shadow-2xl min-w-[120px]">
+        <p className="text-xs text-white/60 mb-1 font-semibold">FY{label}</p>
+        <p className="text-sm font-bold text-white">{formatCompact(total)}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="rounded-xl border border-white/10 bg-black/80 backdrop-blur-md p-3 shadow-2xl min-w-[180px]">
@@ -67,11 +78,23 @@ function CustomTooltip({ active, payload, label }: any) {
 export function ConfidenceExplorer() {
   const { entries } = useEvidenceData();
   const [typeFilter, setTypeFilter] = useState<TypeFilter>('combined');
+  const isMobile = useIsMobile();
 
   const chartData = useMemo(
     () => buildTierTimeSeriesData(entries, typeFilter),
     [entries, typeFilter]
   );
+
+  // Responsive chart height
+  const chartHeight = isMobile ? 300 : 400;
+
+  // Y-axis tick count: fewer on mobile
+  const yTickCount = isMobile ? 3 : 6;
+
+  // X-axis tick formatter: abbreviate on mobile
+  const xTickFormatter = isMobile
+    ? (v: number) => `'${String(v).slice(2)}`
+    : (v: number) => `FY${v}`;
 
   // Dynamic insight: use the most recent year with data
   const insightYear = useMemo(() => {
@@ -96,29 +119,34 @@ export function ConfidenceExplorer() {
 
   return (
     <div className="space-y-4">
-      {/* Toggle buttons */}
+      {/* Toggle buttons — smaller on mobile */}
       <div className="flex gap-2">
         {TYPE_BUTTONS.map(btn => (
           <button
             key={btn.id}
             onClick={() => setTypeFilter(btn.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+            className={`rounded-lg font-medium transition-all border ${
+              isMobile ? 'px-2 py-1 text-xs' : 'px-3 py-1.5 text-xs'
+            } ${
               typeFilter === btn.id
                 ? 'bg-white/10 border-white/20 text-white'
                 : 'bg-transparent border-white/10 text-white/50 hover:text-white/80 hover:border-white/20'
             }`}
           >
-            {btn.label}
+            {isMobile ? btn.label.replace(' Only', '') : btn.label}
           </button>
         ))}
       </div>
 
       {/* Chart */}
-      <div style={{ minHeight: 400 }}>
-        <ResponsiveContainer width="100%" height={400}>
+      <div
+        className="min-h-[300px] w-full"
+        style={{ touchAction: 'pan-y' }}
+      >
+        <ResponsiveContainer width="100%" height={chartHeight}>
           <AreaChart
             data={chartData}
-            margin={{ top: 10, right: 20, left: 20, bottom: 0 }}
+            margin={{ top: 10, right: 20, left: isMobile ? 10 : 20, bottom: 0 }}
           >
             <defs>
               {gradientDefs.map(({ id, color }) => (
@@ -131,31 +159,36 @@ export function ConfidenceExplorer() {
             <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
             <XAxis
               dataKey="year"
-              tickFormatter={(v) => `FY${v}`}
-              tick={{ fill: '#888', fontSize: 11 }}
+              tickFormatter={xTickFormatter}
+              tick={{ fill: '#888', fontSize: isMobile ? 10 : 11 }}
               axisLine={false}
               tickLine={false}
+              angle={isMobile ? -45 : 0}
+              textAnchor={isMobile ? 'end' : 'middle'}
             />
             <YAxis
               tickFormatter={(v) => formatCompact(v)}
-              tick={{ fill: '#888', fontSize: 11 }}
+              tickCount={yTickCount}
+              tick={{ fill: '#888', fontSize: isMobile ? 10 : 11 }}
               axisLine={false}
               tickLine={false}
-              width={65}
+              width={isMobile ? 50 : 65}
             />
-            <Tooltip content={CustomTooltip} />
-            <Legend
-              formatter={(value) => {
-                const tierNum = parseInt(value.replace('tier', ''));
-                const info = TIER_COLORS[tierNum as keyof typeof TIER_COLORS];
-                return (
-                  <span style={{ color: info?.bg, fontSize: 11 }}>
-                    {info?.icon} {info?.label ?? value}
-                  </span>
-                );
-              }}
-              wrapperStyle={{ paddingTop: 12 }}
-            />
+            <Tooltip content={(props) => <CustomTooltip {...props} isMobile={isMobile} />} />
+            {!isMobile && (
+              <Legend
+                formatter={(value) => {
+                  const tierNum = parseInt(value.replace('tier', ''));
+                  const info = TIER_COLORS[tierNum as keyof typeof TIER_COLORS];
+                  return (
+                    <span style={{ color: info?.bg, fontSize: 11 }}>
+                      {info?.icon} {info?.label ?? value}
+                    </span>
+                  );
+                }}
+                wrapperStyle={{ paddingTop: 12 }}
+              />
+            )}
             {/* Tier 1 on bottom — most confirmed */}
             <Area
               type="monotone"

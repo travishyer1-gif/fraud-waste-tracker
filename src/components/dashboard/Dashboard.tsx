@@ -8,6 +8,7 @@ import { TIER_COLORS, CATEGORY_LABELS, FEDERAL_BUDGET, formatAsPercent } from '@
 import { GlobalControls } from '@/components/controls/GlobalControls';
 import { InfoTooltip } from '@/components/ui/InfoTooltip';
 import { useFilters } from '@/context/FilterContext';
+import { useIsMobile } from '@/hooks/useMediaQuery';
 
 // ─── Animated number counter using RAF ────────────────────────────────────────
 function AnimatedNumber({ value }: { value: number }) {
@@ -53,13 +54,14 @@ const itemVariants: Variants = {
 };
 
 // ─── Mini donut via SVG ───────────────────────────────────────────────────────
-function TierDonut({ counts }: { counts: Record<number, number> }) {
+function TierDonut({ counts, size = 72 }: { counts: Record<number, number>; size?: number }) {
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
   if (total === 0) return null;
 
-  const r = 28;
-  const cx = 36;
-  const cy = 36;
+  const r = size * 0.39;
+  const cx = size / 2;
+  const cy = size / 2;
+  const strokeW = size * 0.14;
   const circumference = 2 * Math.PI * r;
   let offset = 0;
 
@@ -73,7 +75,7 @@ function TierDonut({ counts }: { counts: Record<number, number> }) {
   });
 
   return (
-    <svg width="72" height="72" viewBox="0 0 72 72">
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
       {segments.map(({ tier, len, offset: off }) => (
         <circle
           key={tier}
@@ -82,7 +84,7 @@ function TierDonut({ counts }: { counts: Record<number, number> }) {
           r={r}
           fill="none"
           stroke={TIER_COLORS[tier].bg}
-          strokeWidth="10"
+          strokeWidth={strokeW}
           strokeDasharray={`${len} ${circumference - len}`}
           strokeDashoffset={-off + circumference * 0.25}
           opacity={0.85}
@@ -100,6 +102,7 @@ function CategoryRow({
   maxAmount,
   showAsPercent,
   refYear,
+  fullWidth = false,
 }: {
   catKey: string;
   amount: number;
@@ -107,6 +110,7 @@ function CategoryRow({
   maxAmount: number;
   showAsPercent?: boolean;
   refYear?: number;
+  fullWidth?: boolean;
 }) {
   const label = CATEGORY_LABELS[catKey]?.label ?? catKey;
   const tierColor =
@@ -128,16 +132,26 @@ function CategoryRow({
         className="w-2 h-2 rounded-full shrink-0"
         style={{ backgroundColor: tierColor }}
       />
-      <span className="text-xs text-muted-foreground w-28 truncate">{label}</span>
+      <span className={`text-xs text-muted-foreground ${fullWidth ? 'flex-1' : 'w-28 truncate'}`}>{label}</span>
       <span className="text-xs font-mono font-semibold text-foreground w-20 text-right shrink-0">
         {displayAmount}
       </span>
-      <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-500"
-          style={{ width: `${barPct}%`, backgroundColor: tierColor, opacity: 0.7 }}
-        />
-      </div>
+      {!fullWidth && (
+        <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{ width: `${barPct}%`, backgroundColor: tierColor, opacity: 0.7 }}
+          />
+        </div>
+      )}
+      {fullWidth && (
+        <div className="w-16 h-1.5 rounded-full bg-white/5 overflow-hidden shrink-0">
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{ width: `${barPct}%`, backgroundColor: tierColor, opacity: 0.7 }}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -146,6 +160,8 @@ function CategoryRow({
 export function Dashboard() {
   const { filteredEntries, filteredStats } = useEvidenceData();
   const { filters } = useFilters();
+  const isMobile = useIsMobile();
+  const [mobileCatTab, setMobileCatTab] = useState<'fraud' | 'waste'>('fraud');
 
   // Derived from filtered entries
   const {
@@ -370,76 +386,148 @@ export function Dashboard() {
           </motion.div>
 
           {/* ── Category Breakdown ─────────────────────────────────────── */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* FRAUD column */}
+          {isMobile ? (
+            /* Mobile: single-column with toggle */
             <motion.div
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
               className="glass-card p-4"
             >
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-red-400">
+              {/* Toggle */}
+              <div className="flex gap-2 mb-3">
+                <button
+                  onClick={() => setMobileCatTab('fraud')}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                    mobileCatTab === 'fraud'
+                      ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                      : 'bg-transparent border-white/10 text-muted-foreground'
+                  }`}
+                >
+                  <div className="w-2 h-2 rounded-full bg-red-500" />
                   Fraud
-                </h3>
-              </div>
-              <div className="space-y-0.5">
-                {(['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7'] as const).map((cat) => {
-                  const d = fraudCategories.find(([k]) => k === cat);
-                  return (
-                    <CategoryRow
-                      key={cat}
-                      catKey={cat}
-                      amount={d ? d[1].amount : 0}
-                      minTier={d ? d[1].minTier : 5}
-                      maxAmount={maxFraudAmount}
-                      showAsPercent={filters.showAsPercent}
-                      refYear={filters.yearEnd}
-                    />
-                  );
-                })}
-              </div>
-            </motion.div>
-
-            {/* WASTE column */}
-            <motion.div
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: 0.15, ease: 'easeOut' }}
-              className="glass-card p-4"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                <h3 className="text-xs font-semibold uppercase tracking-widest text-amber-400">
+                </button>
+                <button
+                  onClick={() => setMobileCatTab('waste')}
+                  className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-semibold transition-all border ${
+                    mobileCatTab === 'waste'
+                      ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+                      : 'bg-transparent border-white/10 text-muted-foreground'
+                  }`}
+                >
+                  <div className="w-2 h-2 rounded-full bg-amber-500" />
                   Waste
-                </h3>
+                </button>
               </div>
+
+              {/* Category list */}
               <div className="space-y-0.5">
-                {(['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'] as const).map((cat) => {
-                  const d = wasteCategories.find(([k]) => k === cat);
-                  return (
-                    <CategoryRow
-                      key={cat}
-                      catKey={cat}
-                      amount={d ? d[1].amount : 0}
-                      minTier={d ? d[1].minTier : 5}
-                      maxAmount={maxWasteAmount}
-                      showAsPercent={filters.showAsPercent}
-                      refYear={filters.yearEnd}
-                    />
-                  );
-                })}
+                {mobileCatTab === 'fraud'
+                  ? (['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7'] as const).map((cat) => {
+                      const d = fraudCategories.find(([k]) => k === cat);
+                      return (
+                        <CategoryRow
+                          key={cat}
+                          catKey={cat}
+                          amount={d ? d[1].amount : 0}
+                          minTier={d ? d[1].minTier : 5}
+                          maxAmount={maxFraudAmount}
+                          showAsPercent={filters.showAsPercent}
+                          refYear={filters.yearEnd}
+                          fullWidth
+                        />
+                      );
+                    })
+                  : (['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'] as const).map((cat) => {
+                      const d = wasteCategories.find(([k]) => k === cat);
+                      return (
+                        <CategoryRow
+                          key={cat}
+                          catKey={cat}
+                          amount={d ? d[1].amount : 0}
+                          minTier={d ? d[1].minTier : 5}
+                          maxAmount={maxWasteAmount}
+                          showAsPercent={filters.showAsPercent}
+                          refYear={filters.yearEnd}
+                          fullWidth
+                        />
+                      );
+                    })}
               </div>
             </motion.div>
-          </div>
+          ) : (
+            /* Desktop: 2-column grid */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* FRAUD column */}
+              <motion.div
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.1, ease: 'easeOut' }}
+                className="glass-card p-4"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                  <h3 className="text-xs font-semibold uppercase tracking-widest text-red-400">
+                    Fraud
+                  </h3>
+                </div>
+                <div className="space-y-0.5">
+                  {(['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7'] as const).map((cat) => {
+                    const d = fraudCategories.find(([k]) => k === cat);
+                    return (
+                      <CategoryRow
+                        key={cat}
+                        catKey={cat}
+                        amount={d ? d[1].amount : 0}
+                        minTier={d ? d[1].minTier : 5}
+                        maxAmount={maxFraudAmount}
+                        showAsPercent={filters.showAsPercent}
+                        refYear={filters.yearEnd}
+                      />
+                    );
+                  })}
+                </div>
+              </motion.div>
+
+              {/* WASTE column */}
+              <motion.div
+                initial={{ opacity: 0, x: 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: 0.15, ease: 'easeOut' }}
+                className="glass-card p-4"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                  <h3 className="text-xs font-semibold uppercase tracking-widest text-amber-400">
+                    Waste
+                  </h3>
+                </div>
+                <div className="space-y-0.5">
+                  {(['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7'] as const).map((cat) => {
+                    const d = wasteCategories.find(([k]) => k === cat);
+                    return (
+                      <CategoryRow
+                        key={cat}
+                        catKey={cat}
+                        amount={d ? d[1].amount : 0}
+                        minTier={d ? d[1].minTier : 5}
+                        maxAmount={maxWasteAmount}
+                        showAsPercent={filters.showAsPercent}
+                        refYear={filters.yearEnd}
+                      />
+                    );
+                  })}
+                </div>
+              </motion.div>
+            </div>
+          )}
 
           {/* ── Summary Cards ──────────────────────────────────────────── */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-2 sm:grid-cols-4 gap-3"
+            className="grid grid-cols-2 gap-3"
           >
             {/* Entries card */}
             <motion.div variants={itemVariants} className="glass-card p-4 space-y-1">
@@ -492,7 +580,7 @@ export function Dashboard() {
                 Tier Mix
               </p>
               <div className="flex items-center gap-3">
-                <TierDonut counts={tierCounts} />
+                <TierDonut counts={tierCounts} size={isMobile ? 80 : 72} />
                 <div className="space-y-0.5 text-[10px]">
                   {([1, 2, 3, 4] as const).map((t) => (
                     <div key={t} className="flex items-center gap-1">

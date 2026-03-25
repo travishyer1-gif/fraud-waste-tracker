@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-SOURCE_MD = Path("/Users/frobertomaya/clawd/data/artifacts/specs/consolidated-federal-fraud-waste.md")
+SOURCE_MD = Path(__file__).resolve().parent.parent / "data" / "consolidated-federal-fraud-waste.md"
 OUTPUT_JSON = Path(__file__).parent.parent / "src" / "data" / "evidence.json"
 
 # ── Category metadata ────────────────────────────────────────────────────────

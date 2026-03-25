@@ -4,8 +4,24 @@ import { useState, useEffect } from 'react';
 import { Sun, Moon, ShieldAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useFilters } from '@/context/FilterContext';
+import type { ViewId } from './Navigation';
 
-export function Header() {
+const VIEW_LABELS: Record<ViewId, string> = {
+  dashboard:  'Overview',
+  stats:      'Stats',
+  treemap:    'Treemap',
+  trends:     'Trends',
+  confidence: 'Confidence',
+  dataflow:   'Data Flow',
+  table:      'Evidence',
+};
+
+interface HeaderProps {
+  /** Current active view — used to show dynamic page title on mobile. */
+  activeView?: ViewId;
+}
+
+export function Header({ activeView = 'dashboard' }: HeaderProps) {
   const [isDark, setIsDark] = useState(true);
   const { filters, setShowStateData } = useFilters();
 
@@ -25,9 +41,34 @@ export function Header() {
     }
   };
 
+  const pageTitle = VIEW_LABELS[activeView] ?? 'Overview';
+
   return (
     <header className="sticky top-0 z-50 glass-dark border-b border-white/10">
-      <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+      {/* ── Mobile header (< md) ── */}
+      <div className="md:hidden container mx-auto px-4 h-12 flex items-center justify-between">
+        {/* Shield icon only */}
+        <div className="w-8 h-8 rounded-lg bg-red-500/20 border border-red-500/30 flex items-center justify-center shrink-0">
+          <ShieldAlert className="w-4 h-4 text-red-400" />
+        </div>
+
+        {/* Dynamic page title */}
+        <span className="text-sm font-semibold text-foreground">{pageTitle}</span>
+
+        {/* Theme toggle */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          className="w-8 h-8"
+          aria-label="Toggle theme"
+        >
+          {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </Button>
+      </div>
+
+      {/* ── Desktop header (≥ md) — unchanged ── */}
+      <div className="hidden md:flex container mx-auto px-4 h-14 items-center justify-between">
         {/* Logo + Title */}
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-red-500/20 border border-red-500/30 flex items-center justify-center">
@@ -49,7 +90,7 @@ export function Header() {
             Data: FY2003–FY2025
           </span>
 
-          {/* Fix 4: State Data toggle with "Coming Soon" tooltip */}
+          {/* State Data toggle with "Coming Soon" tooltip */}
           <div className="relative group">
             <button
               onClick={() => setShowStateData(!filters.showStateData)}
@@ -88,11 +129,7 @@ export function Header() {
             className="w-8 h-8"
             aria-label="Toggle theme"
           >
-            {isDark ? (
-              <Sun className="w-4 h-4" />
-            ) : (
-              <Moon className="w-4 h-4" />
-            )}
+            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </Button>
         </div>
       </div>

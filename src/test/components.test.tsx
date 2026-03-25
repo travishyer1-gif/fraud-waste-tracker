@@ -77,13 +77,13 @@ function renderWithProviders(ui: React.ReactElement) {
 // ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe('Navigation', () => {
-  it('renders all 7 tabs', async () => {
+  it('renders all 7 desktop tabs', async () => {
     const { Navigation } = await import('@/components/layout/Navigation');
     renderWithProviders(<Navigation />);
 
     const expectedLabels = ['Overview', 'Stats', 'Treemap', 'Trends', 'Confidence', 'Data Flow', 'Evidence'];
     expectedLabels.forEach(label => {
-      expect(screen.getByText(label)).toBeTruthy();
+      expect(screen.getAllByText(label).length).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -91,6 +91,26 @@ describe('Navigation', () => {
     const { Navigation } = await import('@/components/layout/Navigation');
     const { container } = renderWithProviders(<Navigation activeView="dashboard" />);
     expect(container).toBeTruthy();
+  });
+});
+
+describe('BottomTabBar', () => {
+  it('renders 5 primary tabs + More button', async () => {
+    const { BottomTabBar } = await import('@/components/layout/BottomTabBar');
+    renderWithProviders(<BottomTabBar activeView="dashboard" onViewChange={vi.fn()} />);
+    expect(screen.getByText('Overview')).toBeTruthy();
+    expect(screen.getByText('Stats')).toBeTruthy();
+    expect(screen.getByText('Trends')).toBeTruthy();
+    expect(screen.getByText('Evidence')).toBeTruthy();
+    expect(screen.getByText('More')).toBeTruthy();
+  });
+});
+
+describe('FilterChip', () => {
+  it('renders without crashing and shows Filters label', async () => {
+    const { FilterChip } = await import('@/components/controls/FilterChip');
+    renderWithProviders(<FilterChip />);
+    expect(screen.getByText('Filters')).toBeTruthy();
   });
 });
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { LayoutDashboard, TreePine, TrendingUp, GitBranch, Table2, BarChart3, Layers } from 'lucide-react';
+import { LayoutDashboard, TreePine, TrendingUp, GitBranch, Table2, BarChart3, Layers, PieChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const VIEWS = [
@@ -8,6 +8,7 @@ const VIEWS = [
   { id: 'stats', label: 'Stats', icon: BarChart3 },
   { id: 'treemap', label: 'Treemap', icon: TreePine },
   { id: 'trends', label: 'Historical', icon: TrendingUp },
+  { id: 'budget', label: 'Budget', icon: PieChart },
   { id: 'confidence', label: 'Methodology', icon: Layers },
   { id: 'dataflow', label: 'Data Flow', icon: GitBranch },
   { id: 'table', label: 'Evidence', icon: Table2 },

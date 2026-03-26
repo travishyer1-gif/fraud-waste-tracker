@@ -163,6 +163,12 @@ export function Dashboard() {
   const isMobile = useIsMobile();
   const [mobileCatTab, setMobileCatTab] = useState<'fraud' | 'waste'>('fraud');
 
+  // Effective reference year for percentage display
+  const effectiveRefYear =
+    filters.percentMode === 'reference_year'
+      ? filters.referenceYear
+      : filters.yearEnd;
+
   // Derived from filtered entries
   const {
     filteredFloor,
@@ -270,7 +276,7 @@ export function Dashboard() {
           >
             {(() => {
               const yearCount = filters.yearEnd - filters.yearStart + 1;
-              const refYear = filters.yearEnd;
+              const refYear = effectiveRefYear;
               const refBudget = FEDERAL_BUDGET[refYear] ?? Object.values(FEDERAL_BUDGET).reduce((a, b) => a + b, 0) / Object.values(FEDERAL_BUDGET).length;
               const floorPct = ((filteredFloor / refBudget) * 100).toFixed(1);
               const ceilingPct = ((filteredCeiling / refBudget) * 100).toFixed(1);
@@ -433,7 +439,7 @@ export function Dashboard() {
                           minTier={d ? d[1].minTier : 5}
                           maxAmount={maxFraudAmount}
                           showAsPercent={filters.showAsPercent}
-                          refYear={filters.yearEnd}
+                          refYear={effectiveRefYear}
                           fullWidth
                         />
                       );
@@ -448,7 +454,7 @@ export function Dashboard() {
                           minTier={d ? d[1].minTier : 5}
                           maxAmount={maxWasteAmount}
                           showAsPercent={filters.showAsPercent}
-                          refYear={filters.yearEnd}
+                          refYear={effectiveRefYear}
                           fullWidth
                         />
                       );
@@ -482,7 +488,7 @@ export function Dashboard() {
                         minTier={d ? d[1].minTier : 5}
                         maxAmount={maxFraudAmount}
                         showAsPercent={filters.showAsPercent}
-                        refYear={filters.yearEnd}
+                        refYear={effectiveRefYear}
                       />
                     );
                   })}
@@ -513,7 +519,7 @@ export function Dashboard() {
                         minTier={d ? d[1].minTier : 5}
                         maxAmount={maxWasteAmount}
                         showAsPercent={filters.showAsPercent}
-                        refYear={filters.yearEnd}
+                        refYear={effectiveRefYear}
                       />
                     );
                   })}

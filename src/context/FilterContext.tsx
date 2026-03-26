@@ -4,6 +4,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 import { YEAR_RANGE } from '@/lib/constants';
 
 export type DataType = 'fraud' | 'waste' | 'both';
+export type PercentMode = 'dollars' | 'entry_year' | 'reference_year';
 
 export interface FilterState {
   minTier: number;          // minimum certainty tier (1–4)
@@ -12,8 +13,11 @@ export interface FilterState {
   yearEnd: number;
   dataType: DataType;
   searchQuery: string;
-  showAsPercent: boolean;   // show dollar amounts as % of federal budget
-  showStateData: boolean;   // include state-level entries (coming soon)
+  percentMode: PercentMode;  // 'dollars' | 'entry_year' | 'reference_year'
+  referenceYear: number;     // FY2003–2025, used when percentMode === 'reference_year'
+  showStateData: boolean;    // include state-level entries (coming soon)
+  /** @deprecated Use percentMode !== 'dollars' instead */
+  showAsPercent: boolean;
 }
 
 interface FilterContextValue {
@@ -23,6 +27,9 @@ interface FilterContextValue {
   setYearRange: (start: number, end: number) => void;
   setDataType: (type: DataType) => void;
   setSearchQuery: (q: string) => void;
+  setPercentMode: (mode: PercentMode) => void;
+  setReferenceYear: (year: number) => void;
+  /** @deprecated Use setPercentMode instead */
   setShowAsPercent: (v: boolean) => void;
   setShowStateData: (v: boolean) => void;
   resetFilters: () => void;
@@ -35,8 +42,10 @@ const defaultFilters: FilterState = {
   yearEnd: YEAR_RANGE.max,
   dataType: 'both',
   searchQuery: '',
-  showAsPercent: false,
+  percentMode: 'dollars',
+  referenceYear: 2025,
   showStateData: false,
+  get showAsPercent() { return this.percentMode !== 'dollars'; },
 };
 
 const FilterContext = createContext<FilterContextValue | null>(null);
@@ -60,8 +69,23 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   const setSearchQuery = (q: string) =>
     setFilters(prev => ({ ...prev, searchQuery: q }));
 
+  const setPercentMode = (mode: PercentMode) =>
+    setFilters(prev => ({
+      ...prev,
+      percentMode: mode,
+      showAsPercent: mode !== 'dollars',
+    }));
+
+  const setReferenceYear = (year: number) =>
+    setFilters(prev => ({ ...prev, referenceYear: year }));
+
+  // Backward compat: map old boolean toggle to percentMode
   const setShowAsPercent = (v: boolean) =>
-    setFilters(prev => ({ ...prev, showAsPercent: v }));
+    setFilters(prev => ({
+      ...prev,
+      percentMode: v ? 'entry_year' : 'dollars',
+      showAsPercent: v,
+    }));
 
   const setShowStateData = (v: boolean) =>
     setFilters(prev => ({ ...prev, showStateData: v }));
@@ -77,6 +101,8 @@ export function FilterProvider({ children }: { children: ReactNode }) {
         setYearRange,
         setDataType,
         setSearchQuery,
+        setPercentMode,
+        setReferenceYear,
         setShowAsPercent,
         setShowStateData,
         resetFilters,

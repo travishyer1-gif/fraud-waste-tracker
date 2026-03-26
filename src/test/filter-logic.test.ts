@@ -53,11 +53,16 @@ function applyFilters(entries: EvidenceEntry[], filters: FilterState): EvidenceE
 }
 
 const defaultFilters: FilterState = {
+  minTier: 1,
   maxTier: 4,
   yearStart: 2003,
   yearEnd: 2025,
   dataType: 'both',
   searchQuery: '',
+  percentMode: 'dollars',
+  referenceYear: 2025,
+  showStateData: false,
+  showAsPercent: false,
 };
 
 describe('filter logic', () => {
@@ -210,6 +215,7 @@ describe('filter logic', () => {
   describe('combined filters', () => {
     it('tier 1 + fraud + 2024 returns correct subset', () => {
       const result = applyFilters(data.entries, {
+        ...defaultFilters,
         maxTier: 1,
         dataType: 'fraud',
         yearStart: 2024,
@@ -230,6 +236,7 @@ describe('filter logic', () => {
 
     it('tier 1 + waste + 2025 returns a non-empty subset', () => {
       const result = applyFilters(data.entries, {
+        ...defaultFilters,
         maxTier: 1,
         dataType: 'waste',
         yearStart: 2025,

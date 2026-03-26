@@ -14,6 +14,7 @@ import BubbleView from '@/components/views/BubbleView';
 import TimeSeriesView from '@/components/views/TimeSeriesView';
 import ConfidenceView from '@/components/views/ConfidenceView';
 import SankeyView from '@/components/views/SankeyView';
+import BudgetTrendsView from '@/components/views/BudgetTrendsView';
 import { TooltipProvider } from '@/components/ui/InfoTooltip';
 import { MethodologyPanel } from '@/components/ui/MethodologyPanel';
 import { Footer } from '@/components/layout/Footer';
@@ -26,6 +27,7 @@ function ViewContent({ view }: { view: ViewId }) {
   if (view === 'trends') return <TimeSeriesView />;
   if (view === 'confidence') return <ConfidenceView />;
   if (view === 'dataflow') return <SankeyView />;
+  if (view === 'budget') return <BudgetTrendsView />;
   return <BubbleView />;
 }
 

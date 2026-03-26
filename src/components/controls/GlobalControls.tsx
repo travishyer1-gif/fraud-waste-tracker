@@ -2,12 +2,30 @@
 
 import { useState, useEffect } from 'react';
 import { Search, X, RotateCcw, DollarSign, Percent } from 'lucide-react';
-import { useFilters, type DataType } from '@/context/FilterContext';
+import { useFilters, type DataType, type PercentMode } from '@/context/FilterContext';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { TIER_COLORS, YEAR_RANGE } from '@/lib/constants';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { TIER_COLORS, YEAR_RANGE, FEDERAL_BUDGET } from '@/lib/constants';
+
+const REFERENCE_YEAR_OPTIONS = Object.keys(FEDERAL_BUDGET)
+  .map(Number)
+  .sort((a, b) => b - a); // most recent first
+
+function formatBudgetLabel(year: number): string {
+  const budget = FEDERAL_BUDGET[year];
+  if (!budget) return `FY${year}`;
+  const trillions = budget / 1_000_000_000_000;
+  return `FY${year} ($${trillions.toFixed(1)}T)`;
+}
 
 export function GlobalControls() {
   const {
@@ -16,13 +34,13 @@ export function GlobalControls() {
     setYearRange,
     setDataType,
     setSearchQuery,
-    setShowAsPercent,
+    setPercentMode,
+    setReferenceYear,
     resetFilters,
   } = useFilters();
 
   const [localSearch, setLocalSearch] = useState(filters.searchQuery);
 
-  // Fix 2: sync localSearch when filters.searchQuery changes externally (e.g. reset)
   useEffect(() => {
     setLocalSearch(filters.searchQuery);
   }, [filters.searchQuery]);
@@ -37,13 +55,18 @@ export function GlobalControls() {
     setSearchQuery('');
   };
 
-  // Fix 1: dual-range tier label
   const tierLabel =
     filters.minTier === filters.maxTier
       ? `Tier ${filters.minTier} Only`
       : filters.minTier === 1 && filters.maxTier === 4
         ? 'All Tiers (1–4)'
         : `Tiers ${filters.minTier}–${filters.maxTier}`;
+
+  const percentModes: { value: PercentMode; label: string; icon?: React.ReactNode }[] = [
+    { value: 'dollars', label: '$ Amount', icon: <DollarSign className="w-3 h-3" /> },
+    { value: 'entry_year', label: '% Entry Year', icon: <Percent className="w-3 h-3" /> },
+    { value: 'reference_year', label: '% Ref Year', icon: <Percent className="w-3 h-3" /> },
+  ];
 
   return (
     <div className="glass-card p-4 space-y-4">
@@ -113,7 +136,6 @@ export function GlobalControls() {
           <span>{TIER_COLORS[1].icon} Confirmed</span>
           <span>All Tiers {TIER_COLORS[4].icon}</span>
         </div>
-        {/* Tier color bars — only highlight tiers in selected range */}
         <div className="flex gap-1 mt-1">
           {([1, 2, 3, 4] as const).map(t => (
             <div
@@ -148,33 +170,48 @@ export function GlobalControls() {
         </div>
       </div>
 
-      {/* Row 5: % of Budget toggle (Fix 3) */}
-      <div className="flex items-center justify-between">
-        <span className="text-xs text-muted-foreground">Display Amounts:</span>
-        <div className="flex gap-1">
-          <button
-            onClick={() => setShowAsPercent(false)}
-            className={`flex items-center gap-1 px-3 py-1 text-xs rounded-md font-medium transition-colors ${
-              !filters.showAsPercent
-                ? 'bg-primary/20 text-primary border border-primary/30'
-                : 'bg-muted/50 text-muted-foreground border border-transparent hover:border-border'
-            }`}
-          >
-            <DollarSign className="w-3 h-3" />
-            $ Amount
-          </button>
-          <button
-            onClick={() => setShowAsPercent(true)}
-            className={`flex items-center gap-1 px-3 py-1 text-xs rounded-md font-medium transition-colors ${
-              filters.showAsPercent
-                ? 'bg-primary/20 text-primary border border-primary/30'
-                : 'bg-muted/50 text-muted-foreground border border-transparent hover:border-border'
-            }`}
-          >
-            <Percent className="w-3 h-3" />
-            % of Budget
-          </button>
+      {/* Row 5: Display Amounts — three-state toggle */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-muted-foreground">Display Amounts:</span>
         </div>
+        <div className="flex gap-1 flex-wrap">
+          {percentModes.map(({ value, label, icon }) => (
+            <button
+              key={value}
+              onClick={() => setPercentMode(value)}
+              className={`flex items-center gap-1 px-3 py-1 text-xs rounded-md font-medium transition-colors ${
+                filters.percentMode === value
+                  ? 'bg-primary/20 text-primary border border-primary/30'
+                  : 'bg-muted/50 text-muted-foreground border border-transparent hover:border-border'
+              }`}
+            >
+              {icon}
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Reference year dropdown — shown only when reference_year mode is active */}
+        {filters.percentMode === 'reference_year' && (
+          <div className="mt-2">
+            <Select
+              value={String(filters.referenceYear)}
+              onValueChange={val => setReferenceYear(Number(val))}
+            >
+              <SelectTrigger className="h-8 text-xs bg-background/60 border-border">
+                <SelectValue placeholder="Select reference year" />
+              </SelectTrigger>
+              <SelectContent className="bg-card border-border">
+                {REFERENCE_YEAR_OPTIONS.map(year => (
+                  <SelectItem key={year} value={String(year)} className="text-xs">
+                    {formatBudgetLabel(year)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
 
       {/* Reset */}

@@ -68,13 +68,16 @@ const FEDERAL_BUDGET_AVERAGE =
  * Format a dollar amount as a percentage of the federal budget.
  * @param amount - Dollar amount
  * @param year - Fiscal year (uses average budget if unknown/omitted)
+ * @param referenceYear - Optional override: use this year's budget as denominator instead of entry year
  * @returns Formatted string like "0.042% of federal budget"
  */
-export function formatAsPercent(amount: number, year?: number): string {
+export function formatAsPercent(amount: number, year?: number, referenceYear?: number): string {
   const budget =
-    year !== undefined && FEDERAL_BUDGET[year] !== undefined
-      ? FEDERAL_BUDGET[year]
-      : FEDERAL_BUDGET_AVERAGE;
+    referenceYear !== undefined && FEDERAL_BUDGET[referenceYear] !== undefined
+      ? FEDERAL_BUDGET[referenceYear]
+      : year !== undefined && FEDERAL_BUDGET[year] !== undefined
+        ? FEDERAL_BUDGET[year]
+        : FEDERAL_BUDGET_AVERAGE;
   const pct = (amount / budget) * 100;
   // Show enough precision to be meaningful even for small numbers
   const formatted =

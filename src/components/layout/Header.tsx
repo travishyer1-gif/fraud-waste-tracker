@@ -11,6 +11,7 @@ const VIEW_LABELS: Record<ViewId, string> = {
   stats:      'Stats',
   treemap:    'Treemap',
   trends:     'Trends',
+  budget:     'Budget',
   confidence: 'Confidence',
   dataflow:   'Data Flow',
   table:      'Evidence',

@@ -1,15 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { BarChart3, TrendingUp, TreePine, Layers, MoreHorizontal } from 'lucide-react';
+import { BarChart3, TrendingUp, TreePine, Layers, MoreHorizontal, PieChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MoreDrawer } from './MoreDrawer';
 import type { ViewId } from './Navigation';
 
-/** The 4 primary tabs visible in the top bar on mobile. */
+/** The 5 primary tabs visible in the top bar on mobile. */
 const PRIMARY_TABS: { id: ViewId; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { id: 'stats',      label: 'Stats',       icon: BarChart3   },
   { id: 'trends',     label: 'Historical',  icon: TrendingUp  },
+  { id: 'budget',     label: 'Budget',      icon: PieChart    },
   { id: 'treemap',    label: 'Treemap',     icon: TreePine    },
   { id: 'confidence', label: 'Methodology', icon: Layers      },
 ];

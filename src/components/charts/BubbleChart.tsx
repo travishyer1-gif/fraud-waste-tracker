@@ -3,9 +3,11 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import * as d3 from 'd3';
 import type { EvidenceEntry } from '@/lib/types';
-import { CATEGORY_LABELS, TIER_COLORS } from '@/lib/constants';
+import { CATEGORY_LABELS, TIER_COLORS, formatAsPercent } from '@/lib/constants';
 import { formatCompact, getTierInfo } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/useMediaQuery';
+import { useFilters } from '@/context/FilterContext';
+import type { PercentMode } from '@/context/FilterContext';
 
 // ─── constants ────────────────────────────────────────────────────────────────
 const MIN_RADIUS = 8;
@@ -53,7 +55,7 @@ function getCategoryCenter(
 }
 
 // ─── detail panel ─────────────────────────────────────────────────────────────
-function DetailPanel({ entry, onClose }: { entry: EvidenceEntry; onClose: () => void }) {
+function DetailPanel({ entry, onClose, percentMode, referenceYear }: { entry: EvidenceEntry; onClose: () => void; percentMode: PercentMode; referenceYear: number }) {
   const tierInfo = getTierInfo(entry.certaintyTier);
   const typeColor = entry.type === 'fraud' ? '#ef4444' : '#f59e0b';
 
@@ -85,7 +87,7 @@ function DetailPanel({ entry, onClose }: { entry: EvidenceEntry; onClose: () => 
           <div>
             <p className="text-muted-foreground mb-0.5">Best Estimate</p>
             <p className="font-mono text-lg font-bold" style={{ color: typeColor }}>
-              {formatCompact(entry.amountBest)}
+              {formatDisplayAmount(entry, percentMode, referenceYear)}
             </p>
             {(entry.amountLow != null || entry.amountHigh != null) && (
               <p className="text-muted-foreground font-mono text-[10px] mt-0.5">
@@ -146,12 +148,32 @@ function Row({ label, value }: { label: string; value: string }) {
   );
 }
 
+// ─── display formatter ────────────────────────────────────────────────────────
+function formatDisplayAmount(
+  entry: EvidenceEntry,
+  percentMode: PercentMode,
+  referenceYear: number
+): string {
+  if (entry.amountBest == null) return '—';
+  if (percentMode === 'dollars') return formatCompact(entry.amountBest);
+  const year =
+    percentMode === 'reference_year'
+      ? referenceYear
+      : (entry.fiscalYearEnd ?? entry.fiscalYearStart ?? undefined);
+  return formatAsPercent(
+    entry.amountBest,
+    year,
+    percentMode === 'reference_year' ? referenceYear : undefined
+  );
+}
+
 // ─── main component ───────────────────────────────────────────────────────────
 export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const simulationRef = useRef<d3.Simulation<SimNode, undefined> | null>(null);
   const isMobile = useIsMobile();
+  const { filters } = useFilters();
 
   const [dimensions, setDimensions] = useState({ width: 700, height: 500 });
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
@@ -284,7 +306,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
       .attr('font-weight', '600')
       .style('pointer-events', 'none')
       .style('user-select', 'none')
-      .text(d => formatCompact(d.entry.amountBest));
+      .text(d => formatDisplayAmount(d.entry, filters.percentMode, filters.referenceYear));
 
     // ── drag behavior ────────────────────────────────────────────────────────
     const drag = d3.drag<SVGGElement, SimNode>()
@@ -382,7 +404,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
     return () => {
       sim.stop();
     };
-  }, [entries, dimensions, isMobile]);
+  }, [entries, dimensions, isMobile, filters.percentMode, filters.referenceYear]);
 
   // Update SVG dimensions on resize
   useEffect(() => {
@@ -424,7 +446,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
         </div>
 
         {/* Size legend — hidden on mobile to save space */}
-        {!isMobile && (
+        {!isMobile && filters.percentMode === 'dollars' && (
           <div className="backdrop-blur-xl bg-black/70 border border-white/10 rounded-lg px-2.5 py-2">
             <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1.5">Size = Amount</p>
             <div className="flex items-end gap-3">
@@ -466,7 +488,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
         >
           <p className="font-semibold text-white leading-snug mb-1">{tooltip.entry.title}</p>
           {tooltip.entry.amountBest != null && (
-            <p className="font-mono text-emerald-400">{formatCompact(tooltip.entry.amountBest)}</p>
+            <p className="font-mono text-emerald-400">{formatDisplayAmount(tooltip.entry, filters.percentMode, filters.referenceYear)}</p>
           )}
           {(() => {
             const ti = getTierInfo(tooltip.entry.certaintyTier);
@@ -482,7 +504,7 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
 
       {/* Detail panel */}
       {selected && (
-        <DetailPanel entry={selected} onClose={() => setSelected(null)} />
+        <DetailPanel entry={selected} onClose={() => setSelected(null)} percentMode={filters.percentMode} referenceYear={filters.referenceYear} />
       )}
     </div>
   );

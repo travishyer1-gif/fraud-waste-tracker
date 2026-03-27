@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { BarChart3, TrendingUp, TreePine, Layers, MoreHorizontal, PieChart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { MoreDrawer } from './MoreDrawer';
 import type { ViewId } from './Navigation';
@@ -46,7 +47,22 @@ export function BottomTabBar({ activeView, onViewChange }: BottomTabBarProps) {
                   isActive ? 'text-primary' : 'text-muted-foreground'
                 )}
               >
-                <Icon className="w-5 h-5" />
+                <AnimatePresence mode="wait" initial={false}>
+                  {isActive ? (
+                    <motion.span
+                      key="active"
+                      initial={{ scale: 1 }}
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 0.2, ease: 'easeInOut' }}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </motion.span>
+                  ) : (
+                    <span key="inactive">
+                      <Icon className="w-5 h-5" />
+                    </span>
+                  )}
+                </AnimatePresence>
                 <span className="text-[9px] font-medium leading-none">{tab.label}</span>
               </button>
             );
@@ -60,7 +76,22 @@ export function BottomTabBar({ activeView, onViewChange }: BottomTabBarProps) {
               isMoreActive || moreOpen ? 'text-primary' : 'text-muted-foreground'
             )}
           >
-            <MoreHorizontal className="w-5 h-5" />
+            <AnimatePresence mode="wait" initial={false}>
+              {isMoreActive || moreOpen ? (
+                <motion.span
+                  key="active"
+                  initial={{ scale: 1 }}
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 0.2, ease: 'easeInOut' }}
+                >
+                  <MoreHorizontal className="w-5 h-5" />
+                </motion.span>
+              ) : (
+                <span key="inactive">
+                  <MoreHorizontal className="w-5 h-5" />
+                </span>
+              )}
+            </AnimatePresence>
             <span className="text-[9px] font-medium leading-none">More</span>
           </button>
         </div>

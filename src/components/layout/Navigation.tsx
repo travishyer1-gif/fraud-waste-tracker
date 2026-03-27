@@ -1,6 +1,7 @@
 'use client';
 
 import { LayoutDashboard, TreePine, TrendingUp, GitBranch, Table2, BarChart3, Layers, PieChart } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 const VIEWS = [
@@ -34,14 +35,23 @@ export function Navigation({ activeView = 'dashboard', onViewChange }: Navigatio
                 key={view.id}
                 onClick={() => onViewChange?.(view.id)}
                 className={cn(
-                  'flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors',
+                  'relative flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors',
                   isActive
-                    ? 'border-primary text-foreground'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/30'
+                    ? 'text-foreground'
+                    : 'text-muted-foreground hover:text-foreground'
                 )}
               >
                 <Icon className="w-3.5 h-3.5" />
                 {view.label}
+
+                {/* Sliding emerald bottom indicator */}
+                {isActive && (
+                  <motion.span
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-emerald-400 rounded-full"
+                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                  />
+                )}
               </button>
             );
           })}

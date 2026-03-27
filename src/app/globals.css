@@ -26,6 +26,10 @@
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
+
+  /* Waste / amber dual-accent */
+  --color-waste: hsl(var(--color-waste-raw));
+  --color-waste-muted: hsl(var(--color-waste-muted-raw));
 }
 
 @layer base {
@@ -57,6 +61,13 @@
     --tier-4: #f97316;
     --type-fraud: #ef4444;
     --type-waste: #f59e0b;
+
+    /* Waste accent (amber) */
+    --color-waste-raw: 45 93% 47%;
+    --color-waste-muted-raw: 45 93% 30%;
+
+    /* Hero gradient */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(160 30% 8%) 100%);
   }
 
   .dark {

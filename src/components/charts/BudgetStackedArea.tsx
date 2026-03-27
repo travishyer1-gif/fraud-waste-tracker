@@ -36,8 +36,17 @@ function CustomTooltip({ active, payload, label, viewMode }: CustomTooltipProps)
   const total = payload.reduce((sum: number, p) => sum + (p.value ?? 0), 0);
 
   return (
-    <div className="bg-card/95 backdrop-blur-sm border border-white/10 rounded-lg p-3 shadow-xl text-xs min-w-[200px]">
-      <p className="font-semibold text-foreground mb-2">FY{label}</p>
+    <div
+      className="text-xs min-w-[200px]"
+      style={{
+        background: 'rgba(24,24,27,0.95)',
+        border: '1px solid rgba(16,185,129,0.3)',
+        borderRadius: 8,
+        padding: '8px 12px',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+      }}
+    >
+      <p className="font-semibold text-white mb-2">FY{label}</p>
       <div className="space-y-1">
         {[...payload].reverse().map(p => {
           const value = p.value ?? 0;
@@ -50,9 +59,9 @@ function CustomTooltip({ active, payload, label, viewMode }: CustomTooltipProps)
             <div key={p.dataKey} className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-1.5">
                 <div className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: p.color }} />
-                <span className="text-muted-foreground truncate max-w-[120px]">{p.dataKey}</span>
+                <span className="text-white/60 truncate max-w-[120px]">{p.dataKey}</span>
               </div>
-              <span className="font-mono font-semibold text-foreground">
+              <span className="font-mono font-semibold text-emerald-400">
                 {viewMode === 'absolute'
                   ? `${formatBudgetAmount(value)} (${pct}%)`
                   : `${pct}%`}
@@ -62,8 +71,8 @@ function CustomTooltip({ active, payload, label, viewMode }: CustomTooltipProps)
         })}
         {viewMode === 'absolute' && (
           <div className="pt-1 mt-1 border-t border-white/10 flex justify-between">
-            <span className="text-muted-foreground font-medium">Total</span>
-            <span className="font-mono font-semibold text-foreground">{formatBudgetAmount(total)}</span>
+            <span className="text-white/60 font-medium">Total</span>
+            <span className="font-mono font-semibold text-emerald-400">{formatBudgetAmount(total)}</span>
           </div>
         )}
       </div>

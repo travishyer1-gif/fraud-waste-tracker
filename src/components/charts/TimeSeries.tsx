@@ -134,20 +134,28 @@ function buildCounterfactualData(
 function CustomTooltip({ active, payload, label, isMobile }: any) {
   if (!active || !payload || payload.length === 0) return null;
 
+  const tooltipStyle = {
+    background: 'rgba(24,24,27,0.95)',
+    border: '1px solid rgba(16,185,129,0.3)',
+    borderRadius: 8,
+    padding: '8px 12px',
+    boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+  };
+
   // On mobile: simplified — just year + total combined
   if (isMobile) {
     const combinedEntry = payload.find((p: any) => String(p.dataKey).includes('combined') && !String(p.dataKey).includes('cf'));
     const total = combinedEntry?.value ?? payload.reduce((s: number, p: any) => s + (typeof p.value === 'number' ? p.value : 0), 0);
     return (
-      <div className="rounded-xl border border-white/10 bg-black/80 backdrop-blur-md p-2.5 shadow-2xl min-w-[130px]">
+      <div style={tooltipStyle} className="min-w-[130px]">
         <p className="text-xs text-white/60 mb-1 font-semibold">FY{label}</p>
-        <p className="font-mono text-white font-bold text-sm">{typeof total === 'number' ? formatCompact(total) : '—'}</p>
+        <p className="font-mono text-emerald-400 font-bold text-sm">{typeof total === 'number' ? formatCompact(total) : '—'}</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl border border-white/10 bg-black/80 backdrop-blur-md p-3 shadow-2xl min-w-[200px]">
+    <div style={tooltipStyle} className="min-w-[200px]">
       <p className="text-xs text-white/60 mb-2 font-semibold uppercase tracking-wider">
         FY{label}
       </p>
@@ -160,9 +168,9 @@ function CustomTooltip({ active, payload, label, isMobile }: any) {
           >
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
-              <span style={{ color: p.color }}>{p.name}</span>
+              <span className="text-white" style={{ color: p.color }}>{p.name}</span>
             </div>
-            <span className="font-mono text-white/80">
+            <span className="font-mono text-emerald-400">
               {typeof p.value === 'number'
                 ? p.dataKey?.toString().endsWith('Pct')
                   ? `${p.value.toFixed(2)}%`
@@ -196,8 +204,8 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
   // External prop overrides local toggle if provided
   const showAsPct = externalShowAsPct ?? localShowAsPct;
 
-  // Responsive chart height
-  const chartHeight = isMobile ? 300 : 420;
+  // Responsive chart height — more vertical space
+  const chartHeight = isMobile ? 320 : 460;
 
   const baseData = useMemo(() => buildTypeTimeSeriesData(entries), [entries]);
 
@@ -323,10 +331,10 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
           <ComposedChart
             data={chartData}
             margin={{
-              top: 10,
+              top: 6,
               right: showBudget && !showAsPct ? 70 : 20,
               left: isMobile ? 10 : 20,
-              bottom: 30,
+              bottom: 24,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#333" vertical={false} />
@@ -389,9 +397,9 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
               dataKey={fraudKey}
               name="Fraud"
               stroke="#ef4444"
-              strokeWidth={2}
-              dot={{ fill: '#ef4444', r: 3 }}
-              activeDot={{ r: 5 }}
+              strokeWidth={2.5}
+              dot={{ fill: '#ef4444', r: 5, strokeWidth: 0 }}
+              activeDot={{ r: 10, fill: '#ef444450', stroke: '#ef4444', strokeWidth: 1.5 }}
             />
             <Line
               yAxisId="left"
@@ -399,9 +407,9 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
               dataKey={wasteKey}
               name="Waste"
               stroke="#f59e0b"
-              strokeWidth={2}
-              dot={{ fill: '#f59e0b', r: 3 }}
-              activeDot={{ r: 5 }}
+              strokeWidth={2.5}
+              dot={{ fill: '#f59e0b', r: 5, strokeWidth: 0 }}
+              activeDot={{ r: 10, fill: '#f59e0b50', stroke: '#f59e0b', strokeWidth: 1.5 }}
             />
             <Line
               yAxisId="left"
@@ -409,10 +417,10 @@ export function TimeSeries({ disabledEventLabels, showAsPct: externalShowAsPct }
               dataKey={combinedKey}
               name="Combined"
               stroke="#e2e8f0"
-              strokeWidth={2}
+              strokeWidth={2.5}
               strokeDasharray="5 3"
-              dot={false}
-              activeDot={{ r: 4 }}
+              dot={{ fill: '#e2e8f0', r: 5, strokeWidth: 0 }}
+              activeDot={{ r: 10, fill: '#e2e8f030', stroke: '#e2e8f0', strokeWidth: 1.5 }}
             />
 
             {/* Counterfactual lines (shown when events are toggled OFF) */}

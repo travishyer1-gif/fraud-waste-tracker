@@ -344,18 +344,21 @@ export function SankeyDiagram({ entries }: Props) {
       <svg ref={svgRef} className="w-full" />
       {tooltip.visible && (
         <div
-          className="pointer-events-none absolute z-50 px-3 py-2 rounded-lg text-xs text-white whitespace-pre-line"
+          className="pointer-events-none absolute z-50 text-xs whitespace-pre-line"
           style={{
             left: tooltip.x + 12,
             top: tooltip.y - 8,
-            background: 'rgba(15,23,42,0.85)',
-            backdropFilter: 'blur(8px)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-            maxWidth: 220,
+            background: 'rgba(24,24,27,0.95)',
+            border: '1px solid rgba(16,185,129,0.3)',
+            borderRadius: 8,
+            padding: '8px 12px',
+            boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+            maxWidth: 240,
           }}
         >
-          {tooltip.content}
+          {tooltip.content.split('\n').map((line, i) => (
+            <span key={i} className={`block ${i === 0 ? 'text-white' : 'font-mono text-emerald-400'}`}>{line}</span>
+          ))}
         </div>
       )}
     </div>

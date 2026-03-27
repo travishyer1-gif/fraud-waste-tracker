@@ -422,90 +422,96 @@ export function BubbleChart({ entries }: { entries: EvidenceEntry[] }) {
   ];
 
   return (
-    <div ref={containerRef} className="relative flex-1 w-full min-h-[300px]">
-      <svg
-        ref={svgRef}
-        width={dimensions.width}
-        height={dimensions.height}
-        viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
-        className="block"
-        style={{ touchAction: 'none' }}
-      />
+    <div className="flex flex-col w-full flex-1 min-h-[300px]">
+      {/* SVG bubble area */}
+      <div ref={containerRef} className="relative flex-1 w-full min-h-[300px]">
+        <svg
+          ref={svgRef}
+          width={dimensions.width}
+          height={dimensions.height}
+          viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+          className="block"
+          style={{ touchAction: 'none' }}
+        />
 
-      {/* Legends */}
-      <div className="absolute bottom-3 left-3 flex flex-col gap-2 pointer-events-none">
-        {/* Tier legend */}
-        <div className="backdrop-blur-xl bg-black/70 border border-white/10 rounded-lg px-2.5 py-2 space-y-1">
-          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1.5">Confidence</p>
+        {/* Mobile pinch hint */}
+        {isMobile && (
+          <div className="absolute top-2 right-2 pointer-events-none">
+            <span className="text-[9px] text-white/30 bg-black/40 px-1.5 py-0.5 rounded">
+              Pinch to zoom · tap bubble
+            </span>
+          </div>
+        )}
+
+        {/* Tooltip */}
+        {tooltip && (
+          <div
+            className="pointer-events-none absolute z-50 text-xs max-w-[220px]"
+            style={{
+              left: Math.min(tooltip.x + 14, dimensions.width - 240),
+              top:  Math.max(tooltip.y - 14, 4),
+              background: 'rgba(24,24,27,0.95)',
+              border: '1px solid rgba(16,185,129,0.3)',
+              borderRadius: 8,
+              padding: '8px 12px',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+            }}
+          >
+            <p className="font-semibold text-white leading-snug mb-1">{tooltip.entry.title}</p>
+            {tooltip.entry.amountBest != null && (
+              <p className="font-mono text-emerald-400">{formatDisplayAmount(tooltip.entry, filters.percentMode, filters.referenceYear)}</p>
+            )}
+            {(() => {
+              const ti = getTierInfo(tooltip.entry.certaintyTier);
+              return <p className="mt-0.5" style={{ color: ti.bg }}>{ti.icon} Tier {tooltip.entry.certaintyTier} — {ti.label}</p>;
+            })()}
+            <p className="text-muted-foreground mt-0.5">
+              {tooltip.entry.category}: {CATEGORY_LABELS[tooltip.entry.category]?.label ?? tooltip.entry.category}
+            </p>
+            <p className="text-muted-foreground line-clamp-1 mt-0.5">{tooltip.entry.sourceName}</p>
+            <p className="text-white/30 mt-1 text-[9px]">{isMobile ? 'Tap again to inspect' : 'Click to inspect · drag to move'}</p>
+          </div>
+        )}
+
+        {/* Detail panel */}
+        {selected && (
+          <DetailPanel entry={selected} onClose={() => setSelected(null)} percentMode={filters.percentMode} referenceYear={filters.referenceYear} />
+        )}
+      </div>
+
+      {/* Legends — below the SVG area, never overlapping bubbles */}
+      <div className="flex flex-row items-start justify-between gap-4 px-3 py-2 flex-shrink-0 pointer-events-none flex-wrap">
+        {/* Confidence tier legend (left) */}
+        <div className="flex items-center gap-3 flex-wrap">
+          <span className="text-[9px] text-muted-foreground uppercase tracking-wider">Confidence:</span>
           {tierLegend.map(({ tier, bg, label, icon }) => (
-            <div key={tier} className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: bg }} />
+            <div key={tier} className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: bg }} />
               <span className="text-[10px] text-white/70">{icon} {label}</span>
             </div>
           ))}
         </div>
 
-        {/* Size legend — hidden on mobile to save space */}
+        {/* Size reference legend (right) — hidden on mobile and non-dollar modes */}
         {!isMobile && filters.percentMode === 'dollars' && (
-          <div className="backdrop-blur-xl bg-black/70 border border-white/10 rounded-lg px-2.5 py-2">
-            <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1.5">Size = Amount</p>
-            <div className="flex items-end gap-3">
-              {sizeLegend.map(({ label, amount }) => {
-                const pct = Math.log10(amount) / Math.log10(3e12);
-                const r = Math.round(MIN_RADIUS + pct * (MAX_RADIUS - MIN_RADIUS));
-                return (
-                  <div key={label} className="flex flex-col items-center gap-1">
-                    <div
-                      className="rounded-full bg-white/15 border border-white/20"
-                      style={{ width: r * 2, height: r * 2 }}
-                    />
-                    <span className="text-[9px] text-white/50">{label}</span>
-                  </div>
-                );
-              })}
-            </div>
+          <div className="flex items-end gap-3">
+            <span className="text-[9px] text-muted-foreground uppercase tracking-wider self-center">Size = Amount:</span>
+            {sizeLegend.map(({ label, amount }) => {
+              const pct = Math.log10(amount) / Math.log10(3e12);
+              const r = Math.round(MIN_RADIUS + pct * (MAX_RADIUS - MIN_RADIUS));
+              return (
+                <div key={label} className="flex flex-col items-center gap-1">
+                  <div
+                    className="rounded-full bg-white/15 border border-white/20"
+                    style={{ width: r * 2, height: r * 2 }}
+                  />
+                  <span className="text-[9px] text-white/50">{label}</span>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
-
-      {/* Mobile pinch hint */}
-      {isMobile && (
-        <div className="absolute top-2 right-2 pointer-events-none">
-          <span className="text-[9px] text-white/30 bg-black/40 px-1.5 py-0.5 rounded">
-            Pinch to zoom · tap bubble
-          </span>
-        </div>
-      )}
-
-      {/* Tooltip */}
-      {tooltip && (
-        <div
-          className="pointer-events-none absolute z-50 backdrop-blur-xl bg-black/80 border border-white/10 rounded-lg p-3 text-xs max-w-[220px] shadow-xl"
-          style={{
-            left: Math.min(tooltip.x + 14, dimensions.width - 240),
-            top:  Math.max(tooltip.y - 14, 4),
-          }}
-        >
-          <p className="font-semibold text-white leading-snug mb-1">{tooltip.entry.title}</p>
-          {tooltip.entry.amountBest != null && (
-            <p className="font-mono text-emerald-400">{formatDisplayAmount(tooltip.entry, filters.percentMode, filters.referenceYear)}</p>
-          )}
-          {(() => {
-            const ti = getTierInfo(tooltip.entry.certaintyTier);
-            return <p className="mt-0.5" style={{ color: ti.bg }}>{ti.icon} Tier {tooltip.entry.certaintyTier} — {ti.label}</p>;
-          })()}
-          <p className="text-muted-foreground mt-0.5">
-            {tooltip.entry.category}: {CATEGORY_LABELS[tooltip.entry.category]?.label ?? tooltip.entry.category}
-          </p>
-          <p className="text-muted-foreground line-clamp-1 mt-0.5">{tooltip.entry.sourceName}</p>
-          <p className="text-white/30 mt-1 text-[9px]">{isMobile ? 'Tap again to inspect' : 'Click to inspect · drag to move'}</p>
-        </div>
-      )}
-
-      {/* Detail panel */}
-      {selected && (
-        <DetailPanel entry={selected} onClose={() => setSelected(null)} percentMode={filters.percentMode} referenceYear={filters.referenceYear} />
-      )}
     </div>
   );
 }

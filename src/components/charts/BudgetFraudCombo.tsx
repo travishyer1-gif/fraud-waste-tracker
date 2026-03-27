@@ -34,16 +34,25 @@ function CustomTooltip({ active, payload, label }: ComboTooltipProps) {
   if (!active || !payload || !payload.length) return null;
 
   return (
-    <div className="bg-card/95 backdrop-blur-sm border border-white/10 rounded-lg p-3 shadow-xl text-xs min-w-[180px]">
-      <p className="font-semibold text-foreground mb-2">FY{label}</p>
+    <div
+      className="text-xs min-w-[180px]"
+      style={{
+        background: 'rgba(24,24,27,0.95)',
+        border: '1px solid rgba(16,185,129,0.3)',
+        borderRadius: 8,
+        padding: '8px 12px',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.5)',
+      }}
+    >
+      <p className="font-semibold text-white mb-2">FY{label}</p>
       <div className="space-y-1">
         {payload.map(p => (
           <div key={p.dataKey} className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-sm shrink-0" style={{ backgroundColor: p.color }} />
-              <span className="text-muted-foreground">{p.name}</span>
+              <span className="text-white/60">{p.name}</span>
             </div>
-            <span className="font-mono font-semibold text-foreground">
+            <span className="font-mono font-semibold text-emerald-400">
               {p.dataKey === 'budgetTrillions'
                 ? `$${((p.value ?? 0)).toFixed(2)}T`
                 : `$${((p.value ?? 0)).toFixed(0)}B`}

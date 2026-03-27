@@ -30,8 +30,20 @@ const TIER_COLORS: Record<number, { bg: string; label: string }> = {
   4: { bg: '#f97316', label: 'Reported' },
 };
 
-type NodeDatum = SankeyNode<{ name: string; color: string; column: number }, object>;
+type NodeDatum = SankeyNode<{ name: string; color: string; column: number; rawName?: string }, object>;
 type LinkDatum = SankeyLink<{ name: string; color: string; column: number }, object>;
+
+const KNOWN_ACRONYMS = new Set(['GAO', 'DOJ', 'OIG', 'CBO', 'IG', 'HHS', 'DOD', 'IRS', 'CMS', 'OMB']);
+
+function formatSourceType(raw: string): string {
+  return raw
+    .replace(/_/g, ' ')
+    .replace(/\b\w+/g, (word) => {
+      const upper = word.toUpperCase();
+      if (KNOWN_ACRONYMS.has(upper)) return upper;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    });
+}
 
 function formatCompact(n: number | null): string {
   if (n === null || n === undefined) return 'Unknown';
@@ -63,13 +75,21 @@ export function SankeyDiagram({ entries }: Props) {
 
       // ── Build node sets ──────────────────────────────────────────────────────
       const sourceTypeSet = new Set<string>();
-      const categorySet = new Set<string>();
+      // Map: raw sourceType → formatted display name
+      const sourceTypeDisplayMap = new Map<string, string>();
+      // Map: category code → human-readable label
+      const categoryLabelMap = new Map<string, string>();
       const tierSet = new Set<number>();
 
       entries.forEach((e) => {
         const st = e.sourceType?.trim() || 'Unknown';
         sourceTypeSet.add(st);
-        categorySet.add(e.category);
+        if (!sourceTypeDisplayMap.has(st)) {
+          sourceTypeDisplayMap.set(st, formatSourceType(st));
+        }
+        // Use categoryLabel (human-readable) if available, else fall back to category code
+        const label = e.categoryLabel?.trim() || e.category;
+        categoryLabelMap.set(e.category, label);
         if (e.certaintyTier !== null && e.certaintyTier !== undefined) {
           tierSet.add(e.certaintyTier);
         } else {
@@ -77,17 +97,19 @@ export function SankeyDiagram({ entries }: Props) {
         }
       });
 
-      const sourceNodes = Array.from(sourceTypeSet).map((name) => ({
-        name,
+      const sourceNodes = Array.from(sourceTypeSet).map((raw) => ({
+        name: sourceTypeDisplayMap.get(raw) ?? raw,
+        rawName: raw,
         color: '#6b7280',
         column: 0,
       }));
 
-      const categoryNodes = Array.from(categorySet).map((cat) => {
+      const categoryNodes = Array.from(categoryLabelMap.entries()).map(([cat, label]) => {
         const entry = entries.find((e) => e.category === cat);
         const isFraud = entry?.type === 'fraud';
         return {
-          name: cat,
+          name: label,
+          rawName: cat,
           color: isFraud ? '#ef4444' : '#f59e0b',
           column: 1,
         };
@@ -113,18 +135,25 @@ export function SankeyDiagram({ entries }: Props) {
       const srcCatMap = new Map<string, number>();
       const catTierMap = new Map<string, number>();
 
+      // Build reverse lookup: raw → display name
+      const rawToDisplaySource = new Map<string, string>();
+      for (const [raw, display] of sourceTypeDisplayMap) {
+        rawToDisplaySource.set(raw, display);
+      }
+
       entries.forEach((e) => {
-        const st = e.sourceType?.trim() || 'Unknown';
-        const cat = e.category;
+        const rawSt = e.sourceType?.trim() || 'Unknown';
+        const displaySt = rawToDisplaySource.get(rawSt) ?? rawSt;
+        const catLabel = categoryLabelMap.get(e.category) ?? e.category;
         const tier = e.certaintyTier ?? 0;
         const tierName =
           tier === 0 ? 'Unknown Tier' : `Tier ${tier} – ${TIER_COLORS[tier]?.label ?? tier}`;
         const amount = e.amountBest ?? 1_000_000;
 
-        const scKey = `${st}|||${cat}`;
+        const scKey = `${displaySt}|||${catLabel}`;
         srcCatMap.set(scKey, (srcCatMap.get(scKey) ?? 0) + amount);
 
-        const ctKey = `${cat}|||${tierName}`;
+        const ctKey = `${catLabel}|||${tierName}`;
         catTierMap.set(ctKey, (catTierMap.get(ctKey) ?? 0) + amount);
       });
 
@@ -150,7 +179,7 @@ export function SankeyDiagram({ entries }: Props) {
 
       // ── D3 Sankey ────────────────────────────────────────────────────────────
       // Use numeric indices for links (d3-sankey default expects index-based refs)
-      const sankeyGen = sankey<{ name: string; color: string; column: number }, object>()
+      const sankeyGen = sankey<{ name: string; color: string; column: number; rawName?: string }, object>()
         .nodeWidth(16)
         .nodePadding(12)
         .extent([
@@ -164,7 +193,7 @@ export function SankeyDiagram({ entries }: Props) {
       );
 
       const graph: SankeyGraph<
-        { name: string; color: string; column: number },
+        { name: string; color: string; column: number; rawName?: string },
         object
       > = sankeyGen({
         nodes: allNodes.map((d) => ({ ...d })),

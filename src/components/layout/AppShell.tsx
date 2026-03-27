@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Navigation, type ViewId } from './Navigation';
 import { Header } from './Header';
 import { BottomTabBar } from './BottomTabBar';
@@ -19,7 +20,7 @@ import { TooltipProvider } from '@/components/ui/InfoTooltip';
 import { MethodologyPanel } from '@/components/ui/MethodologyPanel';
 import { Footer } from '@/components/layout/Footer';
 
-function ViewContent({ view }: { view: ViewId }) {
+function renderView(view: ViewId) {
   if (view === 'dashboard') return <BubbleView />;
   if (view === 'table') return <EvidenceTable />;
   if (view === 'treemap') return <TreemapView />;
@@ -48,7 +49,7 @@ export function AppShell() {
         {/* Mobile top tab bar — hidden on desktop */}
         <BottomTabBar activeView={activeView} onViewChange={setActiveView} />
 
-        {/* Desktop: inline GlobalControls above main content */}
+        {/* Desktop: collapsible GlobalControls above main content (single instance) */}
         <div className="hidden md:block container mx-auto px-4 pt-4">
           <GlobalControls />
         </div>
@@ -60,7 +61,18 @@ export function AppShell() {
             <FilterChip />
           </div>
 
-          <ViewContent view={activeView} />
+          {/* View transitions */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeView}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            >
+              {renderView(activeView)}
+            </motion.div>
+          </AnimatePresence>
         </main>
 
         {/* Methodology + Footer */}

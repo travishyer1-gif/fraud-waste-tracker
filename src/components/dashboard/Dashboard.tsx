@@ -5,10 +5,10 @@ import { motion, type Variants } from 'framer-motion';
 import { useEvidenceData } from '@/hooks/useEvidenceData';
 import { formatCompact } from '@/lib/utils';
 import { TIER_COLORS, CATEGORY_LABELS, FEDERAL_BUDGET, formatAsPercent } from '@/lib/constants';
-import { GlobalControls } from '@/components/controls/GlobalControls';
 import { InfoTooltip } from '@/components/ui/InfoTooltip';
 import { useFilters } from '@/context/FilterContext';
 import { useIsMobile } from '@/hooks/useMediaQuery';
+import { HeroStats } from '@/components/dashboard/HeroStats';
 
 // ─── Animated number counter using RAF ────────────────────────────────────────
 function AnimatedNumber({ value }: { value: number }) {
@@ -258,15 +258,11 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Layout: sidebar + main */}
-      <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-5">
-        {/* Sidebar */}
-        <aside className="space-y-4">
-          <GlobalControls />
-        </aside>
+      {/* HeroStats banner */}
+      <HeroStats />
 
-        {/* Main content */}
-        <div className="space-y-6">
+      {/* Main content (no sidebar — filters are in AppShell's collapsible bar) */}
+      <div className="space-y-6">
           {/* ── Hero Section ───────────────────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, y: -16 }}
@@ -609,7 +605,6 @@ export function Dashboard() {
             ⚠️ Figures must not be added without consulting the Double Count Matrix.
             Many entries overlap. Sources: GAO, HHS OIG, DOJ, CBO, PRAC, paymentaccuracy.gov.
           </p>
-        </div>
       </div>
     </div>
   );

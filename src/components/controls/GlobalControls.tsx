@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, X, RotateCcw, DollarSign, Percent } from 'lucide-react';
+import { Search, X, RotateCcw, DollarSign, Percent, ChevronDown, ChevronUp, SlidersHorizontal } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useFilters, type DataType, type PercentMode } from '@/context/FilterContext';
 import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
@@ -27,7 +28,8 @@ function formatBudgetLabel(year: number): string {
   return `FY${year} ($${trillions.toFixed(1)}T)`;
 }
 
-export function GlobalControls() {
+/** The actual filter controls panel — shared by both desktop collapsible and mobile FilterSheet */
+export function GlobalControlsPanel() {
   const {
     filters,
     setTierRange,
@@ -69,7 +71,7 @@ export function GlobalControls() {
   ];
 
   return (
-    <div className="glass-card p-4 space-y-4">
+    <div className="space-y-4">
       {/* Row 1: Search */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -226,6 +228,71 @@ export function GlobalControls() {
           Reset Filters
         </Button>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Desktop collapsible filter bar.
+ * Collapsed: shows a compact summary strip.
+ * Expanded: shows the full GlobalControlsPanel.
+ */
+export function GlobalControls() {
+  const { filters } = useFilters();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Build summary text from current filters
+  const dataTypeLabel =
+    filters.dataType === 'both'
+      ? 'Fraud + Waste'
+      : filters.dataType.charAt(0).toUpperCase() + filters.dataType.slice(1);
+
+  const tierLabel =
+    filters.minTier === 1 && filters.maxTier === 4
+      ? 'All Tiers'
+      : `Tiers ${filters.minTier}–${filters.maxTier}`;
+
+  const yearLabel = `FY${filters.yearStart}–${filters.yearEnd}`;
+
+  return (
+    <div className="glass-card overflow-hidden">
+      {/* Collapsed summary strip / toggle header */}
+      <button
+        onClick={() => setIsExpanded(prev => !prev)}
+        className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-white/5 transition-colors"
+        aria-expanded={isExpanded}
+      >
+        <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+        <span className="flex-1 text-xs text-muted-foreground">
+          Showing:{' '}
+          <span className="text-foreground font-medium">{dataTypeLabel}</span>
+          {' | '}
+          <span className="text-foreground font-medium">{tierLabel}</span>
+          {' | '}
+          <span className="text-foreground font-medium">{yearLabel}</span>
+        </span>
+        <span className="text-xs text-muted-foreground flex items-center gap-1 shrink-0">
+          Filters
+          {isExpanded ? (
+            <ChevronUp className="w-3.5 h-3.5" />
+          ) : (
+            <ChevronDown className="w-3.5 h-3.5" />
+          )}
+        </span>
+      </button>
+
+      {/* Animated expand/collapse panel — content stays in DOM for accessibility */}
+      <motion.div
+        animate={{ height: isExpanded ? 'auto' : 0, opacity: isExpanded ? 1 : 0 }}
+        initial={false}
+        transition={{ duration: 0.25, ease: 'easeInOut' }}
+        style={{ overflow: 'hidden' }}
+        aria-hidden={!isExpanded}
+      >
+        <div className="px-4 pb-4 pt-1 border-t border-white/10">
+          <GlobalControlsPanel />
+        </div>
+      </motion.div>
     </div>
   );
 }

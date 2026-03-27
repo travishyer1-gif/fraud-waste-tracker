@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { GlobalControls } from './GlobalControls';
+import { GlobalControlsPanel } from './GlobalControls';
 import { useFilters } from '@/context/FilterContext';
 import { Button } from '@/components/ui/button';
 
@@ -106,7 +106,7 @@ export function FilterSheet({ isOpen, onClose }: FilterSheetProps) {
               </div>
 
               {/* All the regular GlobalControls */}
-              <GlobalControls />
+              <GlobalControlsPanel />
             </div>
 
             {/* Apply & Close */}

@@ -59,6 +59,35 @@ export const FEDERAL_BUDGET: Record<number, number> = {
   2025: 7_000_000_000_000,
 };
 
+// Source: FRED FYFR series (Federal Receipts, Annual, Millions of Dollars)
+// https://fred.stlouisfed.org/series/FYFR — OMB Historical Tables
+// FY2025 is ACTUAL (Treasury MTS final September figures)
+export const FEDERAL_REVENUE: Record<number, number> = {
+  2003: 1_782_314_000_000,
+  2004: 1_880_114_000_000,
+  2005: 2_153_611_000_000,
+  2006: 2_406_869_000_000,
+  2007: 2_567_985_000_000,
+  2008: 2_523_991_000_000,
+  2009: 2_104_989_000_000,
+  2010: 2_162_706_000_000,
+  2011: 2_303_466_000_000,
+  2012: 2_449_990_000_000,
+  2013: 2_775_106_000_000,
+  2014: 3_021_491_000_000,
+  2015: 3_249_890_000_000,
+  2016: 3_267_965_000_000,
+  2017: 3_316_184_000_000,
+  2018: 3_329_907_000_000,
+  2019: 3_463_364_000_000,
+  2020: 3_421_164_000_000,
+  2021: 4_047_111_000_000,
+  2022: 4_897_339_000_000,
+  2023: 4_439_286_000_000,
+  2024: 4_918_106_000_000,
+  2025: 5_234_616_000_000,
+};
+
 /** Average of all known FEDERAL_BUDGET values (fallback for unknown years) */
 const FEDERAL_BUDGET_AVERAGE =
   Object.values(FEDERAL_BUDGET).reduce((a, b) => a + b, 0) /

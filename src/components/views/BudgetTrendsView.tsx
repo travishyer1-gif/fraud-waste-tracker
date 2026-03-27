@@ -6,6 +6,7 @@ import { DollarSign, Percent } from 'lucide-react';
 import { BudgetStackedArea } from '@/components/charts/BudgetStackedArea';
 import { BudgetFraudCombo } from '@/components/charts/BudgetFraudCombo';
 import { BudgetTreemap } from '@/components/charts/BudgetTreemap';
+import { RevenueOutlaysChart } from '@/components/charts/RevenueOutlaysChart';
 import { BudgetMetrics } from '@/components/dashboard/BudgetMetrics';
 
 type ViewMode = 'absolute' | 'normalized';
@@ -34,6 +35,16 @@ export default function BudgetTrendsView() {
           FY2003–2025 spending by function with fraud &amp; waste overlay
         </p>
       </div>
+
+      {/* Revenue vs. Outlays hero chart */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0 }}
+        className="glass-card p-4 space-y-4"
+      >
+        <RevenueOutlaysChart syncId="budget" />
+      </motion.div>
 
       {/* Metrics cards */}
       <BudgetMetrics selectedYear={treemapYear} />

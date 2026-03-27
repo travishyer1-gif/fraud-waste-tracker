@@ -15,6 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fraud-waste-tracker.vercel.app'),
   title: 'Federal Fraud & Waste Tracker',
   description:
     'Evidence-based, non-partisan tracking of $9.9T–$12.4T in federal fraud, waste, and abuse (FY2003–2025). Data from GAO, DOJ, OIG, and CBO.',

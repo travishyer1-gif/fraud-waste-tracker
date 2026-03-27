@@ -107,7 +107,28 @@ export function BudgetMetrics({ selectedYear = 2025 }: BudgetMetricsProps) {
       .reduce((sum, e) => sum + (e.amountBest ?? 0), 0);
 
     const totalFraudWaste = fraudTotal + wasteTotal;
-    const fraudWastePct = budget > 0 ? ((totalFraudWaste / budget) * 100).toFixed(2) : '0.00';
+
+    // Use historical average % across all years with data instead of
+    // single-year ratio — avoids misleading numbers for incomplete years (e.g. FY2025)
+    const budgetYears = Object.keys(FEDERAL_BUDGET).map(Number).filter(y => y <= 2024);
+    let pctSum = 0;
+    let pctCount = 0;
+    for (const y of budgetYears) {
+      const yBudget = FEDERAL_BUDGET[y];
+      if (!yBudget || yBudget <= 0) continue;
+      const yEntries = entries.filter(e => {
+        if (!e.safeToSum) return false;
+        const s = e.fiscalYearStart ?? y;
+        const end = e.fiscalYearEnd ?? s;
+        return s <= y && end >= y;
+      });
+      const yTotal = yEntries.reduce((sum, e) => sum + (e.amountBest ?? 0), 0);
+      if (yTotal > 0) {
+        pctSum += (yTotal / yBudget) * 100;
+        pctCount++;
+      }
+    }
+    const fraudWastePct = pctCount > 0 ? (pctSum / pctCount).toFixed(1) : '0.0';
 
     const catTotals: Record<string, number> = {};
     for (const e of yearEntries) {
@@ -167,7 +188,7 @@ export function BudgetMetrics({ selectedYear = 2025 }: BudgetMetricsProps) {
           icon={<BarChart2 className="w-4 h-4" />}
           label="Fraud+Waste / Budget"
           value={`${metrics.fraudWastePct}%`}
-          sub="of federal outlays"
+          sub="avg. of federal outlays"
           color="#f59e0b"
           index={3}
         />

@@ -86,5 +86,5 @@ export function formatAsPercent(amount: number, year?: number, referenceYear?: n
       : pct >= 0.01
         ? pct.toFixed(4)
         : pct.toFixed(6);
-  return `${formatted}% of fed. budget`;
+  return `${formatted}%`;
 }
